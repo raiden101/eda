@@ -15,14 +15,25 @@ router.post('/login', (req, res) => {
       resp.valid ? 
       jwt.sign(user_data, key, (err, token) => {
         if(err) 
-          res.json({valid: false, data: null, error: 'error while logging in'});
+          res.status(403).json({valid: false, data: null, error: 'error while logging in'});
         else
-          res.json({valid: true, data: token, error: null});
+          res.status(200).json({valid: true, data: token, error: null});
       })
-      :res.json({valid: false, data: null, error: null});        
+      :res.status(403).json({valid: false, data: null, error: null});        
     }
   )
-  .catch(err => res.json({valid: false, data: null, error: err.error}));
+  .catch(err => res.status(403).json({valid: false, data: null, error: err.error}));
 });
+
+
+router.post('/isauth', (req, res) => {
+  // req.body.data: {token: '.......'} , may be userid in the data
+  jwt.verify(req.body.data.token, key, (err, data) => {
+    if(err)
+      res.status(403).json({data: null, error: "error", valid: false});
+    else
+      res.status(200).json({data: null, error: null, valid: true});  
+  });
+})
 
 module.exports = router;
