@@ -16,6 +16,7 @@ let Schema = require('./server/schemas/collections.js');
 
 
 app.use('/api/auth', require('./server/auth/auth'));
+app.use('/api/data', require('./server/data/data'));
 
 app.listen(port, () => {
   console.log('listening to port ' + port);
