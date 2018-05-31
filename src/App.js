@@ -10,12 +10,7 @@ class App extends Component {
     componentDidMount() {
         checkAuth().then((data) => {
             this.setState({...data});
-            console.log(data);
         }).catch(err => console.log);
-        // this.setState({
-        //     status: 1,
-        //     admin: 1
-        // })
     }
     render() {
         let renderItem = <b>Loading...</b>
