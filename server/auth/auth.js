@@ -2,7 +2,7 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const auth_fn = require('./auth_functions');
 const { key } = require('../../credentials/credentials');
-
+const exp_in_secs = 600;
 
 // expected data: user_data: 
 // { username: '...', password: '...', admin: 0/1}
@@ -15,7 +15,11 @@ router.post('/login', (req, res) => {
   promise.then(
     resp => {
       resp.valid ? 
-      jwt.sign(user_data, key, (err, token) => {
+      jwt.sign({
+        ...user_data,
+        exp: Math.floor(Date.now()/1000) + exp_in_secs
+      }, 
+      key, (err, token) => {
         if(err) 
           res.json({valid: false, data: null, error: ['error while logging in!']});
         else

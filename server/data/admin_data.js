@@ -49,11 +49,11 @@ router.post('/get_all_faculties', check_token, (req, res) => {
 });
 
 // { token: '....' }
-router.delete('/delete_faculty/:fac_id', check_token, (req, res) => {
-  faculty.deleteOne({fac_id: req.params.fac_id})
+router.post('/delete_faculties', check_token, (req, res) => {
+  faculty.deleteMany({fac_id: {$in: req.body.fac_ids}})
   .then(data => {
     // if number of docs effected(data.n) == 0
-    if(data.n == 0) throw "error while deleting the user";
+    if(data.n == 0) throw "error while deleting the user or users not found";
     else res.json({data: "deletion successful", error: null});
   })  
   .catch(err => res.json({data: null, error: err}));
