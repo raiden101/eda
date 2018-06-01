@@ -33,7 +33,7 @@ router.post('/isAuth', (req, res) => {
     if(err)
       res.json({status: 0, admin: -1});
     else
-      res.json({status: 1, admin: data.admin});  
+      res.json({status: 1, admin: data.admin});
   });
 })
 

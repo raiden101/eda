@@ -42,3 +42,24 @@
 .error-item:hover{
     text-decoration: underline;
 }
+.tabs{
+    width:70%;
+    height:40px;
+    line-height:40px;
+    padding:20px;
+    margin: 10px auto;
+}
+.tab{
+    width:50%;
+    height:100%;
+    float:left;
+    transition:0.3s;
+    border-bottom:2px solid transparent;
+    cursor:pointer;
+}
+.tab.active{
+    border-bottom:2px solid blue;
+}
+.tab:not(.active):hover{
+    border-bottom:2px solid skyblue;
+}
