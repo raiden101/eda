@@ -3,9 +3,7 @@ const { aft_exam, morn_exam, faculty } = require('../schemas/collections')
 const jwt = require('jsonwebtoken');
 const { key } = require('../../credentials/credentials');
 
-// response will be an array of 2 arrays ie [[],[]]
-// 1st array will have all info about morning exams.
-// 2nd array """""""""""""""""""""""" aft exams.
+
 const check_token = (req, res, next) => {
   jwt.verify(req.body.token, key, (err, data) => {
     if(err)
@@ -15,8 +13,9 @@ const check_token = (req, res, next) => {
       :res.json({data: null, error: "unauthorized activity!!"});
   })
 }
-
-
+// response will be an array of 2 arrays ie [[],[]]
+// 1st array will have all info about morning exams.
+// 2nd array """""""""""""""""""""""" aft exams.
 // { token: '.....'}
 router.post('/', check_token,  (req, res) => {
   let p1 = morn_exam.find({}).sort('date'),
@@ -43,7 +42,7 @@ router.post('/new_faculty', check_token, (req, res) => {
 
 // { token: '.......' }
 router.post('/get_all_faculties', check_token, (req, res) => {
-  faculty.find({})
+  faculty.find({}, "-password -mrn_slots_selected -aft_slots_selected")
   .then(data => res.json({data: data, error: null}))
   .catch(err => res.json({data: null, error: "error while fetching data!!"}));
 });
