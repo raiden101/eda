@@ -17,11 +17,11 @@ router.post('/login', (req, res) => {
       resp.valid ? 
       jwt.sign(user_data, key, (err, token) => {
         if(err) 
-          res.json({valid: false, data: null, error: ['error while logging in']});
+          res.json({valid: false, data: null, error: ['error while logging in!']});
         else
           res.json({valid: true, data: token, error: []});
       })
-      :res.json({valid: false, data: null, error: []});        
+      :res.json({valid: false, data: null, error: ["invalid username or password!"]});        
     }
   )
   .catch(err => res.json({valid: false, data: null, error: [err.error]}));
