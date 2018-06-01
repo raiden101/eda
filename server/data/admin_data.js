@@ -16,6 +16,8 @@ const check_token = (req, res, next) => {
   })
 }
 
+
+// { token: '.....'}
 router.post('/', check_token,  (req, res) => {
   let p1 = morn_exam.find({}),
       p2 = aft_exam.find({});
@@ -26,6 +28,8 @@ router.post('/', check_token,  (req, res) => {
   .catch(err => res.json({data: null, error: "error while fetching data!!"}));
 });
 
+
+// { token: '.....', faculty_data: {.......} }
 router.post('/new_faculty', check_token, (req, res) => {
   new faculty({...req.body.faculty_data})
   .save()
@@ -36,12 +40,15 @@ router.post('/new_faculty', check_token, (req, res) => {
   .catch((err) => res.json({data: null, error: "error while adding to db!!"}))
 });
 
+
+// { token: '.......' }
 router.post('/get_all_faculties', check_token, (req, res) => {
   faculty.find({})
   .then(data => res.json({data: data, error: null}))
   .catch(err => res.json({data: null, error: "error while fetching data!!"}));
 });
 
+// { token: '....' }
 router.delete('/delete_faculty/:fac_id', check_token, (req, res) => {
   faculty.deleteOne({fac_id: req.params.fac_id})
   .then(data => {
@@ -53,6 +60,7 @@ router.delete('/delete_faculty/:fac_id', check_token, (req, res) => {
 });
 
 // data should be enclosed within new_slot{date: '..', }
+// { token: '....', new_slot: {.....} }
 router.post('/slot_creation', check_token, (req, res) => {
   let newSlot = {
     total_slot: req.body.new_slot.total_slot,

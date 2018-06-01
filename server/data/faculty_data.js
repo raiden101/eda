@@ -1,11 +1,23 @@
 const router = require('express').Router();
 const { morn_exam, aft_exam, slot_limitation, faculty } = require('../schemas/collections');
-
+const jwt = require('jsonwebtoken');
+const { key } = require('../../credentials/credentials');
 // resp will be array of arrays.
 // arr[0] will be morning dates.
 // arr[1] will be aft dates.
 // issue: all together dates wont be sorted.
-router.get('/:fac_id', (req, res) => {
+const check_token = (req, res, next) => {
+  jwt.verify(req.body.token, key, (err, data) => {
+    if(err) res.json({data: null, error: "error while fetching data!!"});
+    else 
+      data.admin == 0 ?
+      next() 
+      : res.json({data: null, error: "unauthorized!!!"})
+  });
+};
+
+// { token: '........'}
+router.post('/:fac_id', check_token, (req, res) => {
   let resp = {};
   faculty.findOne({fac_id: req.params.fac_id}, 'fac_des')
   .then(data => {
