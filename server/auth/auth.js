@@ -31,9 +31,9 @@ router.post('/login', (req, res) => {
 router.post('/isAuth', (req, res) => {
   jwt.verify(req.body.token, key, (err, data) => {
     if(err)
-      res.json({data: null, error: ["error"], valid: false});
+      res.json({status: 0, admin: -1});
     else
-      res.json({data: {admin: data.admin}, error: [], valid: true});  
+      res.json({status: 1, admin: data.admin});  
   });
 })
 

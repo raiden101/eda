@@ -12,7 +12,7 @@ router.get('/user_home/:fac_id', (req, res) => {
     if(data != null) 
       return slot_limitation.findOne({fac_des: data.fac_des}, 'morn_max aft_max')
     else 
-      throw "error!!!";
+      throw "oops!! something went wrong";
   })
   .then(data => {
     resp['morn_max'] = data.morn_max;
