@@ -1,26 +1,34 @@
 import React, { Component,Fragment } from 'react';
 import checkAuth from '../../checkAuth';
 import { Redirect } from 'react-router-dom';
+import AdminComponent from './AdminComponent/AdminComponent';
 class Admin extends Component{
     state = {
-        redirect:false
+        redirect:2
     }
     componentDidMount() {
         checkAuth().then((data) => {
-            console.log("admin :", data.admin !== 1);
             if (data.admin !== 1)
                 this.setState({
                     ...this.state,
-                    redirect: true
+                    redirect: 1
+                });
+            else
+                this.setState({
+                    ...this.state,
+                    redirect: 0
                 });
         });
     }
     render() {
-        let renderItem = this.state.redirect ? <Redirect to="/" /> : null;
+        let renderItem = null;
+        if (this.state.redirect === 2) renderItem = <b>Loading...</b>;
+        else if (this.state.redirect === 1) renderItem = <Redirect to="/" />
+        let realComponent = <AdminComponent/>
         return (
             <Fragment>
                 {renderItem}
-                Admin component
+                {!this.state.redirect && realComponent}
             </Fragment>
         );
     }
