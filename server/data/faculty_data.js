@@ -5,7 +5,7 @@ const { morn_exam, aft_exam, slot_limitation, faculty } = require('../schemas/co
 // arr[0] will be morning dates.
 // arr[1] will be aft dates.
 // issue: all together dates wont be sorted.
-router.get('/user_home/:fac_id', (req, res) => {
+router.get('/:fac_id', (req, res) => {
   let resp = {};
   faculty.findOne({fac_id: req.params.fac_id}, 'fac_des')
   .then(data => {
@@ -34,6 +34,8 @@ router.get('/user_home/:fac_id', (req, res) => {
   .catch(err => res.json({data: null, error: err}));
 
 });
+
+
 
 
 

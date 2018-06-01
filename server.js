@@ -18,8 +18,17 @@ let Schema = require('./server/schemas/collections.js');
 
 
 app.use('/api/auth', require('./server/auth/auth'));
-app.use('/api/data', require('./server/data/data'));
 
+////////////////////
+app.use('/api/faculty', require('./server/data/faculty_data'));
+//  /api/faculty/:fac_id    will give data for faculty home page.
+
+//////////////////////////
+app.use('/api/admin', require('./server/data/admin_data'));
+//  /api/admin/    will give data for admin home page.
+
+
+///////////////////////////////
 app.listen(port, () => {
   console.log('listening to port ' + port);
 })
