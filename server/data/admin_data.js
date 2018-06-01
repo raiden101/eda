@@ -19,8 +19,8 @@ const check_token = (req, res, next) => {
 
 // { token: '.....'}
 router.post('/', check_token,  (req, res) => {
-  let p1 = morn_exam.find({}),
-      p2 = aft_exam.find({});
+  let p1 = morn_exam.find({}).sort('date'),
+      p2 = aft_exam.find({}).sort('date');
   Promise.all([p1, p2])
   .then(data => {
     res.json({data: data, error: null})
