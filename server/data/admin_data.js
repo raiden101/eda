@@ -11,10 +11,11 @@ const check_token = (req, res, next) => {
     if(err)
       res.json({data: null, error: "error while fetching data!!"});
     else
-      if(data.admin == 1)
-        next();
+      data.admin == 1 ? next()
+      :res.json({data: null, error: "unauthorized activity!!"});
   })
 }
+
 router.post('/', check_token,  (req, res) => {
   let p1 = morn_exam.find({}),
       p2 = aft_exam.find({});
@@ -25,7 +26,7 @@ router.post('/', check_token,  (req, res) => {
   .catch(err => res.json({data: null, error: "error while fetching data!!"}));
 });
 
-router.post('/new_faculty', (req, res) => {
+router.post('/new_faculty', check_token, (req, res) => {
   new faculty({...req.body.faculty_data})
   .save()
   .then((data) => {
@@ -41,7 +42,7 @@ router.post('/get_all_faculties', check_token, (req, res) => {
   .catch(err => res.json({data: null, error: "error while fetching data!!"}));
 });
 
-router.delete('/delete_faculty/:fac_id', (req, res) => {
+router.delete('/delete_faculty/:fac_id', check_token, (req, res) => {
   faculty.deleteOne({fac_id: req.params.fac_id})
   .then(data => {
     // if number of docs effected(data.n) == 0
@@ -52,7 +53,7 @@ router.delete('/delete_faculty/:fac_id', (req, res) => {
 });
 
 // data should be enclosed within new_slot{date: '..', }
-router.post('/slot_creation', (req, res) => {
+router.post('/slot_creation', check_token, (req, res) => {
   let newSlot = {
     total_slot: req.body.new_slot.total_slot,
     remaining_slot: req.body.new_slot.total_slot,
