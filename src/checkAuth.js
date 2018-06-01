@@ -7,8 +7,7 @@ export default () => {
         safe(auth) ? axios.post('http://localhost:5000/api/auth/isAuth', {
             token: token
         }).then((data) => resolve({
-            status: data.data,
-            admin: data.admin
+            ...data.data
         })) : resolve({
                 status: 0,
                 admin: 0

@@ -4,9 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 class Default extends Component {
     state = {
-        status: {
-            status: 2
-        }
+        status: 2
     };
     refetch = () => {
         checkAuth().then((data) => {
@@ -20,17 +18,16 @@ class Default extends Component {
         this.refetch();
     }
     render() {
-    
         let renderItem = <b>Loading...</b>
-        if (this.state.status.status === 0) {
+        if (!this.state.status) {
             renderItem = <Redirect to="/login" />
             this.setState({
                 ...this.state,
                 fetch: true
             })
         }
-        else if (this.state.status.status === 1) {
-            if (this.state.status.admin === 1) {
+        else if (this.state.status === 1) {
+            if (this.state.admin === 1) {
                 renderItem = <Redirect to="/admin" />
             }
             else

@@ -1,8 +1,5 @@
-
 const isObjectEmpty = (obj) => {
-  if(Object.keys(obj).length) 
-    return false;
-  return true;
+  return Object.keys(obj).length < 1
 }
 
 module.exports = {
