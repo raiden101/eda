@@ -4,7 +4,7 @@ export default () => {
     return new Promise(function (resolve, reject) {
         let auth = localStorage.getItem("auth");
         let { token } = safe(auth) && JSON.parse(auth);
-        auth ? axios.post('http://localhost:5000/api/isAuth', {
+        safe(auth) ? axios.post('http://localhost:5000/api/auth/isAuth', {
             token: token
         }).then((data) => resolve({
             status: data.data,

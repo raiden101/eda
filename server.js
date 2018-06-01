@@ -6,6 +6,8 @@ const { username, password } = require('./credentials/credentials');
 const mongoose = require('mongoose');
 mongoose.connect(`mongodb://${username}:${password}@ds143070.mlab.com:43070/eda`)
 
+app.use(require('cors')());
+
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

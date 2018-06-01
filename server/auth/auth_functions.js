@@ -14,17 +14,18 @@ const findOneInAcollection = (collection, data_to_be_searched) => {
 }
 
 const admin_login = (user_data) => {
-  // cuzz data type: { username: '', password: '', admin: ''}
-  delete user_data['admin']
-  return findOneInAcollection(admin, user_data);
+  return findOneInAcollection(admin, {
+    username: user_data.username,
+    password: user_data.password
+  });
 }
 
 const faculty_login = (user_data) => {
   // we want the data to be of the type: { fac_id: '', password: ''}
-  delete user_data['admin'];
-  user_data['fac_id'] = user_data['username'];
-  delete user_data['username'];
-  return findOneInAcollection(faculty, user_data);
+  return findOneInAcollection(faculty, {
+    fac_id: user_data.username,
+    password: user_data.password
+  });
 }
 
 module.exports = {
