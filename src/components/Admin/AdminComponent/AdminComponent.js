@@ -7,6 +7,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import RenderTable from '../../RenderTable/RenderTable';
+import Modal from '../../Modal/Modal';
+
 class AdminComponent extends Component{
     state = {
         duration: 0,
@@ -54,12 +56,25 @@ class AdminComponent extends Component{
     }
     translateSlotData(obj) {
         let date = new Date(obj.date)
-        let dateString = date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear()
+        let dateString = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()
         return [
             dateString,
             obj.total_slot,
             obj.remaining_slot,
-            <b>{obj.selected_members.length}</b>]
+            <Modal
+                trigger={
+                    <Fragment>
+                        see details (
+                        <span className="fake-link">
+                            {obj.selected_members.length}
+                        </span>)
+                    </Fragment>
+                }
+                title={"Selected members"}
+                content={obj.selected_members.map((element, index) => {
+                    return <span className="wid-10 cell" key={"selected"+index}>{element}</span>
+                })}
+            />]
     }
     render() {
         let redirect = this.state.redirect ? <Redirect to="/" /> : null;
