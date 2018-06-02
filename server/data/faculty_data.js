@@ -7,13 +7,13 @@ const { key } = require('../../credentials/credentials');
 // arr[1] will be aft dates.
 // issue: all together dates wont be sorted.
 const check_token = (req, res, next) => {
-  jwt.verify(req.body.token, key, (err, data) => {
-    if(err) res.json({data: null, error: "error while fetching data!!"});
-    else 
-      data.admin == 0 ?
-      next() 
-      : res.json({data: null, error: "unauthorized!!!"})
-  });
+  try {
+    let decoded_data = jwt.verify(req.body.token, key);
+    decoded_data.admin == 0 ? next()
+    :res.json({data: null, error: "unauthorized activity!!"});
+  }catch(err) {
+      res.json({data: null, error: "error while fetching data!!"});    
+  }
 };
 
 // { token: '........'}
