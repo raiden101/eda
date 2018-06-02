@@ -25,10 +25,11 @@ class SelectedSlots extends Component {
             "Remaining Slots",
             "Selected Members"
         ];
+        this.unmounted = false;
     }
 
     changeDuration = ({ target: { name, value } }) => {
-        this.setState({
+        !this.unmounted && this.setState({
             ...this.state,
             [name]: value
         })
@@ -62,11 +63,11 @@ class SelectedSlots extends Component {
         }).then((data) => {
             data = data.data;
             if (data.error !== null) {
-                this.setState({
+                !this.unmounted && this.setState({
                     ...this.state
                 });
             } else {
-                this.setState({
+                !this.unmounted && this.setState({
                     ...this.state,
                     table: {
                         morning: data.data[0],
@@ -75,6 +76,9 @@ class SelectedSlots extends Component {
                 })
             }
         })
+    }
+    componentWillUnmount() {
+        this.unmounted = true;
     }
     render() {
         return (

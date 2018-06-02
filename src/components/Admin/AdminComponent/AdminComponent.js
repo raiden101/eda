@@ -5,6 +5,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import SelectedSlots from '../SelectedSlots/SelectedSlots';
+import DeleteUsers from '../DeleteUsers/DeleteUsers';
 
 class AdminComponent extends Component{
     constructor(props) {
@@ -12,7 +13,7 @@ class AdminComponent extends Component{
         this.token = JSON.parse(localStorage.getItem("auth")).token;
     }
     state = {
-        type:0
+        type:1
     }
     changeDuration = ({ target: { name, value } }) => {
         this.setState({
@@ -42,6 +43,7 @@ class AdminComponent extends Component{
                     </div>
                     <div className="details">
                         {!type && <SelectedSlots />}
+                        {type === 1 && <DeleteUsers token={this.token}/>}
                     </div>
                 </div>
             </Fragment>
