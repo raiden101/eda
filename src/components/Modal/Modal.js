@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 class Modal extends Component{
@@ -14,6 +13,7 @@ class Modal extends Component{
         this.setState(prevState => ({
             open:!prevState.open
         }))
+        return true;
     }
     render() {
         return (
@@ -26,12 +26,17 @@ class Modal extends Component{
                     onClose={this.toggleClose}>
                     <DialogTitle>{this.props.title}</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>{this.props.content}</DialogContentText>
+                        {this.props.content}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.toggleClose} color="primary">
+                        <Button onClick={() => { this.toggleClose(); (this.props.handleOk && this.props.handleOk())}} color="primary">
                             Ok
                         </Button>
+                        {this.props.cancel &&
+                            <Button onClick={this.toggleClose} color="default">
+                                Cancel
+                            </Button>
+                        }
                     </DialogActions>
                 </Dialog>
             </Fragment>

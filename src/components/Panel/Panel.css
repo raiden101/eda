@@ -1,0 +1,16 @@
+.panel{
+    width:100%;
+}
+.panel-title{
+    cursor:pointer;
+    line-height:40px;
+    margin-top:15px;
+}
+.panel-details{
+    width:100%;
+    height:auto;
+    padding-top: 20px;
+    word-wrap: break-word;
+    box-sizing:border-box;
+    color:#888;
+}

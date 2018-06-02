@@ -3,6 +3,8 @@ import axios from 'axios';
 import './DeleteUsers.css';
 import IconButton from '@material-ui/core/IconButton';
 import RenderTableSelectable from '../../RenderTable/RenderTableSelectable';
+import Modal from '../../Modal/Modal';
+import Panel from '../../Panel/Panel';
 class DeleteUsers extends Component{
     constructor(props) {
         super(props);
@@ -38,13 +40,40 @@ class DeleteUsers extends Component{
     }
     selectedAction = (elements) => {
         return (
-            <IconButton onClick={() => this.removeElements(elements)}>
-                <i className="fa fa-trash" style={{fontSize:"19px"}}></i>
-            </IconButton>
+            <Modal 
+                trigger={
+                    <IconButton>
+                        <i className="fa fa-trash" style={{ fontSize: "19px" }}></i>
+                    </IconButton>
+                }
+                title={"Delete Users"}
+                content={
+                    <Fragment>
+                        Are you sure you want to delete these Users ?
+                        <Panel
+                            title="See details"
+                            content={
+                                <Fragment>
+                                    {
+                                        elements.map((element) => {
+                                            return (
+                                                <div className="wid-10 cell">
+                                                    {element}
+                                                </div>
+                                            );
+                                        })
+                                    }
+                                </Fragment>
+                            }
+                        />
+                    </Fragment>
+                }
+                cancel={true}
+                handleOk={() => this.removeElements(elements)}
+            />
         );
     }
     componentDidMount() {
-        console.log("getting data");
         axios.post('http://localhost:5000/api/admin/get_all_faculties', {
             token:this.props.token
         }).then((data) => {
