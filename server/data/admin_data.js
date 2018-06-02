@@ -5,14 +5,15 @@ const { key } = require('../../credentials/credentials');
 
 
 const check_token = (req, res, next) => {
-  jwt.verify(req.body.token, key, (err, data) => {
-    if(err)
-      res.json({data: null, error: "error while fetching data!!"});
-    else
-      data.admin == 1 ? next()
-      :res.json({data: null, error: "unauthorized activity!!"});
-  })
+  try {
+    let decoded_data = jwt.verify(req.body.token, key);
+    decoded_data.admin == 1 ? next()
+    :res.json({data: null, error: "unauthorized activity!!"});
+  }catch(err) {
+      res.json({data: null, error: "error while fetching data!!"});    
+  }
 }
+
 // response will be an array of 2 arrays ie [[],[]]
 // 1st array will have all info about morning exams.
 // 2nd array """""""""""""""""""""""" aft exams.
@@ -33,7 +34,6 @@ router.post('/new_faculty', check_token, (req, res) => {
   new faculty({...req.body.faculty_data})
   .save()
   .then((data) => {
-    console.log(data);
     res.json({data: null, error: null})
   })
   .catch((err) => res.json({data: null, error: "error while adding to db!!"}))
