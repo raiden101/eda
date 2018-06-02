@@ -25,7 +25,7 @@ class Modal extends Component{
                     open={this.state.open}
                     onClose={this.toggleClose}>
                     <DialogTitle>{this.props.title}</DialogTitle>
-                    <DialogContent>
+                    <DialogContent className="dull-text">
                         {this.props.content}
                     </DialogContent>
                     <DialogActions>
