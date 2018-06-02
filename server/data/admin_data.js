@@ -47,14 +47,25 @@ router.post('/get_all_faculties', check_token, (req, res) => {
   .catch(err => res.json({data: null, error: "error while fetching data!!"}));
 });
 
-// { token: '....' }
+// { token: '....', fac_ids: ['id1', 'id2'...] }
 router.post('/delete_faculties', check_token, (req, res) => {
   faculty.deleteMany({fac_id: {$in: req.body.fac_ids}})
   .then(data => {
     // if number of docs effected(data.n) == 0
-    if(data.n == 0) throw "error while deleting the user or users not found";
-    else res.json({data: "deletion successful", error: null});
-  })  
+    if(data.n == 0) 
+      throw "error while deleting the user or users not found";
+    else {
+      let p1 = morn_exam.updateMany(
+        { selected_members: {$in: req.body.fac_ids} },
+        { $pullAll: {selected_members: req.body.fac_ids} });
+      let p2 = aft_exam.updateMany(
+        { selected_members: {$in: req.body.fac_ids} },
+        { $pullAll: {selected_members: req.body.fac_ids} });
+      Promise.all([p1, p2])
+      .then(data => res.json({data: "deletion successful", error: null}))
+      .catch(err => { throw "error while deleting!!"});
+    }
+  })
   .catch(err => res.json({data: null, error: err}));
 });
 
@@ -75,4 +86,14 @@ router.post('/slot_creation', check_token, (req, res) => {
 
 });
 
+
+// { token: '.....', 
+// slots_to_delete: ['_id1', '_id2', ...], 
+// session: "morning/afternoon"}
+router.post('/delete_slots', check_token, (req, res) => {
+  let _collection = req.body.session === "morning" ? morn_exam : aft_exam;
+  _collection.deleteMany({_id: {$in: req.body.slots_to_delete}})
+  .then(data => res.json({data: "slot deletion successfull", error: null}))
+  .catch(err => res.json({error: "error while deleting the slots", data: null}))
+})
 module.exports = router;
