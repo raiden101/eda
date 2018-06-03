@@ -57,7 +57,7 @@ class RenderTableSelectable extends Component {
                 <div className={"table-title" + (this.state.itemsChecked.length > 0 ? " active" : "")}>
                     <div className="table-title-name">
                         {this.state.itemsChecked.length > 0 ? 
-                            this.state.itemsChecked.length + "selected" :
+                            this.state.itemsChecked.length + " selected" :
                             this.props.title
                         }
                     </div>

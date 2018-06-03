@@ -111,7 +111,14 @@ class SlotDeletion extends Component {
     componentWillUnmount() {
         this.unmounted = true;
     }
-
+    findById = (id, duration) => {
+        let actualDuration = duration ? this.state.table.afternoon : this.state.table.morning
+        let elIndex = -1;
+        actualDuration.forEach((e, i) => {
+            if (e._id === id) {elIndex = i; return;}
+        });
+        return actualDuration[elIndex];
+    }
     selectedAction = (elements, duration) => {
         return (
             <Modal
@@ -130,9 +137,13 @@ class SlotDeletion extends Component {
                                 <Fragment>
                                     {
                                         elements.map((element, index) => {
+                                            let date = this.findById(element, duration) && new Date(this.findById(element, duration).date);
+                                            let dateString = date && (date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+
                                             return (
                                                 <div className="cell-full" key={"cell" + index}>
-                                                    {element}
+                                                    <div className="half">{dateString}</div>
+                                                    <div className="half">{duration ? " Afternoon" : " Morning"}</div>
                                                 </div>
                                             );
                                         })

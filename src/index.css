@@ -12,3 +12,8 @@ body ,html{
 .dull-text{
   color:#888;
 }
+.half{
+  width:50%;
+  display:inline-block;
+  text-align: center;
+}

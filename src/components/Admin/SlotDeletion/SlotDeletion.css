@@ -40,8 +40,8 @@
     background:rgb(251, 224, 234);
 }
 .cell-full{
-    height:30px;
-    line-height: 30px;
+    height:40px;
+    line-height: 40px;
     padding-left:15px;
     box-sizing:border-box;
     margin:2px 0;
