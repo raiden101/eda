@@ -5,7 +5,6 @@ class Panel extends Component{
         open:false
     }
     toggleExpand = () => {
-        console.log(this.state.open);
         this.setState(prevState => ({
             open: !prevState.open
         }));

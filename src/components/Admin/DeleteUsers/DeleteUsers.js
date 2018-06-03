@@ -55,9 +55,9 @@ class DeleteUsers extends Component{
                             content={
                                 <Fragment>
                                     {
-                                        elements.map((element) => {
+                                        elements.map((element,index) => {
                                             return (
-                                                <div className="wid-10 cell">
+                                                <div className="wid-10 cell" key={"cell"+index}>
                                                     {element}
                                                 </div>
                                             );
