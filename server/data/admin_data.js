@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { aft_exam, morn_exam, faculty } = require('../schemas/collections')
+const { aft_exam, morn_exam, faculty, exam_timing } = require('../schemas/collections')
 const jwt = require('jsonwebtoken');
 const { key } = require('../../credentials/credentials');
 
@@ -31,10 +31,10 @@ router.post('/', check_token,  (req, res) => {
 
 // { token: '.....', faculty_data: {.......} }
 router.post('/new_faculty', check_token, (req, res) => {
-  new faculty({...req.body.faculty_data})
+  new faculty(req.body.faculty_data)
   .save()
   .then((data) => {
-    res.json({data: null, error: null})
+    res.json({data: "uploading faculty data successful", error: null})
   })
   .catch((err) => res.json({data: null, error: "error while adding to db!!"}))
 });
@@ -70,7 +70,10 @@ router.post('/delete_faculties', check_token, (req, res) => {
 });
 
 // data should be enclosed within new_slot{date: '..', }
-// { token: '....', new_slot: {.....} }
+// { token: '....', 
+// new_slot: {"session": "morning/afternoon", 
+// total_slot: "...", date: "..."} 
+// }
 router.post('/slot_creation', check_token, (req, res) => {
   let newSlot = {
     total_slot: req.body.new_slot.total_slot,
@@ -81,8 +84,8 @@ router.post('/slot_creation', check_token, (req, res) => {
   new morn_exam(newSlot).save()
   : new aft_exam(newSlot).save();
 
-  p.then(data => res.json({data: null, error: null}))
-  .catch(err => res.json({data: null, error: err}));
+  p.then(data => res.json({data: "slot creation successful", error: null}))
+  .catch(err => res.json({data: null, error: "error while creating new slot"}));
 
 });
 
@@ -96,4 +99,43 @@ router.post('/delete_slots', check_token, (req, res) => {
   .then(data => res.json({data: "slot deletion successfull", error: null}))
   .catch(err => res.json({error: "error while deleting the slots", data: null}))
 })
+
+// { token: "", session: "morning/afternoon", 
+// time: {start: Date obj, end: Date obj}  }
+router.post('/change_timings', check_token, (req, res) => {
+
+  let session = req.body.session;
+  exam_timing.update({}, 
+  {$set: {session: req.body.time}})
+  .then(data => {
+    res.json({data: "date uploaded successfully", error: null});
+  })
+  .catch(err => res.json({error: "error while uploading", data: null}));
+
+});
+
+const get_hours_and_mins = (date) => {
+  return {
+    'hours': date.getHours(),
+    'minutes': date.getMinutes()
+  }
+}
+router.post('/get_exam_timings', check_token, (req, res) => {
+  exam_timing.findOne({})
+  .then(data => {
+    let resp = {};
+    resp['morning'] = {
+      'start': get_hours_and_mins(data.morning.start),
+      'end': get_hours_and_mins(data.morning.end)
+    };
+    resp['afternoon'] = {
+      'start': get_hours_and_mins(data.afternoon.start),
+      'end': get_hours_and_mins(data.afternoon.end)
+    };
+    res.json({data: resp, error: null})
+  })
+  .catch(err => res.json({error: "error while fetching", data: null}));
+})
+
+
 module.exports = router;
