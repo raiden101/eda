@@ -6,6 +6,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import SelectedSlots from '../SelectedSlots/SelectedSlots';
 import DeleteUsers from '../DeleteUsers/DeleteUsers';
+import SlotDeletion from '../SlotDeletion/SlotDeletion';
 
 class AdminComponent extends Component{
     constructor(props) {
@@ -13,7 +14,7 @@ class AdminComponent extends Component{
         this.token = JSON.parse(localStorage.getItem("auth")).token;
     }
     state = {
-        type:1
+        type:2
     }
     changeDuration = ({ target: { name, value } }) => {
         this.setState({
@@ -38,12 +39,15 @@ class AdminComponent extends Component{
                                 }}>
                                 <MenuItem value={0}>Display Slot Selection</MenuItem>
                                 <MenuItem value={1}>Delete Users</MenuItem>
+                                <MenuItem value={2}>Slot Deletion</MenuItem>                                
                             </Select>
                         </FormControl>
                     </div>
                     <div className="details">
                         {!type && <SelectedSlots />}
-                        {type === 1 && <DeleteUsers token={this.token}/>}
+                        {type === 1 && <DeleteUsers token={this.token} />}
+                        {type === 2 && <SlotDeletion token={this.token} />}
+                        
                     </div>
                 </div>
             </Fragment>

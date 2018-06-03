@@ -35,7 +35,7 @@ class DeleteUsers extends Component{
         axios.post('http://localhost:5000/api/admin/delete_faculties', {
             token: this.props.token,
             fac_ids: elements
-        }).then(console.log);
+        });
         return true;
     }
     selectedAction = (elements) => {
@@ -102,9 +102,9 @@ class DeleteUsers extends Component{
                     data={this.state.users}
                     translate={this.translateSlotData}
                     heads={this.tableHeads}
-                    onSelectConfirm={this.handleSelect}
                     title={"Faculty"}
                     selectedAction={this.selectedAction}
+                    selectionId="fac_id"
                 />
             </Fragment>
         );

@@ -27,7 +27,7 @@ class RenderTableSelectable extends Component {
         if (checked)
             this.setState({
                 itemsChecked: this.props.data.map((e) => {
-                    return e.fac_id
+                    return e[this.props.selectionId]
                 })
             })
         else
@@ -89,11 +89,11 @@ class RenderTableSelectable extends Component {
                             this.state.page * this.state.rows,
                             this.state.page * this.state.rows + this.state.rows
                         ).map((element, index) => {
-                            return <TableRow key={"row-" + index} selected={this.state.itemsChecked.indexOf(element.fac_id) !== -1}>
+                            return <TableRow key={"row-" + index} selected={this.state.itemsChecked.indexOf(element[this.props.selectionId]) !== -1}>
                                 <TableCell padding="checkbox">
                                     <CheckBox
-                                        checked={this.state.itemsChecked.indexOf(element.fac_id) !== -1}
-                                        onChange={(e, c) => this.toggleCheck(c, element.fac_id)}
+                                        checked={this.state.itemsChecked.indexOf(element[this.props.selectionId]) !== -1}
+                                        onChange={(e, c) => this.toggleCheck(c, element[this.props.selectionId])}
                                     />
                                 </TableCell>
                                 {this.props.translate(element).map((el, i) => {
