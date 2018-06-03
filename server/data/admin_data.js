@@ -3,7 +3,6 @@ const { aft_exam, morn_exam, faculty, exam_timing } = require('../schemas/collec
 const jwt = require('jsonwebtoken');
 const { key } = require('../../credentials/credentials');
 
-
 const check_token = (req, res, next) => {
   try {
     let decoded_data = jwt.verify(req.body.token, key);
@@ -28,7 +27,8 @@ router.post('/', check_token,  (req, res) => {
   .catch(err => res.json({data: null, error: "error while fetching data!!"}));
 });
 
-
+// related to faculty db operaions
+////////////////////////////////////////////////////////////////
 // { token: '.....', faculty_data: {.......} }
 router.post('/new_faculty', check_token, (req, res) => {
   new faculty(req.body.faculty_data)
@@ -69,6 +69,9 @@ router.post('/delete_faculties', check_token, (req, res) => {
   .catch(err => res.json({data: null, error: err}));
 });
 
+
+// related to slots / exam schedule
+/////////////////////////////////////////////////////////////////
 // data should be enclosed within new_slot{date: '..', }
 // { token: '....', 
 // new_slot: {"session": "morning/afternoon", 
@@ -100,6 +103,9 @@ router.post('/delete_slots', check_token, (req, res) => {
   .catch(err => res.json({error: "error while deleting the slots", data: null}))
 })
 
+
+// related to exam_timing db
+/////////////////////////////////////////////////////////////////
 // { token: "", session: "morning/afternoon", 
 // time: {start: Date obj, end: Date obj}  }
 router.post('/change_timings', check_token, (req, res) => {
@@ -120,6 +126,8 @@ const get_hours_and_mins = (date) => {
     'minutes': date.getMinutes()
   }
 }
+
+// { token: "...."}
 router.post('/get_exam_timings', check_token, (req, res) => {
   exam_timing.findOne({})
   .then(data => {

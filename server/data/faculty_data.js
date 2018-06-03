@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { morn_exam, aft_exam, slot_limitation, faculty } = require('../schemas/collections');
 const jwt = require('jsonwebtoken');
 const { key } = require('../../credentials/credentials');
+
 // resp will be array of arrays.
 // arr[0] will be morning dates.
 // arr[1] will be aft dates.
@@ -9,17 +10,20 @@ const { key } = require('../../credentials/credentials');
 const check_token = (req, res, next) => {
   try {
     let decoded_data = jwt.verify(req.body.token, key);
-    decoded_data.admin == 0 ? next()
-    :res.json({data: null, error: "unauthorized activity!!"});
+    if(decoded_data.admin == 0) {
+      req.fac_id = decoded_data.username;
+      next();
+    }else
+      res.json({data: null, error: "unauthorized activity!!"});
   }catch(err) {
       res.json({data: null, error: "error while fetching data!!"});    
   }
 };
 
-// { token: '........', fac_id: ".."}
+// { token: '........'}
 router.post('/', check_token, (req, res) => {
   let resp = {};
-  faculty.findOne({fac_id: req.body.fac_id}, 'fac_des')
+  faculty.findOne({fac_id: req.fac_id}, 'fac_des')
   .then(data => {
     if(data != null) 
       return slot_limitation.findOne({fac_des: data.fac_des}, 'morn_max aft_max')
@@ -29,12 +33,12 @@ router.post('/', check_token, (req, res) => {
   .then(data => {
     resp['morn_max'] = data.morn_max;
     resp['aft_max'] = data.aft_max;      
-    return morn_exam.find({selected_members: {$eq: req.body.fac_id}}, '-_id date').sort('date')
+    return morn_exam.find({selected_members: {$eq: req.fac_id}}, '-_id date').sort('date')
   })
   .then(
     data => {
       resp['morn_selection'] = data;
-      return aft_exam.find({selected_members: {$eq: req.body.fac_id}}, '-_id date').sort('date'); 
+      return aft_exam.find({selected_members: {$eq: req.fac_id}}, '-_id date').sort('date'); 
     }
   )
   .then(
