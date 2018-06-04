@@ -15,7 +15,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 class SlotAddition extends Component{
     state = {
-        incrementer: 0,
+        incrementer: 1,
         saving:false,
         slots: [],
         snack: false,
