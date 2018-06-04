@@ -5,21 +5,15 @@
     text-align: center;
 }
 .new-item{
-    width:auto;
-    display: inline-block;
-    padding:0 30px;
-    margin:10px auto;
-    height:50px;
-    line-height:50px;
-    text-align:center;
-    cursor: pointer;
-    transition:0.3s;
-    box-shadow: 0 1px 10px rgba(0,0,0,.1);
-}
-.new-item:hover{
-    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+    margin:0 10px !important;
 }
 .new-item i{
     font-size:13px;
     margin-left:10px;
+}
+.new-item.save{
+    background:rgb(56,200,56);
+}
+.new-item.save:hover{
+    background:rgb(36,180,36);
 }

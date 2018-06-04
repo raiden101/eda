@@ -5,6 +5,7 @@ import RenderTableSelectable from '../../RenderTable/RenderTableSelectable';
 
 import Modal from '../../Modal/Modal';
 import Panel from '../../Panel/Panel';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -236,9 +237,9 @@ class SlotAddition extends Component{
                     />}
                     <Modal
                         trigger={
-                            <div className="new-item">
+                            <Button color="primary" className="new-item" variant="raised">
                                 Add slots <i className="fa fa-plus"></i>
-                            </div>
+                            </Button>
                         }
                         title={"Create Slot"}
                         content={
@@ -283,9 +284,10 @@ class SlotAddition extends Component{
                         cancel={true}
                         handleOk={this.addSlot}
                     />
-                    <div className="new-item" onClick={this.saveSlots}>
+
+                    <Button color="primary" className="new-item save" variant="raised" onClick={this.saveSlots}>
                         Save <i className="fa fa-save"></i>
-                    </div>
+                    </Button>
                 </div>
             </Fragment>
         );
