@@ -14,8 +14,7 @@
     text-align:center;
     cursor: pointer;
     transition:0.3s;
-    border-left:1px solid #aaa;
-    border-right:1px solid #aaa;
+    box-shadow: 0 1px 10px rgba(0,0,0,.1);
 }
 .new-item:hover{
     box-shadow: 0 3px 10px rgba(0,0,0,.1);

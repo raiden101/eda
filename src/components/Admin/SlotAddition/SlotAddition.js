@@ -10,20 +10,19 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import Snackbar from '@material-ui/core/Snackbar';
+import axios from 'axios';
 class SlotAddition extends Component{
     state = {
-        incrementer:1,
-        slots: [
-            {
-                slot_id:0,
-                date: new Date(),
-                session: 'morning',
-                total_slot:20
-            }
-        ],
+        incrementer: 0,
+        saving:false,
+        slots: [],
+        snack: false,
+        successRate: 0,
+        rejected:false,
         tempSlotData: {
             slot_id: 1,
-            date: new Date(),
+            date: new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()).toISOString(),
             session: 'morning',
             total_slot: 1
         },
@@ -118,12 +117,33 @@ class SlotAddition extends Component{
             slots:slots,
             tempSlotData: {
                 slot_id: prevState.incrementer+1,
-                date: new Date(),
+                date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()).toISOString(),
                 session: 'morning',
                 total_slot: 1
             }
         }));
         return true;
+    }
+    saveSlots = () => {
+        let slots = [...this.state.slots]
+        this.setState({
+            saving: true
+        });
+        console.log(slots);
+        axios.post("http://localhost:5000/api/admin/add_slots", {
+            token: this.props.token,
+            slots: slots
+        }).then((data) => {
+            this.setState(prevState => {
+                return {
+                    snack: true,
+                    successRate: prevState.slots.length - data.data.data.length,
+                    rejected:data.data.data.length !== 0,
+                    saving: false,
+                    slots: data.data.data
+                }
+            });
+        });
     }
     dashSeperatedDateString = (date) => {
         let dateObj = new Date(date);
@@ -136,7 +156,7 @@ class SlotAddition extends Component{
     }
     changeTempDate = ({ target: { value:date } }) => {
         date = date.split("-");
-        let dateObj = new Date(date[0] * 1, date[1] * 1, date[2]);
+        let dateObj = new Date(date[0] * 1, date[1] * 1, date[2]).toISOString();
         this.setState({
             tempSlotData: {
                 ...this.state.tempSlotData,
@@ -163,75 +183,111 @@ class SlotAddition extends Component{
                 validated: true
             });
         }
-        this.setState({
+        this.setState(prevState=>({
+            ...prevState,
             tempSlotData: {
-                ...this.state.tempSlotData,
-                total_slots: value
+                ...prevState.tempSlotData,
+                total_slot: value
             }
+        }));
+    }
+    handleClose = () => {
+        this.setState({
+            snack: false
+        });
+    }
+    handleRejected = () => {
+        this.setState({
+            rejected: false
         });
     }
     render() {
         return (
-            <div className="slot-addition">
-                {this.state.slots.length > 0 && <RenderTableSelectable
-                    data={this.state.slots}
-                    translate={this.translateSlotData}
-                    heads={this.tableHeads}
-                    onSelectConfirm={this.handleSelect}
-                    title={"Slots"}
-                    selectedAction={this.selectedAction}
-                    selectionId="slot_id"
-                />}
-                <Modal
-                    trigger={
-                        <div className="new-item">
-                            Add slots <i className="fa fa-plus"></i>
-                        </div>
-                    }
-                    title={"Create Slot"}
-                    content={
-                        <Fragment>
-                            <div className="input-field full">
-                                <TextField
-                                    type="date"
-                                    label="Date"
-                                    defaultValue={this.dashSeperatedDateString(this.state.tempSlotData.date)}
-                                    onChange={this.changeTempDate}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    fullWidth/>
-                            </div>
-
-                            <div className="input-field full">
-                                <FormControl fullWidth>
-                                    <InputLabel>Session</InputLabel>
-                                    <Select
-                                        value={this.state.tempSlotData.session}
-                                        onChange={this.changeTempDuration}
-                                        inputProps={{
-                                            name: 'session'
-                                        }}>
-                                        <MenuItem value={'morning'}>Morning</MenuItem>
-                                        <MenuItem value={'afternoon'}>Afternoon</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </div>
-                            <div className="input-field full">
-                                <TextField
-                                    type="number"
-                                    defaultValue={this.state.tempSlotData.total_slot}
-                                    label="Total Slots"
-                                    onChange={this.changeTempSlots}
-                                    error={!this.state.validated}
-                                    fullWidth/>
-                            </div>
-                        </Fragment>
-                    }
-                    cancel={true}
-                    handleOk={this.addSlot}
+            <Fragment>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.snack}
+                    autoHideDuration={3000}
+                    onClose={this.handleClose}
+                    message={<span>{this.state.successRate} Items were Saved</span>}
                 />
-            </div>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={!this.state.snack && this.state.rejected}
+                    autoHideDuration={6000}
+                    onClose={this.handleRejected}
+                    message={<span>Some Items were not added. Possibly duplicate already exists</span>}
+                />
+                <div className="slot-addition">
+                    {this.state.slots.length > 0 && <RenderTableSelectable
+                        data={this.state.slots}
+                        translate={this.translateSlotData}
+                        heads={this.tableHeads}
+                        onSelectConfirm={this.handleSelect}
+                        title={"Slots"}
+                        selectedAction={this.selectedAction}
+                        selectionId="slot_id"
+                    />}
+                    <Modal
+                        trigger={
+                            <div className="new-item">
+                                Add slots <i className="fa fa-plus"></i>
+                            </div>
+                        }
+                        title={"Create Slot"}
+                        content={
+                            <Fragment>
+                                <div className="input-field full">
+                                    <TextField
+                                        type="date"
+                                        label="Date"
+                                        defaultValue={this.dashSeperatedDateString(this.state.tempSlotData.date)}
+                                        onChange={this.changeTempDate}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        fullWidth/>
+                                </div>
+
+                                <div className="input-field full">
+                                    <FormControl fullWidth>
+                                        <InputLabel>Session</InputLabel>
+                                        <Select
+                                            value={this.state.tempSlotData.session}
+                                            onChange={this.changeTempDuration}
+                                            inputProps={{
+                                                name: 'session'
+                                            }}>
+                                            <MenuItem value={'morning'}>Morning</MenuItem>
+                                            <MenuItem value={'afternoon'}>Afternoon</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                                <div className="input-field full">
+                                    <TextField
+                                        type="number"
+                                        defaultValue={this.state.tempSlotData.total_slot}
+                                        label="Total Slots"
+                                        onChange={this.changeTempSlots}
+                                        error={!this.state.validated}
+                                        fullWidth/>
+                                </div>
+                            </Fragment>
+                        }
+                        cancel={true}
+                        handleOk={this.addSlot}
+                    />
+                    <div className="new-item" onClick={this.saveSlots}>
+                        Save <i className="fa fa-save"></i>
+                    </div>
+                </div>
+            </Fragment>
         );
     }
 }
