@@ -139,6 +139,40 @@ router.post('/delete_slots', check_token, (req, res) => {
 })
 
 
+// { token: '', slots: [{date: '', session: '', total_slot: ''}]}
+router.post('/add_slots', check_token, (req, res) => {
+
+  let rejected_slots = [];
+  let slots = [...req.body.slots];
+  Promise.all(req.body.slots.map(slot => {
+    let _collection = slot.session === 'morning' ? morn_exam : aft_exam;
+    return _collection.findOne({date: slot.date});
+  }))
+  .then(data => {
+    return Promise.all(data.map((dat, index) => {
+      if(dat != null) {
+        rejected_slots.push(slots[index]);
+        return Promise.resolve();
+      }
+      else {
+        let _collection = slots[index].session === 'morning' ? morn_exam : aft_exam;        
+        return new _collection({
+          date: slots[index].date,
+          total_slot: slots[index].total_slot,
+        }).save();
+      }
+        
+    }))
+   
+  })
+  .then(data => res.json({ data: rejected_slots, error: null }))
+  .catch(err => res.json({ data: null, error: "oops something went wrong!"}));
+  
+
+
+});
+
+
 // related to exam_timing db
 /////////////////////////////////////////////////////////////////
 // { token: "", session: "morning/afternoon", 
@@ -179,6 +213,5 @@ router.post('/get_exam_timings', check_token, (req, res) => {
   })
   .catch(err => res.json({error: "error while fetching", data: null}));
 })
-
 
 module.exports = router;
