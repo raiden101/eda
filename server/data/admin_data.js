@@ -28,8 +28,9 @@ router.post('/', check_token,  (req, res) => {
         remaining_slot: { 
           $subtract: ["$total_slot", {$size: "$selected_members"}]
         } 
-      } 
+      },
     },
+    { $sort: { "date": 1 } }
   ]),
 
   p2 = aft_exam.aggregate([
@@ -47,8 +48,9 @@ router.post('/', check_token,  (req, res) => {
         remaining_slot: { 
           $subtract: ["$total_slot",  {$size: "$selected_members"}]
       } 
-    }
-  }
+    },
+  },
+  { $sort: { "date": 1 } }    
   ]);
   Promise.all([p1, p2])
   .then(data => {
@@ -108,17 +110,21 @@ router.post('/delete_faculties', check_token, (req, res) => {
 // total_slot: "...", date: "..."} 
 // }
 router.post('/slot_creation', check_token, (req, res) => {
-  let newSlot = {
-    total_slot: req.body.new_slot.total_slot,
-    date: req.body.new_slot.date
-  }
-  let p = req.body.new_slot.session === 'morning' ?
-  new morn_exam(newSlot).save()
-  : new aft_exam(newSlot).save();
-
-  p.then(data => res.json({data: "slot creation successful", error: null}))
-  .catch(err => res.json({data: null, error: "error while creating new slot"}));
-
+  let _collection = req.body.new_slot.session === 'morning' ? morn_exam : aft_exam;
+  _collection.find({date: req.body.new_slot.date})
+  .then(data => {
+    if(data === null) 
+      res.json({error: "this slot already exists!", data: null})
+    else {
+      new _collection({
+        total_slot: req.body.new_slot.total_slot,
+        date: req.body.new_slot.date
+      })
+      .save()
+      .then(data => res.json({data: "slot creation successful", error: null}))
+      .catch(err => res.json({data: null, error: "error while creating new slot"}));
+    }
+  })
 });
 
 
