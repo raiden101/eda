@@ -18,8 +18,36 @@ const check_token = (req, res, next) => {
 // 2nd array """""""""""""""""""""""" aft exams.
 // { token: '.....'}
 router.post('/', check_token,  (req, res) => {
-  let p1 = morn_exam.find({}).sort('date'),
-      p2 = aft_exam.find({}).sort('date');
+  let p1 = morn_exam.aggregate([
+    { $project: {
+        _id: 1,
+        selected_members: 1, 
+        total_slot: 1,
+        selected_slot: {$size: "$selected_members"},
+        remaining_slot: { 
+          $subtract: ["$total_slot", {$size: "$selected_members"}]
+        } 
+      } 
+    },
+  ]),
+
+  p2 = aft_exam.aggregate([
+    { 
+      $project: {
+        _id: 1,
+        selected_members: 1, 
+        total_slot: 1
+      } 
+    },
+    { 
+      $addFields: {
+        selected_slot: {$size: "$selected_members"},
+        remaining_slot: { 
+          $subtract: ["$total_slot",  {$size: "$selected_members"}]
+      } 
+    }
+  }
+  ]);
   Promise.all([p1, p2])
   .then(data => {
     res.json({data: data, error: null})

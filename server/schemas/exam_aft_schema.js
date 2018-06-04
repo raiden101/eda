@@ -3,8 +3,6 @@ let Schema = mongoose.Schema;
 const exam_aft_schema = new Schema({
     date: Date,
     total_slot: Number,
-    remaining_slot: Number,
-    selected_slot: {type: Number, default: 0},
     selected_members: {type: [String], default: []}
 });
 
