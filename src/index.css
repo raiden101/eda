@@ -17,3 +17,7 @@ body ,html{
   display:inline-block;
   text-align: center;
 }
+.input-field.full{
+  width:100%;
+  min-width:300px;
+}
