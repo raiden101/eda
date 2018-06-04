@@ -157,6 +157,7 @@ class SlotAddition extends Component{
     }
     changeTempDate = ({ target: { value:date } }) => {
         date = date.split("-");
+        if (!(date[0].length && date[1].length && date[2].length)) return;
         let dateObj = new Date(date[0] * 1, date[1] * 1, date[2]).toISOString();
         this.setState({
             tempSlotData: {

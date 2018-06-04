@@ -29,7 +29,11 @@ class Modal extends Component{
                         {this.props.content}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => { (this.props.handleOk && this.props.handleOk()) || this.toggleClose(); }} color="primary">
+                        <Button onClick={() => {
+                            if (this.props.handleOk)
+                                this.props.handleOk() && this.toggleClose();
+                            else this.toggleClose();
+                        }} color="primary">
                             Ok
                         </Button>
                         {this.props.cancel &&
