@@ -21,6 +21,7 @@ router.post('/', check_token,  (req, res) => {
   let p1 = morn_exam.aggregate([
     { $project: {
         _id: 1,
+        date: 1,
         selected_members: 1, 
         total_slot: 1,
         selected_slot: {$size: "$selected_members"},
@@ -35,6 +36,7 @@ router.post('/', check_token,  (req, res) => {
     { 
       $project: {
         _id: 1,
+        date: 1,
         selected_members: 1, 
         total_slot: 1
       } 
