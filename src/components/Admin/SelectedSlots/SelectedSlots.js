@@ -18,7 +18,6 @@ class SelectedSlots extends Component {
 
     constructor(props) {
         super(props);
-        this.token = JSON.parse(localStorage.getItem("auth")).token;
         this.tableHeads = [
             "Date",
             "Total slots",
@@ -59,7 +58,7 @@ class SelectedSlots extends Component {
     }
     componentDidMount() {
         axios.post('http://localhost:5000/api/admin/', {
-            token: this.token
+            token: this.props.token
         }).then((data) => {
             data = data.data;
             if (data.error !== null) {

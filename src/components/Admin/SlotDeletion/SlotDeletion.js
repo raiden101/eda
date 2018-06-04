@@ -139,7 +139,6 @@ class SlotDeletion extends Component {
                                         elements.map((element, index) => {
                                             let date = this.findById(element, duration) && new Date(this.findById(element, duration).date);
                                             let dateString = date && (date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
-
                                             return (
                                                 <div className="cell-full" key={"cell" + index}>
                                                     <div className="half">{dateString}</div>
