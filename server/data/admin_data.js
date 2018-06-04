@@ -72,7 +72,7 @@ router.post('/new_faculty', check_token, (req, res) => {
 
 // { token: '.......' }
 router.post('/get_all_faculties', check_token, (req, res) => {
-  faculty.find({}, "-password -mrn_slots_selected -aft_slots_selected")
+  faculty.find({}, "-password")
   .then(data => res.json({data: data, error: null}))
   .catch(err => res.json({data: null, error: "error while fetching data!!"}));
 });
@@ -110,7 +110,6 @@ router.post('/delete_faculties', check_token, (req, res) => {
 router.post('/slot_creation', check_token, (req, res) => {
   let newSlot = {
     total_slot: req.body.new_slot.total_slot,
-    remaining_slot: req.body.new_slot.total_slot,
     date: req.body.new_slot.date
   }
   let p = req.body.new_slot.session === 'morning' ?
