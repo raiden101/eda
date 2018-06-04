@@ -285,8 +285,18 @@ class SlotAddition extends Component{
                         handleOk={this.addSlot}
                     />
 
-                    <Button color="primary" className="new-item save" variant="raised" onClick={this.saveSlots}>
-                        Save <i className="fa fa-save"></i>
+                    <Button
+                        color="primary"
+                        className="new-item save"
+                        variant="raised"
+                        onClick={this.saveSlots}
+                        disabled={this.state.saving}>
+                        {this.state.saving ?
+                            "Saving" :
+                            <Fragment>
+                                Save <i className="fa fa-save"></i>
+                            </Fragment>
+                        }
                     </Button>
                 </div>
             </Fragment>
