@@ -44,7 +44,7 @@ class AdminComponent extends Component{
                         </FormControl>
                     </div>
                     <div className="details">
-                        {!type && <SelectedSlots />}
+                        {!type && <SelectedSlots token={this.token}/>}
                         {type === 1 && <DeleteUsers token={this.token} />}
                         {type === 2 && <SlotDeletion token={this.token} />}
                         
