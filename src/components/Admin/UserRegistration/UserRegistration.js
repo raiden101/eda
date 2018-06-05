@@ -124,6 +124,16 @@ class UserRegistration extends Component{
                     onClose={this.handleClose('failureSnack')}
                     message={<span>{this.state.failureMessage}</span>}
                 />
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={!this.state.failureSnack && this.state.successSnack}
+                    autoHideDuration={3000}
+                    onClose={this.handleClose('successSnack')}
+                    message={<span>User added to the database successfully</span>}
+                />
                 <div className="register-users">
                     <div className="header">Register Users</div>
                     <div className="input-space">
