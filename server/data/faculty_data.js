@@ -23,6 +23,64 @@ const check_token = (req, res, next) => {
 // { token: '........'}
 router.post('/', check_token, (req, res) => {
   let resp = {};
+  // faculty.aggregate([
+  //   {
+  //     $match: { fac_id: req.fac_id }
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "slot_limitations",
+  //       localField: "fac_des",
+  //       foreignField: "fac_des",
+  //       pipeline: [
+  //         {
+  //           $project: {
+  //             "morn_max": 1,
+  //             "aft_max": 1,
+  //             _id: 0
+  //           }
+  //         }
+  //       ],  
+  //       as: "slot_lim"
+  //     }
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "morn_exams",
+  //       localField: "fac_id", 
+  //       foreignField: "selected_members",
+  //       pipeline: [
+  //         {
+  //           $project: {
+  //             "date": 1,
+  //             _id: 0
+  //           }
+  //         }
+  //       ],  
+  //       as: "morn_selection"
+  //     }  
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: "aft_exams",
+  //       localField: "fac_id", 
+  //       foreignField: "selected_members",
+  //       pipeline: [
+  //         {
+  //           $project: {
+  //             "date": 1,
+  //             _id: 0
+  //           }
+  //         }
+  //       ], 
+  //       as: "aft_selection"
+  //     }  
+  //   }
+  // ])
+  // .then(data => res.json({data: data, error: null}))
+  // .catch(err => res.json({error: "error while fetching data", data: null}));
+  // the above code works in mongo 3.6
+  /////////////////////////////////////////
   faculty.findOne({fac_id: req.fac_id}, 'fac_des')
   .then(data => {
     if(data != null) 
