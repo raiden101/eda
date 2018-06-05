@@ -89,7 +89,7 @@ class DeleteUsers extends Component{
 
 
     translateSlotData(obj) {
-        return [obj.fac_name.toLowerCase(),
+        return [obj.fac_name !== undefined && obj.fac_name.toLowerCase(),
             obj.fac_id,
             obj.email,
             obj.branch
