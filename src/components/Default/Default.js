@@ -21,10 +21,6 @@ class Default extends Component {
         let renderItem = <b>Loading...</b>
         if (!this.state.status) {
             renderItem = <Redirect to="/login" />
-            this.setState({
-                ...this.state,
-                fetch: true
-            })
         }
         else if (this.state.status === 1) {
             if (this.state.admin === 1) {

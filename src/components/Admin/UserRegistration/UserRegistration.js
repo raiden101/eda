@@ -63,16 +63,19 @@ class UserRegistration extends Component{
                 faculty_email,
                 faculty_contact
             } = this.state;
+            let faculty_data = {
+                fac_name: faculty_name,
+                branch: faculty_branch,
+                contact_no: faculty_contact,
+                password: 1111,
+                fac_des: faculty_designation,
+                email: faculty_email,
+                fac_id: faculty_id + ""
+            };
+            console.log(faculty_data);
             axios.post('http://localhost:5000/api/admin/new_faculty', {
                 token: this.token,
-                faculty_data: {
-                    faculty_name,
-                    faculty_branch,
-                    faculty_contact,
-                    faculty_designation,
-                    faculty_email,
-                    faculty_id
-                }
+                faculty_data: faculty_data
             }).then((data) => {
                 if (data.data.error) {
                     this.setState({
@@ -179,17 +182,18 @@ class UserRegistration extends Component{
                                     name: 'faculty_branch',
                                 }}>
                                 <MenuItem value={0}><i>Select Branch</i></MenuItem>
-                                <MenuItem value={1}>Bio Technology</MenuItem>
-                                <MenuItem value={2}>Civil</MenuItem>
-                                <MenuItem value={3}>Electronics & Communication</MenuItem>
-                                <MenuItem value={4}>Electricals & Electronics</MenuItem>
-                                <MenuItem value={5}>Information Science</MenuItem>
-                                <MenuItem value={6}>Mechanical</MenuItem>
-                                <MenuItem value={7}>MCA</MenuItem>
-                                <MenuItem value={8}>Physics</MenuItem>
-                                <MenuItem value={9}>Chemistry</MenuItem>
-                                <MenuItem value={10}>Mathematics</MenuItem>
-                                <MenuItem value={11}>Humanities</MenuItem>
+                                <MenuItem value={"BTE"}>Bio Technology</MenuItem>
+                                <MenuItem value={"Civil Engg"}>Civil</MenuItem>
+                                <MenuItem value={"CSE"}>Computer Science</MenuItem>
+                                <MenuItem value={"ECE"}>Electronics & Communication</MenuItem>
+                                <MenuItem value={"EEE"}>Electricals & Electronics</MenuItem>
+                                <MenuItem value={"ISE"}>Information Science</MenuItem>
+                                <MenuItem value={"Mechanical Engg."}>Mechanical</MenuItem>
+                                <MenuItem value={"MCA"}>MCA</MenuItem>
+                                <MenuItem value={"Physics"}>Physics</MenuItem>
+                                <MenuItem value={"Chemistry"}>Chemistry</MenuItem>
+                                <MenuItem value={"Mathematics"}>Mathematics</MenuItem>
+                                <MenuItem value={"Humanities"}>Humanities</MenuItem>
                             </Select>
                         </FormControl>
                     </div>
