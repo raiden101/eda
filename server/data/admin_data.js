@@ -26,7 +26,7 @@ router.post('/', check_token,  (req, res) => {
         total_slot: 1,
         selected_slot: {$size: "$selected_members"},
         remaining_slot: { 
-          $subtract: ["$total_slot", {$size: "$selected_members"}]
+          $subtract: ["$total_slot", { $size: "$selected_members" }]
         } 
       },
     },
@@ -44,9 +44,9 @@ router.post('/', check_token,  (req, res) => {
     },
     { 
       $addFields: {
-        selected_slot: {$size: "$selected_members"},
+        selected_slot: { $size: "$selected_members" },
         remaining_slot: { 
-          $subtract: ["$total_slot",  {$size: "$selected_members"}]
+          $subtract: ["$total_slot",  { $size: "$selected_members" }]
       } 
     },
   },
@@ -63,10 +63,10 @@ router.post('/', check_token,  (req, res) => {
 ////////////////////////////////////////////////////////////////
 // { token: '.....', faculty_data: {.......} }
 router.post('/new_faculty', check_token, (req, res) => {
-  faculty.find({fac_id: req.body.faculty_data.fac_id})
+  faculty.findOne({fac_id: req.body.faculty_data.fac_id})
   .then(data => {
-    if(data == null)
-      return  new faculty(req.body.faculty_data).save();
+    if(data === null)
+      return new faculty(req.body.faculty_data).save();
     return Promise.resolve(-1);
   })
   .then((data) => {
@@ -88,11 +88,11 @@ router.post('/get_all_faculties', check_token, (req, res) => {
 
 // { token: '....', fac_ids: ['id1', 'id2'...] }
 router.post('/delete_faculties', check_token, (req, res) => {
-  faculty.deleteMany({fac_id: {$in: req.body.fac_ids}})
+  faculty.deleteMany({ fac_id: { $in: req.body.fac_ids } })
   .then(data => {
     // if number of docs effected(data.n) == 0
     if(data.n == 0) 
-      throw "error while deleting the user or users not found";
+      throw "error while deleting the users or users not found";
     else {
       let p1 = morn_exam.updateMany(
         { selected_members: {$in: req.body.fac_ids} },
@@ -150,8 +150,8 @@ router.post('/delete_slots', check_token, (req, res) => {
 router.post('/add_slots', check_token, (req, res) => {
 
   let rejected_slots = [];
-  let slots = [...req.body.slots];
-  Promise.all(req.body.slots.map(slot => {
+  let slots = req.body.slots;
+  Promise.all(slots.map(slot => {
     let _collection = slot.session === 'morning' ? morn_exam : aft_exam;
     return _collection.findOne({date: slot.date});
   }))
