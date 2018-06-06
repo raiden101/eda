@@ -1,5 +1,10 @@
 const router = require('express').Router();
-const { aft_exam, morn_exam, faculty, exam_timing } = require('../schemas/collections')
+const { slot_limitation, 
+        aft_exam, 
+        morn_exam, 
+        faculty, 
+        exam_timing 
+      } = require('../schemas/collections');
 const jwt = require('jsonwebtoken');
 const { key } = require('../../credentials/credentials');
 
@@ -18,40 +23,23 @@ const check_token = (req, res, next) => {
 // 2nd array """""""""""""""""""""""" aft exams.
 // { token: '.....'}
 router.post('/', check_token,  (req, res) => {
-  let p1 = morn_exam.aggregate([
+  let query = [
     { $project: {
         _id: 1,
         date: 1,
         selected_members: 1, 
         total_slot: 1,
-        selected_slot: {$size: "$selected_members"},
+        selected_slot: { $size: "$selected_members" },
         remaining_slot: { 
           $subtract: ["$total_slot", { $size: "$selected_members" }]
         } 
       },
     },
     { $sort: { "date": 1 } }
-  ]),
-
-  p2 = aft_exam.aggregate([
-    { 
-      $project: {
-        _id: 1,
-        date: 1,
-        selected_members: 1, 
-        total_slot: 1
-      } 
-    },
-    { 
-      $addFields: {
-        selected_slot: { $size: "$selected_members" },
-        remaining_slot: { 
-          $subtract: ["$total_slot",  { $size: "$selected_members" }]
-      } 
-    },
-  },
-  { $sort: { "date": 1 } }    
-  ]);
+  ]
+  let p1 = morn_exam.aggregate(query),
+  p2 = aft_exam.aggregate(query);
+  
   Promise.all([p1, p2])
   .then(data => {
     res.json({data: data, error: null})
@@ -249,6 +237,52 @@ router.post('/slot_info', check_token, (req, res) => {
   .catch(err => res.json({error: "error while fetching data", data: null}));
 });
 
+// { token: '...', designation: }
+router.post('/pending_faculty', (req, res) => {
+  slot_limitation.findOne({ fac_des: req.body.designation }, '-_id maximum')
+  .then(data => {
+    if(data === null) 
+      throw "error";
+    else {
+      let val = data.maximum;
+      return faculty.aggregate([
+        { $match: { fac_des: req.body.designation } },
+        { $project: { _id: 0, fac_id: 1 } },
+        {
+          $lookup: {
+            from: "morn_exams",
+            localField: "fac_id",
+            foreignField: "selected_members",
+            as: "morn_selections"
+          }
+        },
+        {
+          $lookup: {
+            from: "aft_exams",
+            localField: "fac_id",
+            foreignField: "selected_members",
+            as: "aft_selections"
+          }
+        },
+        {
+          $project: {
+            "fac_id": 1,
+            "morn_count": { $size: "$morn_selections" },
+            "aft_count": { $size: "$aft_selections" },
+            "tot_count": { $sum: [
+              { $size: "$morn_selections" }, 
+              { $size: "$aft_selections" }
+            ]}
+          }
+        },
+        { $match: { tot_count: { $lt: val } } }
+      ]);
+    }
+      
+  })
+  .then(data => res.json({ data: data, error: null}))
+  .catch(err => res.json({ data: null, error: "error while fetching data!" }))
+});
 
 
 module.exports = router;
