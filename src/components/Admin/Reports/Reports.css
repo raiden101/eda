@@ -10,3 +10,14 @@
     box-sizing: border-box;
     text-align:center;
 }
+.downloads{
+    width:100%;
+    height:50px;
+    background:#eee;
+    line-height:50px;
+    font-size:13px;
+    color:blue;
+    text-decoration: underline;
+    text-align: center;
+    cursor:pointer;
+}

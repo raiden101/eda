@@ -6,6 +6,9 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import './Reports.css';
 import axios from 'axios';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 class Reports extends Component{
     state = {
         dates:[],
@@ -70,6 +73,29 @@ class Reports extends Component{
     dateToString = (date) => {
         let d = new Date(date);
         return d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear();
+    }
+    downloadPdf = () => {
+        if (this.state.loading) return;
+        let rows;
+        rows = this.state.users.map(element => {
+            return this.translateSlotData(element);
+        });
+        let docDefinition = {
+            content: [
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+
+                        body: [
+                            [...this.tableHeads],
+                            ...rows
+                        ]
+                    }
+                }
+            ]
+        }
+        pdfMake.createPdf(docDefinition).print();
     }
     componentWillMount() {
         axios.post('http://localhost:5000/api/admin/get_exam_dates', {
@@ -147,6 +173,10 @@ class Reports extends Component{
                     <div className="loading">
                         {this.state.loading ? "Loading..." : "No users here : /"}
                     </div>}
+                <div className="downloads">
+                    <div className="half" onClick={this.downloadPdf}>Download this document</div>
+                    <div className="half">Download all</div>
+                </div>
             </Fragment>
         );
     }
