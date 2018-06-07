@@ -57,7 +57,7 @@ class SelectedSlots extends Component {
         ]
     }
     componentDidMount() {
-        axios.post('http://localhost:5000/api/admin/', {
+        axios.post('/api/admin/', {
             token: this.props.token
         }).then((data) => {
             data = data.data;

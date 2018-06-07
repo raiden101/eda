@@ -2,9 +2,28 @@ import React, { Component,Fragment } from 'react';
 import checkAuth from '../../checkAuth';
 import { Redirect } from 'react-router-dom';
 import AdminComponent from './AdminComponent/AdminComponent';
+import axios from 'axios';
+
+
 class Admin extends Component{
     state = {
-        redirect:2
+        redirect: 2
+    }
+    constructor(props) {
+        super(props);
+        this.unmounted = false;
+        let that = this;
+        axios.interceptors.response.use(response => {
+            if (!!response.data.error) {
+                !this.unmounted && that.setState({
+                    redirect: 1
+                });
+            }
+            return response;
+        });
+    }
+    componentWillUnmount() {
+        this.unmounted = true;
     }
     componentDidMount() {
         checkAuth().then((data) => {

@@ -130,7 +130,7 @@ class SlotAddition extends Component{
         this.setState({
             saving: true
         });
-        axios.post("http://localhost:5000/api/admin/add_slots", {
+        axios.post("/api/admin/add_slots", {
             token: this.props.token,
             slots: slots
         }).then((data) => {

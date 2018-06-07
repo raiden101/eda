@@ -36,7 +36,7 @@ class PendingFaculty extends Component{
         this.setState({
             loading:true
         })
-        axios.post('http://localhost:5000/api/admin/pending_faculty', {
+        axios.post('/api/admin/pending_faculty', {
             token: this.props.token,
             designation:1
         }).then((data) => {
@@ -51,7 +51,7 @@ class PendingFaculty extends Component{
             [name]: value,
             loading:true
         });
-        axios.post('http://localhost:5000/api/admin/pending_faculty', {
+        axios.post('/api/admin/pending_faculty', {
             token: this.props.token,
             designation: value
         }).then((data) => {

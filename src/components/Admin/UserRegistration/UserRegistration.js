@@ -72,7 +72,7 @@ class UserRegistration extends Component{
                 email: faculty_email,
                 fac_id: faculty_id + ""
             };
-            axios.post('http://localhost:5000/api/admin/new_faculty', {
+            axios.post('/api/admin/new_faculty', {
                 token: this.token,
                 faculty_data: faculty_data
             }).then((data) => {

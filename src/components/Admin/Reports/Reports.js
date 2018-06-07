@@ -56,7 +56,7 @@ class Reports extends Component{
             dates: this.state[session + '_dates']
         })
         let sessionString = (session === 'morn') ? 'morning' : 'afternoon';
-        axios.post('http://localhost:5000/api/admin/slot_info', {
+        axios.post('/api/admin/slot_info', {
             token: this.props.token,
             session: sessionString,
             date: date,
@@ -122,7 +122,7 @@ class Reports extends Component{
         pdfMake.createPdf(docDefinition).print();
     }
     componentWillMount() {
-        axios.post('http://localhost:5000/api/admin/get_exam_dates', {
+        axios.post('/api/admin/get_exam_dates', {
             token:this.props.token
         }).then((data) => {
             data = data.data.data;
@@ -132,7 +132,7 @@ class Reports extends Component{
                 dates: data.morn_dates,
                 currentDate: data.morn_dates[0].date
             });
-            axios.post('http://localhost:5000/api/admin/slot_info', {
+            axios.post('/api/admin/slot_info', {
                 token: this.props.token,
                 session: 'morning',
                 date: data.morn_dates[0].date
