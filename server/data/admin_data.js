@@ -49,6 +49,27 @@ router.post('/', check_token,  (req, res) => {
 
 // related to faculty db operaions
 ////////////////////////////////////////////////////////////////
+
+// { token: '..', fac_des: '..', maximum: '..', minimum: '..',
+// morn_max: '', aft_max: ''}
+router.post('/set_designation', check_token, (req, res) => {
+  slot_limitation.updateOne(
+    { fac_des: req.body.fac_des },
+    {
+      $set: { 
+        maximum: req.body.maximum, 
+        minimum: req.body.minimum,
+        morn_max: req.body.morn_max,
+        aft_max: req.body.aft_max        
+      }
+    }
+  )
+  .then(data => res.json({ data: "update successful", error: null }))
+  .catch(err => res.json({ error: "error while updating", data: null}));
+
+});
+
+
 // { token: '.....', faculty_data: {.......} }
 router.post('/new_faculty', check_token, (req, res) => {
   faculty.findOne({fac_id: req.body.faculty_data.fac_id})
@@ -207,6 +228,22 @@ router.post('/get_exam_timings', check_token, (req, res) => {
     res.json({data: resp, error: null})
   })
   .catch(err => res.json({error: "error while fetching", data: null}));
+})
+
+
+// {token: '..'}
+router.post('/get_exam_dates', check_token, (req, res) => {
+  let resp = {};
+  morn_exam.find({}, { date: 1 })
+  .then(data => {
+    resp['morn_dates'] = data;
+    return aft_exam.find({}, { date: 1 });
+  })
+  .then(data => {
+    resp['aft_dates'] = data;
+    res.json({ data: resp, error: null });
+  })
+  .catch(err => res.json({ error: "error while fetching data", data: null }))
 })
 
 
