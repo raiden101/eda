@@ -35,8 +35,8 @@ class Reports extends Component{
         return [
             obj.fac_id,
             obj.fac_name,
-            obj.fac_des,
-            obj.branch,
+            obj.fac_des.replace(/GD/g,''),
+            obj.branch.replace(/anical/g, '.'),
             ' ',
             ' '
         ];
@@ -79,8 +79,8 @@ class Reports extends Component{
     downloadPdf = () => {
         if (this.state.loading) return;
         let rows;
-        rows = this.state.users.map(element => {
-            return this.translateSlotData(element);
+        rows = this.state.users.map((element,i) => {
+            return [(i+1)].concat(this.translateSlotData(element));
         });
         let sessionString = this.state.session === 'morn' ? 'Morning' : 'Afternoon';
         let docDefinition = {
@@ -109,10 +109,10 @@ class Reports extends Component{
                 {
                     table: {
                         headerRows: 1,
-                        widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+                        widths: ['auto', 'auto', 'auto', '15%', 'auto', 'auto', 'auto'],
 
                         body: [
-                            [...this.tableHeads],
+                            ['sl no'].concat(...this.tableHeads),
                             ...rows
                         ]
                     }
