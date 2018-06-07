@@ -17,6 +17,8 @@
 .fake-link{
     color:blue;
     cursor:pointer;
+}
+.fake-link:hover{
     text-decoration: underline;
 }
 .wid-10{

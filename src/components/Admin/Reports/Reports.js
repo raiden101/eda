@@ -52,13 +52,15 @@ class Reports extends Component{
             session = value;
         if (name === 'currentDate')
             date = value;
+        this.setState({
+            dates: this.state[session + '_dates']
+        })
         let sessionString = (session === 'morn') ? 'morning' : 'afternoon';
         axios.post('http://localhost:5000/api/admin/slot_info', {
             token: this.props.token,
             session: sessionString,
             date: date,
         }).then(data => {
-            console.log(data)
             data = data.data.data;
             let users = [];
             data.forEach((e, i) => {
@@ -80,8 +82,30 @@ class Reports extends Component{
         rows = this.state.users.map(element => {
             return this.translateSlotData(element);
         });
+        let sessionString = this.state.session === 'morn' ? 'Morning' : 'Afternoon';
         let docDefinition = {
             content: [
+                {
+                    columns: [
+                        {
+                            width: '50%',
+                            margin: [0, 30],
+                            alignment: "center",
+                            text: {
+                                bold: true,
+                                text:"Date : "+this.dateToString(this.state.currentDate)
+                            }
+                        }, {
+                            width: '50%',
+                            margin: [0, 30],
+                            alignment:"center",
+                            text: {
+                                bold: true,
+                                text: "Session : "+sessionString
+                            }
+                        }
+                    ]
+                },
                 {
                     table: {
                         headerRows: 1,
@@ -114,7 +138,6 @@ class Reports extends Component{
                 date: data.morn_dates[0].date
             }).then(data => {
                 data = data.data.data;
-                console.log(data);
                 let users = [];
                 data.forEach((e, i) => {
                     users.push(e.fac_info[0]);
@@ -131,7 +154,7 @@ class Reports extends Component{
             <Fragment>
                 <div className="settings">
                     <div className="half">
-                        <FormControl>
+                        <FormControl className="dropdown">
                             <InputLabel>Date</InputLabel>
                             <Select
                                 value={this.state.currentDate}
@@ -151,7 +174,7 @@ class Reports extends Component{
                             </FormControl>
                         </div>
                     <div className="half">
-                        <FormControl>
+                        <FormControl className = "dropdown">
                             <InputLabel>Session</InputLabel>
                             <Select
                                 value={this.state.session}
@@ -173,10 +196,10 @@ class Reports extends Component{
                     <div className="loading">
                         {this.state.loading ? "Loading..." : "No users here : /"}
                     </div>}
-                <div className="downloads">
-                    <div className="half" onClick={this.downloadPdf}>Download this document</div>
-                    <div className="half">Download all</div>
-                </div>
+                {!this.state.loading && <div className="downloads">
+                    <div className="half fake-link" onClick={this.downloadPdf}>Download this document</div>
+                    <div className="half fake-link">Download all</div>
+                </div>}
             </Fragment>
         );
     }

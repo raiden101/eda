@@ -34,7 +34,6 @@ class SelectedSlots extends Component {
         })
     }
     translateSlotData(obj) {
-        console.log(obj);
         let date = new Date(obj.date)
         let dateString = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()
         return [
