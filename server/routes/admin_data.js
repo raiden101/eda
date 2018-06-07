@@ -7,6 +7,8 @@ const { slot_limitation,
       } = require('../schemas/collections');
 const jwt = require('jsonwebtoken');
 const { key } = require('../../credentials/credentials');
+const mapping = require('../utils/designation_map');
+
 
 const check_token = (req, res, next) => {
   try {
@@ -116,7 +118,7 @@ router.post('/delete_faculties', check_token, (req, res) => {
   })
   .catch(err => res.json({data: null, error: err}));
 });
-
+////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 // related to slots / exam schedule
 /////////////////////////////////////////////////////////////////
@@ -264,13 +266,17 @@ router.post('/slot_info', check_token, (req, res) => {
     {
       $project: {
         "fac_info.fac_name": 1,
-        "fac_info.fac_des": 1, 
+        "fac_info.fac_des": 1,
         "fac_info.fac_id": 1,
-        "fac_info.branch": 1
+        "fac_info.branch": 1,
       }
     }
   ])
-  .then(data => res.json({data: data, error: null}))
+  .then(data => {
+    for(let i=0;i<data.length;++i)
+      data[i].fac_info[0].fac_des = mapping[data[i].fac_info[0].fac_des]
+    res.json({data: data, error: null})
+  })
   .catch(err => res.json({error: "error while fetching data", data: null}));
 });
 

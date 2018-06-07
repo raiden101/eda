@@ -20,11 +20,11 @@ let Schema = require('./server/schemas/collections.js');
 app.use('/api/auth', require('./server/auth/auth'));
 
 ////////////////////
-app.use('/api/faculty', require('./server/data/faculty_data'));
+app.use('/api/faculty', require('./server/routes/faculty_data'));
 //  /api/faculty/:fac_id    will give data for faculty home page.
 
 //////////////////////////
-app.use('/api/admin', require('./server/data/admin_data'));
+app.use('/api/admin', require('./server/routes/admin_data'));
 //  /api/admin/    will give data for admin home page.
 
 
