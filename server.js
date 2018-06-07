@@ -6,7 +6,6 @@ const { username, password } = require('./credentials/credentials');
 const mongoose = require('mongoose');
 mongoose.connect(`mongodb://${username}:${password}@ds143070.mlab.com:43070/eda`)
 mongoose.connection.once('error', () => console.log('error connecting to db'))
-app.use(require('cors')());
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
