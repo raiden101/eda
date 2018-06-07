@@ -281,7 +281,7 @@ router.post('/slot_info', check_token, (req, res) => {
 });
 
 // { token: '...', designation: }
-router.post('/pending_faculty', (req, res) => {
+router.post('/pending_faculty', check_token, (req, res) => {
   slot_limitation.findOne({ fac_des: req.body.designation }, '-_id maximum')
   .then(data => {
     if(data === null) 
