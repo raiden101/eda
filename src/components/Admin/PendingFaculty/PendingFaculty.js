@@ -145,8 +145,7 @@ class PendingFaculty extends Component{
                         {this.state.loading ? "Loading..." : "No users here : /"}
                     </div>}
                 {!this.state.loading && <div className="downloads">
-                    <div className="half fake-link" onClick={this.downloadPdf}>Download this document</div>
-                    <div className="half fake-link">Download all</div>
+                    <div className="full fake-link" onClick={this.downloadPdf}>Download this document</div>
                 </div>}
             </Fragment>
         );
