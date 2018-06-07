@@ -290,7 +290,7 @@ router.post('/pending_faculty', (req, res) => {
       let val = data.maximum;
       return faculty.aggregate([
         { $match: { fac_des: req.body.designation } },
-        { $project: { _id: 0, fac_id: 1 } },
+        { $project: { _id: 0, fac_id: 1, fac_name: 1 } },
         {
           $lookup: {
             from: "morn_exams",
@@ -310,8 +310,7 @@ router.post('/pending_faculty', (req, res) => {
         {
           $project: {
             "fac_id": 1,
-            "morn_count": { $size: "$morn_selections" },
-            "aft_count": { $size: "$aft_selections" },
+            "fac_name": 1,
             "tot_count": { $sum: [
               { $size: "$morn_selections" }, 
               { $size: "$aft_selections" }
