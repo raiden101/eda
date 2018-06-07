@@ -9,13 +9,14 @@ import DeleteUsers from '../DeleteUsers/DeleteUsers';
 import SlotDeletion from '../SlotDeletion/SlotDeletion';
 import SlotAddition from '../SlotAddition/SlotAddition';
 import UserRegistration from '../UserRegistration/UserRegistration';
+import Reports from '../Reports/Reports';
 class AdminComponent extends Component{
     constructor(props) {
         super(props);
         this.token = JSON.parse(localStorage.getItem("auth")).token;
     }
     state = {
-        type:4
+        type:5
     }
     changeDuration = ({ target: { name, value } }) => {
         this.setState({
@@ -43,6 +44,7 @@ class AdminComponent extends Component{
                                 <MenuItem value={2}>Slot Deletion</MenuItem>
                                 <MenuItem value={3}>Slot Addition</MenuItem>
                                 <MenuItem value={4}>User Registration</MenuItem>
+                                <MenuItem value={5}>Reports</MenuItem>
                             </Select>
                         </FormControl>
                     </div>
@@ -52,6 +54,7 @@ class AdminComponent extends Component{
                         {type === 2 && <SlotDeletion token={this.token} />}
                         {type === 3 && <SlotAddition token={this.token} />}
                         {type === 4 && <UserRegistration token={this.token} />}
+                        {type === 5 && <Reports token={this.token} />}
                     </div>
                 </div>
             </Fragment>
