@@ -118,8 +118,8 @@ class PendingFaculty extends Component{
     render() {
         return (
             <Fragment>
-                <div className="settings">
-                    <div className="half">
+                <div className="controls">
+                    <div>
                         <FormControl className = "dropdown">
                             <InputLabel>Designation</InputLabel>
                             <Select

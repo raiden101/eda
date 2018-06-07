@@ -152,8 +152,8 @@ class Reports extends Component{
     render() {
         return (
             <Fragment>
-                <div className="settings">
-                    <div className="half">
+                <div className="controls">
+                    <div className="quarter">
                         <FormControl className="dropdown">
                             <InputLabel>Date</InputLabel>
                             <Select
@@ -173,7 +173,7 @@ class Reports extends Component{
                             </Select>
                             </FormControl>
                         </div>
-                    <div className="half">
+                    <div className="quarter">
                         <FormControl className = "dropdown">
                             <InputLabel>Session</InputLabel>
                             <Select

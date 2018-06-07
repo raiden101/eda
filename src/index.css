@@ -12,14 +12,24 @@ body ,html{
 .dull-text{
   color:#888;
 }
-.half{
+.half,.quarter{
   width:50%;
   display:inline-block;
   text-align: center;
 }
+.quarter{
+  width:25%;
+}
 .input-field.full{
   width:100%;
   min-width:300px;
+}
+
+.loading{
+    width:100%;
+    padding:150px;
+    box-sizing: border-box;
+    text-align:center;
 }
 
 .dropdown{

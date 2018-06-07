@@ -31,6 +31,7 @@ class AdminComponent extends Component{
         return (
             <Fragment>
                 <div className="admin-component">
+                    <div className="header">Welcome Admin</div>
                     <div className="controls">
                         <FormControl className="data-functions">
                             <InputLabel>Operation</InputLabel>

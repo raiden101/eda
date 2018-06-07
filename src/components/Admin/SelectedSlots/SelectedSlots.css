@@ -1,17 +1,16 @@
 
 .controls{
-    width:100%;
-    padding:15px;
+    width: 100%;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    padding: 15px;
+    padding-bottom: 20px;
+    border-bottom:1px solid #ddd;
+    margin-bottom:20px;
+    border-radius: 3px;
     box-sizing: border-box;
 }
 .select-duration{
     width:150px;
-    text-align:center;
-}
-.loading{
-    width:100%;
-    padding:200px;
-    box-sizing: border-box;
     text-align:center;
 }
 .fake-link{

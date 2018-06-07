@@ -12,10 +12,9 @@ class Admin extends Component{
     constructor(props) {
         super(props);
         this.unmounted = false;
-        let that = this;
         axios.interceptors.response.use(response => {
             if (!!response.data.error) {
-                !this.unmounted && that.setState({
+                !this.unmounted && this.setState({
                     redirect: 1
                 });
             }

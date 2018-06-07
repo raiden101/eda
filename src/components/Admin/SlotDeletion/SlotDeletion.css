@@ -1,17 +1,5 @@
-
-.controls{
-    width:100%;
-    padding:15px;
-    box-sizing: border-box;
-}
 .select-duration{
     width:150px;
-    text-align:center;
-}
-.loading{
-    width:100%;
-    padding:200px;
-    box-sizing: border-box;
     text-align:center;
 }
 .wid-10{

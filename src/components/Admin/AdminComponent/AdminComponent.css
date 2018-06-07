@@ -1,6 +1,7 @@
 .admin-component{
-    width:85%;
+    width:90%;
     padding:40px;
+    padding-top:7px;
     box-sizing:border-box;
     height:100%;
     margin:0 auto;
@@ -12,6 +13,12 @@
 .details{
     width:100%;
     height:auto;
-    border:1px solid #aaa;
+    box-shadow: 0 8px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
     margin-bottom:25px;
+}
+.header{
+    font-size: 30px;
+    margin: 0 20px;
+    margin-bottom:20px;
 }
