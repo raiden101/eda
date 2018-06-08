@@ -27,7 +27,7 @@ class Default extends Component {
                 renderItem = <Redirect to="/admin" />
             }
             else
-                renderItem = <b>Normal route</b>
+                renderItem = <Redirect to="/faculty" />
         }
         return (
             <Fragment>
