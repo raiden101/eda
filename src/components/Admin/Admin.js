@@ -13,7 +13,7 @@ class Admin extends Component{
         super(props);
         this.unmounted = false;
         axios.interceptors.response.use(response => {
-            if (!!response.data.error) {
+            if (response.data.error === "auth error") {
                 !this.unmounted && this.setState({
                     redirect: 1
                 });
