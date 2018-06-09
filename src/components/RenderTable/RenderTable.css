@@ -1,20 +1,20 @@
-.rendered-table{
-    width:100%;
-    height:auto;
+.rendered-table {
+	width: 100%;
+	height: auto;
 }
-.table-title{
-    width:100%;
-    padding:0 20px;
-    height:60px;
-    box-sizing: border-box;
+.table-title {
+	width: 100%;
+	padding: 0 20px;
+	height: 60px;
+	box-sizing: border-box;
 }
-.selected-action{
-    height:60px;
-    line-height:60px;
-    float:right;
+.selected-action {
+	height: 60px;
+	line-height: 60px;
+	float: right;
 }
-.table-title-name{
-    float:left;
-    height:60px;
-    line-height:60px;
+.table-title-name {
+	float: left;
+	height: 60px;
+	line-height: 60px;
 }

@@ -1,19 +1,19 @@
-.slot-addition{
-    width:100%;
-    padding:20px;
-    box-sizing: border-box;
-    text-align: center;
+.slot-addition {
+	width: 100%;
+	padding: 20px;
+	box-sizing: border-box;
+	text-align: center;
 }
-.new-item{
-    margin:0 10px !important;
+.new-item {
+	margin: 0 10px !important;
 }
-.new-item i{
-    font-size:13px;
-    margin-left:10px;
+.new-item i {
+	font-size: 13px;
+	margin-left: 10px;
 }
-.new-item.save{
-    background:rgb(56,200,56);
+.new-item.save {
+	background: rgb(56, 200, 56);
 }
-.new-item.save:hover{
-    background:rgb(36,180,36);
+.new-item.save:hover {
+	background: rgb(36, 180, 36);
 }

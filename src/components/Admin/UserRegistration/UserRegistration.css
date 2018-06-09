@@ -1,33 +1,33 @@
-.register-users{
-    width:100%;
-    height:auto;
-    padding:20px;
-    box-sizing:border-box;
+.register-users {
+	width: 100%;
+	height: auto;
+	padding: 20px;
+	box-sizing: border-box;
 }
-.register-users .header{
-    font-size:23px;
-    width:60%;
-    margin:0 auto;
-    text-align:center;
-    padding-bottom:10px;
+.register-users .header {
+	font-size: 23px;
+	width: 60%;
+	margin: 0 auto;
+	text-align: center;
+	padding-bottom: 10px;
 }
-.input-space{
-    width:100%;
-    max-width:350px;
-    margin:10px auto;
-    padding-top:10px;
+.input-space {
+	width: 100%;
+	max-width: 350px;
+	margin: 10px auto;
+	padding-top: 10px;
 }
 
-.new-item{
-    margin:0 10px !important;
+.new-item {
+	margin: 0 10px !important;
 }
-.new-item i{
-    font-size:13px;
-    margin-left:10px;
+.new-item i {
+	font-size: 13px;
+	margin-left: 10px;
 }
-.new-item.save{
-    background:rgb(56,200,56);
+.new-item.save {
+	background: rgb(56, 200, 56);
 }
-.new-item.save:hover{
-    background:rgb(36,180,36);
+.new-item.save:hover {
+	background: rgb(36, 180, 36);
 }

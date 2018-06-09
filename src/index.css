@@ -1,37 +1,40 @@
-body ,html{
-  margin: 0;
-  padding: 0;
-  font-family: Roboto;
-  height:100%;
-  width:100%;
+body,
+html {
+	margin: 0;
+	padding: 0;
+	font-family: Roboto;
+	height: 100%;
+	width: 100%;
 }
-#root,.App{
-  width:100%;
-  height:100%;
+#root,
+.App {
+	width: 100%;
+	height: 100%;
 }
-.dull-text{
-  color:#888;
+.dull-text {
+	color: #888;
 }
-.half,.quarter{
-  width:50%;
-  display:inline-block;
-  text-align: center;
+.half,
+.quarter {
+	width: 50%;
+	display: inline-block;
+	text-align: center;
 }
-.quarter{
-  width:25%;
+.quarter {
+	width: 25%;
 }
-.input-field.full{
-  width:100%;
-  min-width:300px;
-}
-
-.loading{
-    width:100%;
-    padding:150px;
-    box-sizing: border-box;
-    text-align:center;
+.input-field.full {
+	width: 100%;
+	min-width: 300px;
 }
 
-.dropdown{
-    width:150px;
+.loading {
+	width: 100%;
+	padding: 150px;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+.dropdown {
+	width: 150px;
 }
