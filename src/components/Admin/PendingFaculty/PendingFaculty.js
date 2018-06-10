@@ -18,12 +18,16 @@ class PendingFaculty extends Component {
 	};
 	constructor(props) {
 		super(props);
+		this.unmounted = false;
 		this.props = props;
 		this.tableHeads = ["Id", "Name", "No. of Slots Selected"];
 	}
 	translateSlotData = obj => {
 		return [obj.fac_id, obj.fac_name, obj.tot_count];
 	};
+	componentWillUnmount() {
+		this.unmounted = true;
+	}
 	componentWillMount() {
 		this.setState({
 			loading: true
@@ -34,10 +38,11 @@ class PendingFaculty extends Component {
 				designation: 1
 			})
 			.then(data => {
-				this.setState({
-					users: data.data.data,
-					loading: false
-				});
+				!this.unmounted &&
+					this.setState({
+						users: data.data.data,
+						loading: false
+					});
 			});
 	}
 	changeDropdown = ({ target: { name, value } }) => {
@@ -51,10 +56,11 @@ class PendingFaculty extends Component {
 				designation: value
 			})
 			.then(data => {
-				this.setState({
-					users: data.data.data,
-					loading: false
-				});
+				!this.unmounted &&
+					this.setState({
+						users: data.data.data,
+						loading: false
+					});
 			});
 	};
 	getDesignation = index => {

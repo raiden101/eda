@@ -16,6 +16,9 @@
 	color: blue;
 	cursor: pointer;
 }
+.fake-link.black{
+	color:#000;
+}
 .fake-link:hover {
 	text-decoration: underline;
 }

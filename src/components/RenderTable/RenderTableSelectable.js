@@ -13,6 +13,20 @@ class RenderTableSelectable extends Component {
 		rows: 5,
 		itemsChecked: []
 	};
+	paginationEnabled = true;
+	constructor(props) {
+		super(props);
+		if (props.paginationEnabled === undefined)
+			this.paginationEnabled = props.data.length > 5;
+		else if (props.paginationEnabled === false)
+			this.paginationEnabled = false;
+	}
+	componentWillMount() {
+		if (this.paginationEnabled === false)
+			this.setState({
+				rows: this.props.data.length
+			});
+	}
 	changePage = (event, page) => {
 		this.setState({
 			page
@@ -168,14 +182,16 @@ class RenderTableSelectable extends Component {
 							})}
 					</TableBody>
 				</Table>
-				<TablePagination
-					component="div"
-					count={this.props.data.length}
-					rowsPerPage={this.state.rows}
-					page={this.state.page}
-					onChangePage={this.changePage}
-					onChangeRowsPerPage={this.changeRows}
-				/>
+				{this.paginationEnabled && (
+					<TablePagination
+						component="div"
+						count={this.props.data.length}
+						rowsPerPage={this.state.rows}
+						page={this.state.page}
+						onChangePage={this.changePage}
+						onChangeRowsPerPage={this.changeRows}
+					/>
+				)}
 			</div>
 		);
 	}

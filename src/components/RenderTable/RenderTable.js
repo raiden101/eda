@@ -11,6 +11,18 @@ class RenderTable extends Component {
 		page: 0,
 		rows: 5
 	};
+	paginationEnabled = true;
+	constructor(props) {
+		super(props);
+		if (props.paginationEnabled === undefined) this.paginationEnabled = props.data.length > 5;
+		else if (props.paginationEnabled === false) this.paginationEnabled = false;
+	}
+	componentWillMount() {
+		if (this.paginationEnabled === false)
+			this.setState({
+				rows: this.props.data.length
+			});
+	}
 	changePage = (event, page) => {
 		this.setState({
 			page
@@ -45,7 +57,7 @@ class RenderTable extends Component {
 							)
 							.map((element, index) => {
 								return (
-									<TableRow key={"row-" + index}>
+									<TableRow className="row-hover" key={"row-" + index}>
 										{this.props
 											.translate(element)
 											.map((el, i) => {
@@ -62,14 +74,14 @@ class RenderTable extends Component {
 							})}
 					</TableBody>
 				</Table>
-				<TablePagination
+				{this.paginationEnabled && <TablePagination
 					component="div"
 					count={this.props.data.length}
 					rowsPerPage={this.state.rows}
 					page={this.state.page}
 					onChangePage={this.changePage}
 					onChangeRowsPerPage={this.changeRows}
-				/>
+				/>}
 			</div>
 		);
 	}

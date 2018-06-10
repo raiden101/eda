@@ -18,3 +18,7 @@
 	height: 60px;
 	line-height: 60px;
 }
+
+.row-hover:hover{
+	background:#eee;
+}
