@@ -4,31 +4,40 @@ import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 import FacultyHome from './FacultyHome/FacultyHome';
 import FacultySelection from './FacultySelection/FacultySelection';
 class Faculty extends Component {
 	state = {
 		activeTab: 0,
-		data: 0
+		data: 0,
+		redirect:false
 	};
+	unmounted = false;
 	constructor(props) {
 		super(props);
 		this.token = JSON.parse(localStorage.getItem("auth")).token;
+		axios.interceptors.response.use(response => {
+			response.data.error && !this.unmounted && this.setState({
+				redirect: true
+			});
+			return response;
+		})
 	}
 	handleChange = (event, value) => {
-		this.setState({
-			activeTab: value
-		});
+		!this.unmounted && this.setState({ activeTab: value });
 	};
 	componentWillMount() {
 		axios.post('api/faculty', {
 			token: this.token
 		}).then((data) => {
-			console.log(data);
-			this.setState({
+			!this.unmounted && this.setState({
 				data: data.data[0]
 			});
 		});
+	}
+	componentWillUnmount() {
+		this.unmounted = true;
 	}
 	render() {
 		let { activeTab } = this.state;
@@ -50,6 +59,7 @@ class Faculty extends Component {
 				</div>
 		</Fragment> : <center>Loading Faculty Data...</center>;
 		return <div className="faculty-component">
+				{this.state.redirect && <Redirect to = "/"/>}
 				{component}
 			</div>;
 	}

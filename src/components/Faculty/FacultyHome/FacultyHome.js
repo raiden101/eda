@@ -27,7 +27,8 @@ export default props => {
     let items = (
         <Fragment>
             <div className="mini-header" style={{
-                "marginLeft": "20px"
+                "marginLeft": "20px",
+                textAlign:"center"
             }}>
                 Selected Items
             </div>
