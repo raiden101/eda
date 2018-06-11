@@ -18,7 +18,7 @@ const check_token = (req, res, next) => {
 		if (decoded_data.admin == 0) {
 			req.fac_id = decoded_data.username;
 			next();
-		} else res.json({ data: null, error: "unauthorized activity!!" });
+		} else res.json({ data: null, error: "auth error" });
 	} catch (err) {
 		res.json({ data: null, error: "error while fetching data!!" });
 	}

@@ -18,7 +18,7 @@ class Faculty extends Component {
 		super(props);
 		this.token = JSON.parse(localStorage.getItem("auth")).token;
 		axios.interceptors.response.use(response => {
-			response.data.error && !this.unmounted && this.setState({
+			response.data.error==="auth error" && !this.unmounted && this.setState({
 				redirect: true
 			});
 			return response;
@@ -42,9 +42,10 @@ class Faculty extends Component {
 	render() {
 		let { activeTab } = this.state;
 		let component = this.state.data ? <Fragment>
-				<div className="header">
-					<h4 style={ { margin: "6px 0px", textTransform: "capitalize" } }
-					>Welcome { this.state.data.fac_name.toLowerCase() }</h4>
+				<div className="header" style={{
+					textTransform:"capitalize"
+				}}>
+					Welcome{" "}{this.state.data.fac_name.toLowerCase()}
 				</div>
 				<div className="paper-field">
 					<AppBar position="static">
