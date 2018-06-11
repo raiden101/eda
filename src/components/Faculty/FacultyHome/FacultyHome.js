@@ -29,7 +29,7 @@ export default props => {
             <div className="mini-header" style={{
                 "marginLeft": "20px"
             }}>
-                Selected Items
+                Selected Slots
             </div>
             <div className="faculty_table">
                 <RenderTable
@@ -46,7 +46,7 @@ export default props => {
 						Some Information
 					</span>} content={<Fragment>
 						<li className="instructions">
-							Select a Minimum of 1 slot per Day.
+							Select a Minimum of { props.data.slot_lims[0].minimum } slot per Day.
 						</li>
 						<li className="instructions">
 							Select a total of{" "}

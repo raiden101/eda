@@ -24,7 +24,7 @@ class Faculty extends Component {
 		axios.post('api/faculty', {
 			token: this.token
 		}).then((data) => {
-			console.log(data);
+			// console.log(data.data);
 			this.setState({
 				data: data.data[0]
 			});
@@ -33,7 +33,10 @@ class Faculty extends Component {
 	render() {
 		let { activeTab } = this.state;
 		let component = this.state.data ? <Fragment>
-				<div className="header">Welcome Yo,</div>
+				<div className="header">
+					<h4 style={ { margin: "6px 0px", textTransform: "capitalize" } }
+					>Welcome { this.state.data.fac_name.toLowerCase() }</h4>
+				</div>
 				<div className="paper-field">
 					<AppBar position="static">
 						<Tabs value={activeTab} onChange={this.handleChange}>

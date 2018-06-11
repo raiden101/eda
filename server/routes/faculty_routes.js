@@ -58,8 +58,10 @@ router.post("/", check_token, (req, res) => {
 			{
 				$project: {
 					fac_des: 1,
+					"fac_name": 1,
 					"slot_lims.morn_max": 1,
 					"slot_lims.aft_max": 1,
+					"slot_lims.minimum": 1,
 					"morn_selections.date": 1,
 					"aft_selections.date": 1
 				}
