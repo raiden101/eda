@@ -14,8 +14,10 @@ class RenderTable extends Component {
 	paginationEnabled = true;
 	constructor(props) {
 		super(props);
-		if (props.paginationEnabled === undefined) this.paginationEnabled = props.data.length > 5;
-		else if (props.paginationEnabled === false) this.paginationEnabled = false;
+		if (props.paginationEnabled === undefined)
+			this.paginationEnabled = props.data.length > 5;
+		else if (props.paginationEnabled === false)
+			this.paginationEnabled = false;
 	}
 	componentWillMount() {
 		if (this.paginationEnabled === false)
@@ -34,6 +36,7 @@ class RenderTable extends Component {
 		});
 	};
 	render() {
+		let rows = this.paginationEnabled ? this.state.rows : this.props.data.length;
 		return (
 			<div className="rendered-table">
 				<Table>
@@ -51,13 +54,16 @@ class RenderTable extends Component {
 					<TableBody>
 						{this.props.data
 							.slice(
-								this.state.page * this.state.rows,
-								this.state.page * this.state.rows +
-									this.state.rows
+								this.state.page * rows,
+								this.state.page * rows +
+									rows
 							)
 							.map((element, index) => {
 								return (
-									<TableRow className="row-hover" key={"row-" + index}>
+									<TableRow
+										className="row-hover"
+										key={"row-" + index}
+									>
 										{this.props
 											.translate(element)
 											.map((el, i) => {
@@ -74,14 +80,16 @@ class RenderTable extends Component {
 							})}
 					</TableBody>
 				</Table>
-				{this.paginationEnabled && <TablePagination
-					component="div"
-					count={this.props.data.length}
-					rowsPerPage={this.state.rows}
-					page={this.state.page}
-					onChangePage={this.changePage}
-					onChangeRowsPerPage={this.changeRows}
-				/>}
+				{this.paginationEnabled && (
+					<TablePagination
+						component="div"
+						count={this.props.data.length}
+						rowsPerPage={rows}
+						page={this.state.page}
+						onChangePage={this.changePage}
+						onChangeRowsPerPage={this.changeRows}
+					/>
+				)}
 			</div>
 		);
 	}

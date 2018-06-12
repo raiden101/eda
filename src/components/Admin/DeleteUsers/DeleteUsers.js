@@ -99,14 +99,14 @@ class DeleteUsers extends Component {
 	render() {
 		return (
 			<Fragment>
-				<RenderTableSelectable
+				{this.state.users.length > 0 ? <RenderTableSelectable
 					data={this.state.users}
 					translate={this.translateSlotData}
 					heads={this.tableHeads}
 					title={"Faculty"}
 					selectedAction={this.selectedAction}
 					selectionId="fac_id"
-				/>
+				/>:<div className="loading">Loading..</div>}
 			</Fragment>
 		);
 	}

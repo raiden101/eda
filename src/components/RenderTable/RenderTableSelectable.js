@@ -21,12 +21,6 @@ class RenderTableSelectable extends Component {
 		else if (props.paginationEnabled === false)
 			this.paginationEnabled = false;
 	}
-	componentWillMount() {
-		if (this.paginationEnabled === false)
-			this.setState({
-				rows: this.props.data.length
-			});
-	}
 	changePage = (event, page) => {
 		this.setState({
 			page
@@ -64,6 +58,7 @@ class RenderTableSelectable extends Component {
 			});
 	}
 	render() {
+		let rows = this.paginationEnabled ? this.state.rows : this.props.data.length;
 		return (
 			<div className="rendered-table">
 				<div
@@ -122,9 +117,9 @@ class RenderTableSelectable extends Component {
 					<TableBody>
 						{this.props.data
 							.slice(
-								this.state.page * this.state.rows,
-								this.state.page * this.state.rows +
-									this.state.rows
+								this.state.page * rows,
+								this.state.page * rows +
+									rows
 							)
 							.map((element, index) => {
 								return (
@@ -186,7 +181,7 @@ class RenderTableSelectable extends Component {
 					<TablePagination
 						component="div"
 						count={this.props.data.length}
-						rowsPerPage={this.state.rows}
+						rowsPerPage={rows}
 						page={this.state.page}
 						onChangePage={this.changePage}
 						onChangeRowsPerPage={this.changeRows}

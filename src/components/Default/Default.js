@@ -20,7 +20,7 @@ class Default extends Component {
 		this.refetch();
 	}
 	render() {
-		let renderItem = <b>Loading...</b>;
+		let renderItem = <div className="loading">Loading...</div>;
 		if (!this.state.status) {
 			renderItem = <Redirect to="/login" />;
 		} else if (this.state.status === 1) {
