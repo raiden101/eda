@@ -57,7 +57,7 @@ router.post("/", check_token, (req, res) => {
 			},
 			{
 				$project: {
-					fac_des: 1,
+					"fac_des": 1,
 					"fac_name": 1,
 					"slot_lims.morn_max": 1,
 					"slot_lims.aft_max": 1,
@@ -129,6 +129,7 @@ router.post("/update_info", check_token, (req, res) => {
 
 router.post("/selection_info", check_token, (req, res) => {
 	let query = [
+		{ $match: { selected_members: { $nin: [req.fac_id] } } },
 		{
 			$project: {
 				_id: 1,
@@ -142,15 +143,27 @@ router.post("/selection_info", check_token, (req, res) => {
 		{ $sort: { date: 1 } }
 	];
 	let p1 = morn_exam.aggregate(query),
-		p2 = aft_exam.aggregate(query);
+			p2 = aft_exam.aggregate(query);
+	return Promise.all([p1, p2])
+	.then(data => {
+		res.json({ data: data, error: null });
+	})
+	.catch(err => res.json({ data: null, error: "error while getting data"}))
 
-	Promise.all([p1, p2])
-		.then(data => {
-			res.json({ data: data, error: null });
-		})
-		.catch(err =>
-			res.json({ data: null, error: "error while fetching data!!" })
-		);
 });
+
+router.post('/reserve_slot', check_token, (req, res) => {
+	let _collection = req.body.selected.session === 'morning' ? morn_exam : aft_exam;
+	_collection.updateOne(
+		{ date: new Date(slot.date) }, 
+		{ 
+			$push: { selected_members: req.fac_id }, 
+			$inc: { remaining_slot: -1 }
+		}
+	)
+	.then(data => res.json({ data: "reservation successful", error: null}))
+	.catch(err => res.json({ error: "error while reserving slots", data: null}))
+	
+})
 
 module.exports = router;
