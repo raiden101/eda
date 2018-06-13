@@ -21,7 +21,7 @@ app.use("/api/auth", require("./server/auth/auth"));
 
 app.use("/api/faculty", require("./server/routes/faculty_routes"));
 
-app.use("/api/admin", require("./server/routes/admin_routes"));
+app.use("/api/admin", require("./server/routes/admin_routes/index"));
 
 ///////////////////////////////
 app.listen(port, () => {
