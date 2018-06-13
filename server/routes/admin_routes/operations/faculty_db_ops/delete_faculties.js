@@ -2,7 +2,7 @@ const {
   morn_exam, 
   aft_exam, 
   faculty 
-} = require('../../../schemas/collections')
+} = require('../../../../schemas/collections')
 
 
 // { token: '....', fac_ids: ['id1', 'id2'...] }

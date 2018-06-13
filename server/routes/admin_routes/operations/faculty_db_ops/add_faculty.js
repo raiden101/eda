@@ -1,4 +1,4 @@
-const { faculty } = require('../../../schemas/collections')
+const { faculty } = require('../../../../schemas/collections')
 
 // { token: '.....', faculty_data: {.......} }
 

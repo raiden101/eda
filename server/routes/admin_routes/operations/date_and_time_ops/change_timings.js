@@ -1,4 +1,4 @@
-const { exam_timing } = require('../../../schemas/collections');
+const { exam_timing } = require('../../../../schemas/collections');
 
 // { token: "", session: "morning/afternoon", 
 // time: {start: Date obj, end: Date obj}  }

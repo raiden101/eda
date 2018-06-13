@@ -1,4 +1,4 @@
-const { faculty } = require('../../../schemas/collections');
+const { faculty } = require('../../../../schemas/collections');
 
 // { token: '.......' }
 module.exports = (req, res) => {

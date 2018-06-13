@@ -1,4 +1,4 @@
-const { morn_exam, aft_exam } = require('../../../schemas/collections');
+const { morn_exam, aft_exam } = require('../../../../schemas/collections');
 
 // { token: '', slots: [{date: '', session: '', total_slot: ''}]}
 

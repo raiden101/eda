@@ -1,4 +1,4 @@
-const { exam_timing } = require('../../../schemas/collections');
+const { exam_timing } = require('../../../../schemas/collections');
 
 const get_hours_and_mins = (date) => {
 	return {

@@ -1,4 +1,4 @@
-const { slot_limitation } = require('../../../schemas/collections')
+const { slot_limitation } = require('../../../../schemas/collections')
 
 // { token: '..', fac_des: '..', maximum: '..', minimum: '..',
 // morn_max: '', aft_max: ''}
