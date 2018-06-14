@@ -71,7 +71,7 @@ class Faculty extends Component {
 					)}
 					{activeTab === 1 && (
 						<div className="tab-faculty">
-							<FacultySelection token={this.token} />
+							<FacultySelection token={this.token} data={this.state.data}/>
 						</div>
 					)}
 				</div>
