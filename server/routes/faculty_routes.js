@@ -57,7 +57,7 @@ router.post("/", check_token, (req, res) => {
 			},
 			{
 				$project: {
-					fac_des: 1,
+					"fac_des": 1,
 					"fac_name": 1,
 					"slot_lims.morn_max": 1,
 					"slot_lims.aft_max": 1,
@@ -128,7 +128,8 @@ router.post("/update_info", check_token, (req, res) => {
 });
 
 router.post("/selection_info", check_token, (req, res) => {
-	let query = [
+	const query = [
+		{ $match: { selected_members: { $nin: [req.fac_id] } } },
 		{
 			$project: {
 				_id: 1,
@@ -141,16 +142,47 @@ router.post("/selection_info", check_token, (req, res) => {
 		},
 		{ $sort: { date: 1 } }
 	];
-	let p1 = morn_exam.aggregate(query),
-		p2 = aft_exam.aggregate(query);
-
-	Promise.all([p1, p2])
-		.then(data => {
-			res.json({ data: data, error: null });
+	const projection_str = 'morn_selected_slots aft_selected_slots fac_des'
+	
+	faculty.findOne({ fac_id: req.fac_id }, projection_str)
+	.then(data => {
+		
+		if(data === null) throw "errror";
+		slot_limitation.findOne({ fac_des: data.fac_des })
+		.then(lim => {
+			if(lim.maximum <= (data.morn_selected_slots + data.aft_selected_slots))
+				return Promise.reject("maximum slot selected");
+			else
+				return Promise.all(
+					[morn_exam.aggregate(query), aft_exam.aggregate(query)]
+				)
 		})
-		.catch(err =>
-			res.json({ data: null, error: "error while fetching data!!" })
-		);
+		.then(data => res.json({ data: data, error: null }))
+		.catch(err => res.json({ error: err, data: null }))
+		
+	})
+	
 });
+
+router.post('/reserve_slot', check_token, (req, res) => {
+	let [_collection, field] = req.body.selected.session === 'morning' ? 
+	[morn_exam, 'morn_selected_slots'] : [aft_exam, 'aft_selected_slots'];
+	_collection.updateOne(
+		{ date: new Date(slot.date) }, 
+		{ 
+			$push: { selected_members: req.fac_id }, 
+			$inc: { remaining_slot: -1 }
+		}
+	)
+	.then(data => {
+		return faculty.updateOne(
+			{ fac_id: req.fac_id }, 
+			{ $inc: { field: 1 } }
+		)
+	})
+	.then(data => res.json({ data: "reservation successful", error: null}))
+	.catch(err => res.json({ error: "error while reserving slots", data: null}))
+	
+})
 
 module.exports = router;
