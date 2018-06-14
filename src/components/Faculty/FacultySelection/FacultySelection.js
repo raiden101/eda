@@ -22,23 +22,27 @@ class FacultySelection extends Component {
 			success:false
 		};
 	}
+	unmounted = false;
+	componentWillUnmount() {
+		this.unmounted = true;
+	}
 	tableHeads = ["Date", "Remaining Slots"];
 	refetch = () => {
-		this.setState({
+		!this.unmounted && this.setState({
 			loading: true
 		});
 		axios
-			.post("selection_info", {
+			.post("faculty/selection_info", {
 				token: this.props.token
 			})
 			.then(data => {
 				if (data.data.error) {
-					this.setState({
+					!this.unmounted && this.setState({
 						allSelected: true,
 						loading: false
 					});
 				} else {
-					this.setState({
+					!this.unmounted && this.setState({
 						morning: data.data.data[0],
 						afternoon: data.data.data[1],
 						allSelected: false,
@@ -51,7 +55,7 @@ class FacultySelection extends Component {
 		this.refetch();
 	}
 	changeDropdown = ({ target: { name, value } }) => {
-		this.setState({
+		!this.unmounted && this.setState({
 			[name]: value
 		});
 	};
@@ -62,11 +66,11 @@ class FacultySelection extends Component {
 		return [dateString, obj.remaining_slot];
 	};
 	rowClicked = duration => obj => {
-		this.setState({
+		!this.unmounted && this.setState({
 			loading: true
 		});
 		axios
-			.post("reserve_slot", {
+			.post("faculty/reserve_slot", {
 				token: this.props.token,
 				selected: {
 					date: obj.date,
@@ -97,7 +101,7 @@ class FacultySelection extends Component {
 					});
 					if (mIndex !== -1) morning.splice(mIndex, 1);
 					if (aIndex !== -1) afternoon.splice(aIndex, 1);
-					this.setState({
+					!this.unmounted && this.setState({
 						loading: false,
 						morning: morning,
 						afternoon: afternoon,
@@ -106,7 +110,7 @@ class FacultySelection extends Component {
 						success:true
 					});
 				} else {
-					this.setState({
+					!this.unmounted && this.setState({
 						loading: false,
 						error: true
 					});
@@ -115,7 +119,7 @@ class FacultySelection extends Component {
 			});
 	};
 	handleClose = name => () => {
-		this.setState({
+		!this.unmounted && this.setState({
 			[name]: false
 		});
 	};

@@ -7,9 +7,10 @@ export default class FacultyHome extends Component {
     state = {
         data:0
     }
+    unmounted = false;
     componentWillMount() {
         axios
-            .post("/", {
+            .post("faculty/", {
                 token: this.props.token
             })
             .then(data => {
@@ -18,6 +19,9 @@ export default class FacultyHome extends Component {
                         data: data.data[0]
                     });
             });
+    }
+    componentWillUnmount() {
+        this.unmounted = true;
     }
     translateSlotData = (obj) => {
         let date = new Date(obj.date);

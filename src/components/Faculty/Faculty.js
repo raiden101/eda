@@ -25,14 +25,14 @@ class Faculty extends Component {
 				});
 			return response;
 		});
-		axios.defaults.baseURL = "api/faculty/";
+		axios.defaults.baseURL = "api";
 	}
 	handleChange = (event, value) => {
 		!this.unmounted && this.setState({ activeTab: value });
 	};
 	componentWillMount() {
 		axios
-			.post("/", {
+			.post("/faculty", {
 				token: this.token
 			})
 			.then(data => {
