@@ -13,7 +13,7 @@ module.exports = (req, res) => {
 				}
 			}
 		},
-		{ $match: { remaining_slot: { $ne: 0 } } },
+		{ $match: { remaining_slot: { $gt: 0 } } },
 		{ $sort: { date: 1 } }
 	];
 	const projection_str = 'morn_selected_slots aft_selected_slots fac_des'
