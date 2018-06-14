@@ -75,7 +75,7 @@ class UserRegistration extends Component {
 				fac_id: faculty_id + ""
 			};
 			axios
-				.post("/api/admin/new_faculty", {
+				.post("/admin/new_faculty", {
 					token: this.token,
 					faculty_data: faculty_data
 				})

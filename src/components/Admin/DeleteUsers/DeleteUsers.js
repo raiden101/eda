@@ -26,7 +26,7 @@ class DeleteUsers extends Component {
 		this.setState({
 			users: users
 		});
-		axios.post("/api/admin/delete_faculties", {
+		axios.post("/admin/delete_faculties", {
 			token: this.props.token,
 			fac_ids: elements
 		});
@@ -73,7 +73,7 @@ class DeleteUsers extends Component {
 	};
 	componentDidMount() {
 		axios
-			.post("/api/admin/get_all_faculties", {
+			.post("/admin/get_all_faculties", {
 				token: this.props.token
 			})
 			.then(data => {

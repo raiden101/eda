@@ -5,7 +5,12 @@ import Admin from "./components/Admin/Admin";
 import Faculty from "./components/Faculty/Faculty";
 import { BrowserRouter } from "react-router-dom";
 import { Route } from "react-router-dom";
+import axios from 'axios';
 class App extends Component {
+	constructor(props) {
+		super(props);
+		axios.defaults.baseURL = "/api";
+	}
 	render() {
 		return (
 			<div className="App">

@@ -22,13 +22,14 @@ class Faculty extends Component {
 				redirect: true
 			});
 			return response;
-		})
+		});
+		axios.defaults.baseURL = "api/faculty/";
 	}
 	handleChange = (event, value) => {
 		!this.unmounted && this.setState({ activeTab: value });
 	};
 	componentWillMount() {
-		axios.post('api/faculty', {
+		axios.post('/', {
 			token: this.token
 		}).then((data) => {
 			!this.unmounted && this.setState({
@@ -55,7 +56,7 @@ class Faculty extends Component {
 						</Tabs>
 					</AppBar>
 					{activeTab === 0 && <div className="tab-faculty">
-					<FacultyHome data = {this.state.data} token={this.token}/>
+						<FacultyHome data = {this.state.data} token={this.token}/>
 					</div>}
 					{activeTab === 1 && <div className="tab-faculty">
 						<FacultySelection token={this.token} />

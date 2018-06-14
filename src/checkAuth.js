@@ -6,7 +6,7 @@ export default () => {
 		let { token } = safe(auth) && JSON.parse(auth);
 		safe(auth)
 			? axios
-					.post("/api/auth/isAuth", {
+					.post("/auth/isAuth", {
 						token: token
 					})
 					.then(data =>

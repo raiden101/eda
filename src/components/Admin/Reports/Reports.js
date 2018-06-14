@@ -55,7 +55,7 @@ class Reports extends Component {
 		});
 		let sessionString = session === "morn" ? "morning" : "afternoon";
 		axios
-			.post("/api/admin/slot_info", {
+			.post("/admin/slot_info", {
 				token: this.props.token,
 				session: sessionString,
 				date: date
@@ -132,7 +132,7 @@ class Reports extends Component {
 	};
 	componentWillMount() {
 		axios
-			.post("/api/admin/get_exam_dates", {
+			.post("/admin/get_exam_dates", {
 				token: this.props.token
 			})
 			.then(data => {
@@ -144,7 +144,7 @@ class Reports extends Component {
 					currentDate: data.morn_dates[0].date
 				});
 				axios
-					.post("/api/admin/slot_info", {
+					.post("/admin/slot_info", {
 						token: this.props.token,
 						session: "morning",
 						date: data.morn_dates[0].date

@@ -20,10 +20,11 @@ class FacultySelection extends Component {
 			loading: true
 		});
 		axios
-			.post("/api/faculty/selection_info", {
+			.post("selection_info", {
 				token: this.props.token
 			})
 			.then(data => {
+				console.log(data.data)
 				if (data.data.error) {
 					this.setState({
 						allSelected: true,
@@ -36,7 +37,6 @@ class FacultySelection extends Component {
 						allSelected: false,
 						loading: false
 					});
-					console.log(data.data.data[0]);
 				}
 			});
 	}
@@ -52,7 +52,21 @@ class FacultySelection extends Component {
 		return [dateString, obj.remaining_slot];
 	};
 	rowClicked = duration => obj => {
-		console.log(duration, obj);
+        this.setState({
+            loading: true
+        });
+        axios.post('reserve_slot', {
+            token: this.props.token,
+            selected: {
+                date: obj.date,
+                session:duration
+            }
+        }).then(data => {
+            this.setState({
+                loading: false
+            });
+            console.log(data.data);
+        })
 	};
 	render() {
 		return (

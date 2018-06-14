@@ -28,7 +28,7 @@ class Login extends Component {
 			submitting: true
 		});
 		axios
-			.post("/api/auth/login", {
+			.post("/auth/login", {
 				user_data: {
 					username: this.state.username,
 					password: this.state.password,

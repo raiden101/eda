@@ -58,7 +58,7 @@ class SlotDeletion extends Component {
 				[durationTable]: slots
 			}
 		});
-		axios.post("/api/admin/delete_slots", {
+		axios.post("/admin/delete_slots", {
 			token: this.props.token,
 			slots_to_delete: elements,
 			session: durationTable
@@ -95,7 +95,7 @@ class SlotDeletion extends Component {
 	}
 	componentDidMount() {
 		axios
-			.post("/api/admin/", {
+			.post("/admin/", {
 				token: this.token
 			})
 			.then(data => {

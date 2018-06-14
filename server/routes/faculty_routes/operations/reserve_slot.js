@@ -10,7 +10,7 @@ module.exports = (req, res) => {
 	_collection.updateOne(
 		{ 
 			$and: [ 
-				{ date: new Date(slot.date) }, 
+				{ date: new Date(req.body.date) }, 
 				{ remaining_slot: { $gt: 0 } }
 			] 
 		}, 
@@ -25,7 +25,7 @@ module.exports = (req, res) => {
 		else
 			return faculty.updateOne(
 				{ fac_id: req.fac_id }, 
-				{ $inc: { field: 1 } }
+				{ $inc: { [field]: 1 } }
 			)
 	})
 	.then(data => res.json({ data: "reservation successful", error: null}))
