@@ -46,6 +46,12 @@ class Faculty extends Component {
 	componentWillUnmount() {
 		this.unmounted = true;
 	}
+	setData = (data) => {
+		console.log(data);
+		!this.unmounted && this.setState({
+			data: data
+		});
+	}
 	render() {
 		let { activeTab } = this.state;
 		let component = this.state.data ? (
@@ -67,7 +73,7 @@ class Faculty extends Component {
 					</AppBar>
 					{activeTab === 0 && (
 						<div className="tab-faculty">
-							<FacultyHome token={this.token} />
+							<FacultyHome token={this.token} setData={this.setData}/>
 						</div>
 					)}
 					{activeTab === 1 && (
