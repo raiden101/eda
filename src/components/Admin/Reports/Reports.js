@@ -134,7 +134,7 @@ class Reports extends Component {
 		};
 		pdfMake.createPdf(docDefinition).print();
 	};
-	componentWillMount() {
+	componentDidMount() {
 		axios
 			.post("/admin/get_exam_dates", {
 				token: this.props.token

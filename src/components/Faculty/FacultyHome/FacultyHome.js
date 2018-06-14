@@ -8,7 +8,7 @@ export default class FacultyHome extends Component {
         data:0
     }
     unmounted = false;
-    componentWillMount() {
+    componentDidMount() {
         axios
             .post("faculty/", {
                 token: this.props.token

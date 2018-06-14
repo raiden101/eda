@@ -31,7 +31,7 @@ class Faculty extends Component {
 	handleChange = (event, value) => {
 		!this.unmounted && this.setState({ activeTab: value });
 	};
-	componentWillMount() {
+	componentDidMount() {
 		axios
 			.post("/faculty", {
 				token: this.token

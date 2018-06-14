@@ -51,7 +51,7 @@ class FacultySelection extends Component {
 				}
 			});
 	};
-	componentWillMount() {
+	componentDidMount() {
 		this.refetch();
 	}
 	changeDropdown = ({ target: { name, value } }) => {
