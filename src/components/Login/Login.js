@@ -6,6 +6,9 @@ import axios from "axios";
 import "./Login.css";
 import setAuth from "../../setAuth";
 class Login extends Component {
+    componentWillMount() {
+		localStorage.setItem("auth","");
+	}
 	state = {
 		username: "",
 		password: "",

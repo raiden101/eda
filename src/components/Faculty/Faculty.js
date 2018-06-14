@@ -16,7 +16,8 @@ class Faculty extends Component {
 	unmounted = false;
 	constructor(props) {
 		super(props);
-		this.token = JSON.parse(localStorage.getItem("auth")).token;
+		let local = localStorage.getItem("auth")
+		this.token = local? JSON.parse(local).token:0;
 		axios.interceptors.response.use(response => {
 			response.data.error === "auth error" &&
 				!this.unmounted &&
