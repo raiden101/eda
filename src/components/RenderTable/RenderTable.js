@@ -63,6 +63,9 @@ class RenderTable extends Component {
 									<TableRow
 										className="row-hover"
 										key={"row-" + index}
+										onClick={
+											()=>{this.props.onRowClick && this.props.onRowClick(element)}
+										}
 									>
 										{this.props
 											.translate(element)
