@@ -33,7 +33,12 @@ class App extends Component {
 										<Faculty />
 									</Fragment>;
 							}} exact />
-						<Route path="/about" component={About} exact />
+						<Route path="/about" component={() => {
+							return <Fragment>
+								<TopBar />
+								<About />
+							</Fragment>;
+						}} exact />
 						<Route path="/" component={NotFound} />
 					</Switch>
 					</Fragment>
