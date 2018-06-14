@@ -24,7 +24,6 @@ class FacultySelection extends Component {
 				token: this.props.token
 			})
 			.then(data => {
-				console.log(data.data)
 				if (data.data.error) {
 					this.setState({
 						allSelected: true,
@@ -48,7 +47,6 @@ class FacultySelection extends Component {
     translateSlotData = obj => {
         let date = new Date(obj.date);
         let dateString = date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear();
-
 		return [dateString, obj.remaining_slot];
 	};
 	rowClicked = duration => obj => {

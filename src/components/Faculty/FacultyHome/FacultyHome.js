@@ -1,65 +1,84 @@
-import React, { Fragment } from "react";
+import React, { Fragment, Component } from "react";
 import Panel from "../../Panel/Panel";
 import RenderTable from '../../RenderTable/RenderTable';
 import "./FacultyHome.css";
-export default props => {
-    let translateSlotData = (obj) => {
+import axios from 'axios';
+export default class FacultyHome extends Component {
+    state = {
+        data:0
+    }
+    componentWillMount() {
+        axios
+            .post("/", {
+                token: this.props.token
+            })
+            .then(data => {
+                !this.unmounted &&
+                    this.setState({
+                        data: data.data[0]
+                    });
+            });
+    }
+    translateSlotData = (obj) => {
         let date = new Date(obj.date);
         return [
             date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear(),
             obj.session
         ];
     }
-    let morning = props.data.morn_selections.map((element) => {
-		return { date: element.date, session: "Morning" };
-    });
-    let afternoon = props.data.aft_selections.map((element) => {
-        return {
-            date: element.date,
-            session: 'Afternoon'
-        }
-    });
-    let tableHeads = [
-        "Date",
-        "Session"
-    ];
-    let total = [...morning, ...afternoon];
-    let items = (
-        <Fragment>
-            <div className="mini-header" style={{
-                "marginLeft": "20px",
-                textAlign:"center"
-            }}>
-                Selected Slots
+    render() {
+        if (!this.state.data) return <div className="loading">Loading...</div>;
+        let morning = this.state.data.morn_selections.map((element) => {
+            return { date: element.date, session: "Morning" };
+        });
+        let afternoon = this.state.data.aft_selections.map((element) => {
+            return {
+                date: element.date,
+                session: 'Afternoon'
+            }
+        });
+        let tableHeads = [
+            "Date",
+            "Session"
+        ];
+        let total = [...morning, ...afternoon];
+        let items = (
+            <Fragment>
+                <div className="mini-header" style={{
+                    "marginLeft": "20px",
+                    textAlign: "center"
+                }}>
+                    Selected Slots
             </div>
-            <div className="faculty_table">
-                <RenderTable
-                    data={total}
-                    heads={tableHeads}
-                    translate={translateSlotData}
-                    paginationEnabled={false}
-                />
-            </div>
-        </Fragment>
-    );
-	return <Fragment>
-			<Panel title={<span className="mini-header fake-link black">
-						Some Information
+                <div className="faculty_table">
+                    <RenderTable
+                        data={total}
+                        heads={tableHeads}
+                        translate={this.translateSlotData}
+                        paginationEnabled={false}
+                    />
+                </div>
+            </Fragment>
+        );
+        return <Fragment>
+            <Panel title={<span className="mini-header fake-link black">
+                Some Information
 					</span>} content={<Fragment>
-						<li className="instructions">
-							Select a Minimum of { props.data.slot_lims[0].minimum } slot per Day.
+                    <li className="instructions">
+                        Select a Minimum of {this.state.data.slot_lims[0].minimum} slot per Day.
 						</li>
-						<li className="instructions">
-							Select a total of{" "}
-							{props.data.slot_lims[0].morn_max +
-								props.data.slot_lims[0].aft_max}{" "}
-							slots.
+                    <li className="instructions">
+                        Select a total of{" "}
+                        {this.state.data.slot_lims[0].morn_max +
+                            this.state.data.slot_lims[0].aft_max}{" "}
+                        slots.
 						</li>
-						<li className="instructions">
-							If you don't select the No. of slots required.
-							You wont be able to submit the form.
+                    <li className="instructions">
+                        If you don't select the No. of slots required.
+                        You wont be able to submit the form.
 						</li>
-					</Fragment>} />
-			{total.length > 0 && items}
-		</Fragment>;
-};
+                </Fragment>} />
+            {total.length > 0 && items}
+        </Fragment>;
+        }
+    }
