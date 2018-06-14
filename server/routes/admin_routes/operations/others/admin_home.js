@@ -1,5 +1,4 @@
-const { morn_exam, aft_exam } = require('../../../schemas/collections');
-
+const { morn_exam, aft_exam } = require('../../../../schemas/collections')
 // response will be an array of 2 arrays ie [[],[]]
 // 1st array will have all info about morning exams.
 // 2nd array """""""""""""""""""""""" aft exams.
