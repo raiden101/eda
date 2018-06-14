@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
 			next();
 		} else res.json({ data: null, error: "auth error" });
 	} catch (err) {
-		res.json({ data: null, error: "error while fetching data!!" });
+		res.json({ data: null, error: "auth error" });
 	}
 };
 
