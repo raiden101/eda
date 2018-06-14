@@ -4,7 +4,7 @@ import Default from "./components/Default/Default";
 import Admin from "./components/Admin/Admin";
 import Faculty from "./components/Faculty/Faculty";
 import { BrowserRouter } from "react-router-dom";
-import { Route } from "react-router-dom";
+import { Route,Switch } from "react-router-dom";
 import TopBar from "./components/TopBar/TopBar";
 import axios from "axios";
 import About from "./components/About/About";
@@ -17,7 +17,8 @@ class App extends Component {
 	render() {
 		return <div className="App">
 				<BrowserRouter>
-					<Fragment>
+				<Fragment>
+					<Switch>
 						<Route path="/" component={Default} exact />
 						<Route path="/login" component={Login} exact />
 						<Route path="/admin" component={() => {
@@ -34,6 +35,7 @@ class App extends Component {
 							}} exact />
 						<Route path="/about" component={About} exact />
 						<Route path="/" component={NotFound} />
+					</Switch>
 					</Fragment>
 				</BrowserRouter>
 			</div>;
