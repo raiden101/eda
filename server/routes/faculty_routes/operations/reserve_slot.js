@@ -10,13 +10,12 @@ module.exports = (req, res) => {
 	_collection.updateOne(
 		{ 
 			$and: [ 
-				{ date: new Date(req.body.date) }, 
-				{ remaining_slot: { $gt: 0 } }
+				{ date: new Date(req.body.selected.date) }, 
+				{ $where: "this.selected_members.length < this.total_slot" }
 			] 
 		}, 
 		{ 
-			$push: { selected_members: req.fac_id }, 
-			$inc: { remaining_slot: -1 }
+			$push: { selected_members: req.fac_id }
 		}
 	)
 	.then(data => {
@@ -29,6 +28,6 @@ module.exports = (req, res) => {
 			)
 	})
 	.then(data => res.json({ data: "reservation successful", error: null}))
-	.catch(err => res.json({ error: "error while reserving slots", data: null}))
+	.catch(err => res.json({ error: "error while reserving the slot", data: null}))
 	
 }
