@@ -121,20 +121,14 @@ class UserRegistration extends Component {
 		return (
 			<Fragment>
 				<Snackbar
-					anchorOrigin={{
-						vertical: "bottom",
-						horizontal: "left"
-					}}
+					anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
 					open={this.state.failureSnack}
 					autoHideDuration={3000}
 					onClose={this.handleClose("failureSnack")}
 					message={<span>{this.state.failureMessage}</span>}
 				/>
 				<Snackbar
-					anchorOrigin={{
-						vertical: "bottom",
-						horizontal: "left"
-					}}
+					anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
 					open={!this.state.failureSnack && this.state.successSnack}
 					autoHideDuration={3000}
 					onClose={this.handleClose("successSnack")}
@@ -144,7 +138,7 @@ class UserRegistration extends Component {
 				/>
 				<div className="register-users">
 					<div className="header">Register Users</div>
-					<div className="input-space">
+					<div className="input-space ihalf">
 						<TextField
 							type="text"
 							value={this.state.faculty_name}
@@ -153,7 +147,7 @@ class UserRegistration extends Component {
 							fullWidth
 						/>
 					</div>
-					<div className="input-space">
+					<div className="input-space ihalf">
 						<TextField
 							type="number"
 							label="Id"
@@ -162,15 +156,13 @@ class UserRegistration extends Component {
 							fullWidth
 						/>
 					</div>
-					<div className="input-space">
+					<div className="input-space ihalf">
 						<FormControl fullWidth>
 							<InputLabel>Designation</InputLabel>
 							<Select
 								value={this.state.faculty_designation}
 								onChange={this.changeDropdownState}
-								inputProps={{
-									name: "faculty_designation"
-								}}
+								inputProps={{ name: "faculty_designation" }}
 							>
 								<MenuItem value={0}>
 									<i>Select Designation</i>
@@ -182,15 +174,13 @@ class UserRegistration extends Component {
 							</Select>
 						</FormControl>
 					</div>
-					<div className="input-space">
+					<div className="input-space ihalf">
 						<FormControl fullWidth>
 							<InputLabel>Branch</InputLabel>
 							<Select
 								value={this.state.faculty_branch}
 								onChange={this.changeDropdownState}
-								inputProps={{
-									name: "faculty_branch"
-								}}
+								inputProps={{ name: "faculty_branch" }}
 							>
 								<MenuItem value={0}>
 									<i>Select Branch</i>

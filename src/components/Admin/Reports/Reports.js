@@ -31,6 +31,10 @@ class Reports extends Component {
 			"Signature"
 		];
 	}
+	unmounted = false;
+	componentWillUnmount() {
+		this.unmounted = true;
+	}
 	translateSlotData = obj => {
 		return [
 			obj.fac_id,
@@ -42,7 +46,7 @@ class Reports extends Component {
 		];
 	};
 	changeDropdown = ({ target: { name, value } }) => {
-		this.setState({
+		!this.unmounted && this.setState({
 			[name]: value,
 			loading: true
 		});
@@ -50,7 +54,7 @@ class Reports extends Component {
 		let date = this.state.currentDate;
 		if (name === "session") session = value;
 		if (name === "currentDate") date = value;
-		this.setState({
+		!this.unmounted && this.setState({
 			dates: this.state[session + "_dates"]
 		});
 		let sessionString = session === "morn" ? "morning" : "afternoon";
@@ -66,7 +70,7 @@ class Reports extends Component {
 				data.forEach((e, i) => {
 					users.push(e.fac_info[0]);
 				});
-				this.setState({
+				!this.unmounted && this.setState({
 					users: users,
 					loading: false
 				});
@@ -137,7 +141,7 @@ class Reports extends Component {
 			})
 			.then(data => {
 				data = data.data.data;
-				this.setState({
+				!this.unmounted && this.setState({
 					morn_dates: data.morn_dates,
 					aft_dates: data.aft_dates,
 					dates: data.morn_dates,
@@ -155,7 +159,7 @@ class Reports extends Component {
 						data.forEach((e, i) => {
 							users.push(e.fac_info[0]);
 						});
-						this.setState({
+						!this.unmounted && this.setState({
 							users: users,
 							loading: false
 						});

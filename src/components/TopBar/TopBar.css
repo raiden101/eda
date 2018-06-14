@@ -1,0 +1,29 @@
+.top-bar{
+    width:100%;
+    height:50px;
+    z-index:2;
+    position:fixed;
+    background:#fff;
+    line-height:50px;
+    padding:0 40px;
+    box-shadow:0 0px 8px rgba(0,0,0,0.2);
+    box-sizing:border-box;
+}
+.action{
+    width:auto;
+    height:100%;
+    padding:0 20px;
+    transition: 0.3s;
+    display:inline-block;
+    cursor:pointer;
+}
+.action a{
+    color:inherit;
+    text-decoration: none;
+}
+.action:hover{
+    background:#eee;
+}
+.action-right{
+    float: right;
+}

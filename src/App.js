@@ -5,7 +5,8 @@ import Admin from "./components/Admin/Admin";
 import Faculty from "./components/Faculty/Faculty";
 import { BrowserRouter } from "react-router-dom";
 import { Route } from "react-router-dom";
-import axios from 'axios';
+import TopBar from "./components/TopBar/TopBar";
+import axios from "axios";
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -18,8 +19,30 @@ class App extends Component {
 					<Fragment>
 						<Route path="/" component={Default} exact />
 						<Route path="/login" component={Login} exact />
-						<Route path="/admin" component={Admin} exact />
-						<Route path="/faculty" component={Faculty} exact />
+						<Route
+							path="/admin"
+							component={() => {
+								return (
+									<Fragment>
+										<TopBar />
+										<Admin />
+									</Fragment>
+								);
+							}}
+							exact
+						/>
+						<Route
+							path="/faculty"
+							component={() => {
+								return (
+									<Fragment>
+										<TopBar />
+										<Faculty />
+									</Fragment>
+								);
+							}}
+							exact
+						/>
 					</Fragment>
 				</BrowserRouter>
 			</div>

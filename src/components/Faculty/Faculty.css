@@ -1,10 +1,10 @@
 .faculty-component {
 	width: 90%;
 	padding: 40px;
-	padding-top:30px;
+	padding-top:80px;
 	box-sizing: border-box;
-	height: 100%;
     margin: 0 auto;
+	padding-bottom:50px;
 }
 .tab-faculty{
     width:100%;

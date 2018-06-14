@@ -14,6 +14,10 @@ class DeleteUsers extends Component {
 		this.tableHeads = ["Username", "User ID", "Email", "Branch"];
 		this.unmounted = false;
 	}
+	unmounted = false;
+	componentWillUnmount() {
+		this.unmounted = true;
+	}
 	removeElements = elements => {
 		let users = [...this.state.users];
 		elements.forEach((element, index) => {
@@ -23,7 +27,7 @@ class DeleteUsers extends Component {
 			});
 			users.splice(elIndex, 1);
 		});
-		this.setState({
+		!this.unmounted && this.setState({
 			users: users
 		});
 		axios.post("/admin/delete_faculties", {
@@ -80,7 +84,7 @@ class DeleteUsers extends Component {
 				data = data.data;
 				if (data.error === null) {
 					!this.unmounted &&
-						this.setState({
+						!this.unmounted && this.setState({
 							...this.state,
 							users: data.data
 						});
