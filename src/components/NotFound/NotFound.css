@@ -1,0 +1,18 @@
+.not-found{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+}
+.not-found-header{
+    font-size:65px;
+    margin:10px 0;
+}
+.not-found a{
+    text-decoration:none;
+    border-bottom:1px dashed blue;
+}
+.not-found a:hover{
+    border-bottom:1px solid blue;
+}
