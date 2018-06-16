@@ -28,7 +28,7 @@ class PendingFaculty extends Component {
 	componentWillUnmount() {
 		this.unmounted = true;
 	}
-	componentWillMount() {
+	componentDidMount() {
 		this.setState({
 			loading: true
 		});

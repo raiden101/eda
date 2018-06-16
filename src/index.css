@@ -12,6 +12,9 @@ html {
 	min-height: 100%;
 	height:auto;
 }
+.App{
+	padding-top:80px;
+}
 .dull-text {
 	color: #888;
 }

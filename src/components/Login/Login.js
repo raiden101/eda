@@ -6,7 +6,7 @@ import axios from "axios";
 import "./Login.css";
 import setAuth from "../../setAuth";
 class Login extends Component {
-    componentWillMount() {
+    componentDidMount() {
 		localStorage.setItem("auth","");
 	}
 	state = {

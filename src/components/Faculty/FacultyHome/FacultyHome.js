@@ -8,12 +8,13 @@ export default class FacultyHome extends Component {
         data:0
     }
     unmounted = false;
-    componentWillMount() {
+    componentDidMount() {
         axios
             .post("faculty/", {
                 token: this.props.token
             })
             .then(data => {
+                this.props.setData(data.data[0])
                 !this.unmounted &&
                     this.setState({
                         data: data.data[0]

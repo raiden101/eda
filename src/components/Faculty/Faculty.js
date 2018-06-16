@@ -31,7 +31,7 @@ class Faculty extends Component {
 	handleChange = (event, value) => {
 		!this.unmounted && this.setState({ activeTab: value });
 	};
-	componentWillMount() {
+	componentDidMount() {
 		axios
 			.post("/faculty", {
 				token: this.token
@@ -45,6 +45,12 @@ class Faculty extends Component {
 	}
 	componentWillUnmount() {
 		this.unmounted = true;
+	}
+	setData = (data) => {
+		console.log(data);
+		!this.unmounted && this.setState({
+			data: data
+		});
 	}
 	render() {
 		let { activeTab } = this.state;
@@ -67,7 +73,7 @@ class Faculty extends Component {
 					</AppBar>
 					{activeTab === 0 && (
 						<div className="tab-faculty">
-							<FacultyHome token={this.token} />
+							<FacultyHome token={this.token} setData={this.setData}/>
 						</div>
 					)}
 					{activeTab === 1 && (
