@@ -78,7 +78,8 @@ class DeleteUsers extends Component {
 	componentDidMount() {
 		axios
 			.post("/admin/get_all_faculties", {
-				token: this.props.token
+				token: this.props.token,
+				fields: ['fac_name', 'fac_id', 'email', 'branch']
 			})
 			.then(data => {
 				data = data.data;
