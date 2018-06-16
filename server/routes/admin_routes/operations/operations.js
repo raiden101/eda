@@ -10,7 +10,8 @@ const admin_home = require('./others/admin_home'),
       get_exam_timings = require('./date_and_time_ops/get_exam_timings'),
       get_exam_dates = require('./date_and_time_ops/get_exam_dates'),
       pending_faculties = require('./faculty_db_ops/pending_faculty'),
-      slot_info = require('./slot_db_ops/slot_info');
+      slot_info = require('./slot_db_ops/slot_info'),
+      send_mails = require('./others/send_mails');
 
 module.exports = {
   admin_home,
@@ -25,5 +26,6 @@ module.exports = {
   get_exam_timings,
   get_exam_dates,
   pending_faculties,
-  slot_info
+  slot_info,
+  send_mails
 }

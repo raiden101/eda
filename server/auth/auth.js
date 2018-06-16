@@ -2,7 +2,7 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const auth_fn = require('./auth_functions');
 const { key } = require('../../credentials/credentials');
-const exp_in_secs = 6000;
+const exp_in_secs = 15000;
 
 // expected data: user_data: 
 // { username: '...', password: '...', admin: 0/1}

@@ -28,6 +28,7 @@ router.post('/slot_info', check_token, operations.slot_info);
 
 router.post('/pending_faculty', check_token, operations.pending_faculties);
 
+router.post('/send_mails', check_token, operations.send_mails);
 
 module.exports = router;
 

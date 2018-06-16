@@ -3,8 +3,7 @@ const { faculty } = require('../../../schemas/collections');
 module.exports = (req, res) => {
 	let resp = {};
 
-  faculty
-    .aggregate([
+  faculty.aggregate([
       { $match: { fac_id: req.fac_id } },
       {
         $lookup: {
