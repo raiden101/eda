@@ -74,7 +74,8 @@ const get_doc_def = (fac_id) => {
 const send_mail = (fac_id, email, name) => {
   return new Promise((resolve, reject) => {
 
-    get_doc_def(fac_id).then(doc_def => {
+    get_doc_def(fac_id)
+    .then(doc_def => {
 
       pdfmake.createPdf(doc_def).getBase64(base_64_data => {
         let mail_ops = {
@@ -97,14 +98,14 @@ const send_mail = (fac_id, email, name) => {
         
         transporter.sendMail(mail_ops, (error, info) => {
           if(error)
-            reject('error')
+            resolve({ msg: email, success: false });
           else 
-            resolve('done');
+            resolve({ msg: 'done', success: true });
         })     
       });
       
     })
-    .catch(err => reject('error'));
+    .catch(err => resolve({ msg: email, success: false }))
     
   });
 
@@ -113,9 +114,19 @@ const send_mail = (fac_id, email, name) => {
 
 // faculties: [{ fac_id, email, name }...]
 module.exports = (req, res) => {
-  Promise.all(req.body.faculties.map(faculty => {
-    send_mail(faculty.fac_id, faculty.email, faculty.name)
-  }))
-  .then(data => res.json({ data: "email sent!!", error: null}))
-  .catch(err => res.json({ data: null, error: "error while sending mail"}))
+  Promise.all(req.body.faculties.map(faculty => (
+    send_mail(faculty.fac_id, 'newtest191@gmail.com', faculty.name)
+  )))
+  .then(data => {
+    let rejected_mails = [];
+    for(let i=0;i<data.length;++i)
+      if(!data[i].success)
+        rejected_mails.push(data[i].msg);
+    
+    res.json({ data: {
+      rejected_mails: rejected_mails, 
+      sent_mail_count: req.body.faculties.length - rejected_mails.length
+    }, error: null});
+  })
+  .catch(err => res.json({ data: null, error: "error while sending mails"}))
 }
