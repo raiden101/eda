@@ -88,13 +88,14 @@
     text-align:center;
 }
 .not-found-header{
+    font-style:italic;
     font-size:65px;
     margin:10px 0;
 }
 .not-found a{
     text-decoration:none;
-    border-bottom:1px dashed blue;
+    border-bottom:2px dashed blue;
 }
 .not-found a:hover{
-    border-bottom:1px solid blue;
+    border-bottom:2px solid blue;
 }
