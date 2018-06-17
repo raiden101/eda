@@ -66,24 +66,24 @@ export default class FacultyHome extends Component {
             </Fragment>
         );
         return <Fragment>
-            <Panel title={<span className="mini-header fake-link black">
-                Some Information
-					</span>} content={<Fragment>
-                    <li className="instructions">
-                        Select a Minimum of {this.state.data.slot_lims[0].minimum} slot per Day.
-						</li>
-                    <li className="instructions">
-                        Select a total of{" "}
-                        {this.state.data.slot_lims[0].morn_max +
-                            this.state.data.slot_lims[0].aft_max}{" "}
-                        slots.
-						</li>
-                    <li className="instructions">
-                        If you don't select the No. of slots required.
-                        You wont be able to submit the form.
-						</li>
-                </Fragment>} />
-            {total.length > 0 && items}
-        </Fragment>;
+				<Panel title={<span className="mini-header fake-link black">
+							Some Information
+						</span>} content={<Fragment>
+							<li className="instructions">
+								Select a Minimum of{" "}
+								{this.state.data.slot_lims[0].minimum}{" "}
+								slot per Day.
+							</li>
+							<li className="instructions">
+								Select a total of {this.state.data.slot_lims[0].morn_max + this.state.data.slot_lims[0].aft_max} slots. With {this.state.data.slot_lims[0].morn_max} from Morning and {this.state.data.slot_lims[0].aft_max} from Afternoon.
+							</li>
+							<li className="instructions">
+								If you don't select the No. of slots
+								required. You wont be able to submit the
+								form.
+							</li>
+						</Fragment>} />
+				{total.length > 0 && items}
+			</Fragment>;
         }
     }
