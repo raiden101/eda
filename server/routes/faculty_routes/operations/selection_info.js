@@ -28,11 +28,14 @@ module.exports = (req, res) => {
 					data.morn_selected_slots + data.aft_selected_slots
 				)
 					return Promise.reject("maximum slot selected");
-				else
-					return Promise.all([
-						morn_exam.aggregate(query),
-						aft_exam.aggregate(query)
-					]);
+				else {
+					let p1 = lim.morn_max > data.morn_selected_slots ? 
+					morn_exam.aggregate(query) : Promise.resolve('morn_max');
+					let p2 = lim.aft_max > data.aft_selected_slots ? 
+					aft_exam.aggregate(query) : Promise.resolve('aft_max');
+				
+					return Promise.all([p1, p2]);
+				}
 			})
 			.then(data => res.json({ data: data, error: null }))
 			.catch(err => res.json({ error: err, data: null }));
