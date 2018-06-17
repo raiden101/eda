@@ -11,13 +11,14 @@ import SlotAddition from "../SlotAddition/SlotAddition";
 import UserRegistration from "../UserRegistration/UserRegistration";
 import Reports from "../Reports/Reports";
 import PendingFaculty from "../PendingFaculty/PendingFaculty";
+import SendMail from '../SendMail/SendMail';
 class AdminComponent extends Component {
 	constructor(props) {
 		super(props);
 		this.token = JSON.parse(localStorage.getItem("auth")).token;
 	}
 	state = {
-		type: 6
+		type: 7
 	};
 	changeDuration = ({ target: { name, value } }) => {
 		this.setState({
@@ -28,29 +29,35 @@ class AdminComponent extends Component {
 
 	render() {
 		let type = this.state.type;
-		return (
-			<Fragment>
+		return <Fragment>
 				<div className="admin-component">
 					<div className="header">Welcome Admin</div>
 					<div className="controls">
 						<FormControl className="data-functions">
 							<InputLabel>Operation</InputLabel>
-							<Select
-								value={this.state.type}
-								onChange={this.changeDuration}
-								inputProps={{
-									name: "type"
-								}}
-							>
+							<Select value={this.state.type} onChange={this.changeDuration} inputProps={{ name: "type" }}>
 								<MenuItem value={0}>
 									Display Slot Selection
 								</MenuItem>
-								<MenuItem value={1}>Delete Users</MenuItem>
-								<MenuItem value={2}>Slot Deletion</MenuItem>
-								<MenuItem value={3}>Slot Addition</MenuItem>
-								<MenuItem value={4}>User Registration</MenuItem>
+								<MenuItem value={1}>
+									Delete Users
+								</MenuItem>
+								<MenuItem value={2}>
+									Slot Deletion
+								</MenuItem>
+								<MenuItem value={3}>
+									Slot Addition
+								</MenuItem>
+								<MenuItem value={4}>
+									User Registration
+								</MenuItem>
 								<MenuItem value={5}>Reports</MenuItem>
-								<MenuItem value={6}>Pending Faculty</MenuItem>
+								<MenuItem value={6}>
+									Pending Faculty
+								</MenuItem>
+								<MenuItem value={7}>
+									Send Mail
+								</MenuItem>
 							</Select>
 						</FormControl>
 					</div>
@@ -62,10 +69,10 @@ class AdminComponent extends Component {
 						{type === 4 && <UserRegistration token={this.token} />}
 						{type === 5 && <Reports token={this.token} />}
 						{type === 6 && <PendingFaculty token={this.token} />}
+						{type === 7 && <SendMail token={this.token} />}
 					</div>
 				</div>
-			</Fragment>
-		);
+			</Fragment>;
 	}
 }
 export default AdminComponent;
