@@ -46,7 +46,7 @@ class PendingFaculty extends Component {
 			});
 	}
 	changeDropdown = ({ target: { name, value } }) => {
-		this.setState({
+		!this.unmounted && this.setState({
 			[name]: value,
 			loading: true
 		});
