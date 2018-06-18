@@ -3,3 +3,17 @@
     display:inline-block;
     padding:0 20px;
 }
+.button-with-icon i{
+    padding-left:10px;
+}
+.mail-text{
+    width:500px;
+    min-height:200px;
+    height:auto;
+    resize:none;
+    border:0;
+    background:#eee;
+    padding:20px;
+    box-sizing: border-box;
+    outline:none;
+}

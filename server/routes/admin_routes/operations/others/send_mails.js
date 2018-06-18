@@ -84,6 +84,7 @@ const send_mail = (fac_id, email, name) => {
         }
         
         transporter.sendMail(mail_ops, (error, info) => {
+          console.log(error);
           if(error)
             resolve({ msg: email, success: false });
           else 
@@ -102,7 +103,7 @@ const send_mail = (fac_id, email, name) => {
 // faculties: [{ fac_id, email, name }...]
 module.exports = (req, res) => {
   Promise.all(req.body.faculties.map(faculty => (
-    send_mail(faculty.fac_id, 'newtest191@gmail.com', faculty.name)
+    send_mail(faculty.fac_id, 'newtest191@gmail.com', faculty.fac_name)
   )))
   .then(data => {
     let rejected_mails = [];
