@@ -1,14 +1,12 @@
-const nodemailer = require('nodemailer');
-
 const pdfmake = require('pdfmake/build/pdfmake');
 const vfs_fonts = require('pdfmake/build/vfs_fonts');
 pdfmake.vfs = vfs_fonts.pdfMake.vfs;
 
-const { email_add, email_pwd } = require('../../../../../credentials/credentials');
+const { email_add } = require('../../../../../credentials/credentials');
 const { morn_exam, aft_exam } = require('../../../../schemas/collections');
 
-const doc_def = require('./doc_def');
-
+const doc_def = require('../utils/doc_def');
+const transporter = require('../utils/transporter');
 
 // function for extractiong human readable date.
 const get_date = (date) => {
@@ -23,17 +21,6 @@ const layout = {
   fillColor: (i, node) => i%2 === 0 ? '#eee': null
 }
 
-// preparing transporer using which mail will be sent.
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  auth: {
-    user: email_add,
-    pass: email_pwd
-  },
-  tls: {
-    rejectUnauthorized: false
-  }
-})
 
 // function for getting definition for the pdf.
 // ("pdfmake" module specific).
