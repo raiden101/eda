@@ -56,9 +56,10 @@ const get_doc_def = (fac_id) => {
     .catch(err => reject("error while fetching data"));
 
   });
+
 }
 
-const send_mail = (fac_id, email, name) => {
+async function send_mail(fac_id, email, name) {
   return new Promise((resolve, reject) => {
 
     get_doc_def(fac_id)
@@ -84,9 +85,9 @@ const send_mail = (fac_id, email, name) => {
         }
         
         transporter.sendMail(mail_ops, (error, info) => {
-          console.log(error);
-          if(error)
+          if(error) {
             resolve({ msg: email, success: false });
+          }
           else 
             resolve({ msg: 'done', success: true });
         })     
@@ -102,19 +103,25 @@ const send_mail = (fac_id, email, name) => {
 
 // faculties: [{ fac_id, email, name }...]
 module.exports = (req, res) => {
-  Promise.all(req.body.faculties.map(faculty => (
-    send_mail(faculty.fac_id, 'newtest191@gmail.com', faculty.fac_name)
-  )))
-  .then(data => {
-    let rejected_mails = [];
-    for(let i=0;i<data.length;++i)
-      if(!data[i].success)
-        rejected_mails.push(data[i].msg);
-    
-    res.json({ data: {
-      rejected_mails: rejected_mails, 
-      sent_mail_count: req.body.faculties.length - rejected_mails.length
-    }, error: null});
-  })
-  .catch(err => res.json({ data: null, error: "error while sending mails"}))
+  let faculties = req.body.faculties,
+      rejected_mails = [];
+
+  (function sendMail(i) {
+
+    if(i < faculties.length) {
+      send_mail(faculties[i].fac_id, 'newtest191@gmail.com', faculties[i].fac_name)
+      .then(resp => {
+        if(!resp.success)
+          rejected_mails.push(resp.msg);
+        sendMail(++i);
+      });
+    }else { 
+      res.json({ data: 
+        { rejected_mails: rejected_mails }, 
+        error: null 
+      });
+    }
+
+  })(0);
+
 }
