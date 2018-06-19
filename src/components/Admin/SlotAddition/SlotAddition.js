@@ -135,24 +135,31 @@ class SlotAddition extends Component {
 	};
 	addSlot = () => {
 		if (!this.state.validated) return false;
-		let slots = [...this.state.slots];
-		slots.push(this.state.tempSlotData);
-		this.setState(prevState => ({
-			...this.state,
-			incrementer: prevState.incrementer + 1,
-			slots: slots,
-			tempSlotData: {
-				slot_id: prevState.incrementer + 1,
-				date: new Date(
-					new Date().getFullYear(),
-					new Date().getMonth(),
-					new Date().getDate()
-				).toISOString(),
-				session: "morning",
-				total_slot: 1
+		let slots = [...this.state.slots], flag = 0;
+		for(let i=0;i<slots.length;++i)
+			if(this.state.tempSlotData.date === slots[i].date) {
+				flag = 1;break;
 			}
-		}));
-		return true;
+		if(flag === 0) {
+			slots.push(this.state.tempSlotData);
+			this.setState(prevState => ({
+				...this.state,
+				incrementer: prevState.incrementer + 1,
+				slots: slots,
+				tempSlotData: {
+					slot_id: prevState.incrementer + 1,
+					date: new Date(
+						new Date().getFullYear(),
+						new Date().getMonth(),
+						new Date().getDate()
+					).toISOString(),
+					session: "morning",
+					total_slot: 1
+				}
+			}));
+			return true;
+		}
+		return false;
 	};
 	saveSlots = () => {
 		let slots = [...this.state.slots];
