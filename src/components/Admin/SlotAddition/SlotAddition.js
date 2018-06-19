@@ -137,7 +137,8 @@ class SlotAddition extends Component {
 		if (!this.state.validated) return false;
 		let slots = [...this.state.slots], flag = 0;
 		for(let i=0;i<slots.length;++i)
-			if(this.state.tempSlotData.date === slots[i].date) {
+			if(this.state.tempSlotData.date === slots[i].date && 
+				this.state.tempSlotData.session === slots[i].session) {
 				flag = 1;break;
 			}
 		if(flag === 0) {
