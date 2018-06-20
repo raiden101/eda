@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const operations = require('./operations/operations');
 const check_token = require('./check_token');
+const fileUpload = require('express-fileupload');
+router.use(fileUpload());
 
 router.post('/', check_token, operations.admin_home);
 
@@ -29,6 +31,8 @@ router.post('/slot_info', check_token, operations.slot_info);
 router.post('/pending_faculty', check_token, operations.pending_faculties);
 
 router.post('/send_mails', check_token, operations.send_mails);
+
+router.post('/upload_faculties', check_token, operations.add_faculties);
 
 module.exports = router;
 
