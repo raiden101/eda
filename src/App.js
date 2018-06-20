@@ -20,7 +20,7 @@ class App extends Component {
 					<Fragment>
 						<Switch>
 							<Route path="/" component={Default} exact />
-							<Route path="/login" component={Login} exact />
+							<Route path="/login" component={Login} />
 							<Route
 								path="/admin"
 								component={() => {
