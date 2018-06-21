@@ -40,7 +40,7 @@ class Admin extends Component {
 	}
 	render() {
 		let renderItem = null;
-		if (this.state.redirect === 2) renderItem = <b>Loading...</b>;
+		if (this.state.redirect === 2) renderItem = <div className = "loading">Loading...</div>;
 		else if (this.state.redirect === 1) renderItem = <Redirect to="/" />;
 		let realComponent = <AdminComponent />;
 		return (
