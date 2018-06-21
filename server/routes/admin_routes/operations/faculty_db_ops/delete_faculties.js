@@ -15,11 +15,11 @@ module.exports = (req, res) => {
 			throw "error while deleting the users or users not found";
 		else {
 			let p1 = morn_exam.updateMany(
-				{ selected_members: {$in: req.body.fac_ids} },
-				{ $pullAll: {selected_members: req.body.fac_ids} });
+				{ selected_members: { $in: req.body.fac_ids } },
+				{ $pullAll: { selected_members: req.body.fac_ids } });
 			let p2 = aft_exam.updateMany(
-				{ selected_members: {$in: req.body.fac_ids} },
-				{ $pullAll: {selected_members: req.body.fac_ids} });
+				{ selected_members: { $in: req.body.fac_ids } },
+				{ $pullAll: { selected_members: req.body.fac_ids } });
 			Promise.all([p1, p2])
 			.then(data => res.json({data: "deletion successful", error: null}))
 			.catch(err => { throw "error while deleting!!"});

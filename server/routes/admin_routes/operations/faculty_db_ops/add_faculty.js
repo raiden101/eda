@@ -8,7 +8,10 @@ module.exports = (req, res) => {
 	faculty.findOne({fac_id: fac_data.fac_id})
 	.then(data => {
 		if(data === null)
-			return new faculty(fac_data).save();
+			return new faculty({
+				...fac_data,
+				password: fac_data.contact_no
+			}).save();
 		return Promise.resolve(-1);
 	})
 	.then(data => {

@@ -1,6 +1,8 @@
 const { faculty } = require('../../../../schemas/collections');
 
-// { token: '.......' }
+// { token: '.......', fields: [], pending: true/false}
+// pending field decides if faculty penging info 
+// is to be put into the resp or not
 module.exports = (req, res) => {
 	let proj = {}, fields = req.body.fields;
 	for(let i=0;i<fields.length;++i)

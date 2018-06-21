@@ -59,13 +59,13 @@ const get_doc_def = (fac_id) => {
 
 }
 
-async function send_mail(fac_id, email, name) {
+function send_mail(fac_id, email, name) {
   return new Promise((resolve, reject) => {
 
     get_doc_def(fac_id)
-    .then(doc_def => {
+    .then(doc_definition => {
 
-      pdfmake.createPdf(doc_def).getBase64(base_64_data => {
+      pdfmake.createPdf(doc_definition).getBase64(base_64_data => {
         let mail_ops = {
           from: email_add,
           to: email,
@@ -101,7 +101,7 @@ async function send_mail(fac_id, email, name) {
 }
 
 
-// faculties: [{ fac_id, email, name }...]
+// {token: '', mail: '', faculties: [{ fac_id, email, name }...]
 module.exports = (req, res) => {
   let faculties = req.body.faculties,
       rejected_mails = [];
@@ -111,6 +111,7 @@ module.exports = (req, res) => {
     if(i < faculties.length) {
       send_mail(faculties[i].fac_id, 'newtest191@gmail.com', faculties[i].fac_name)
       .then(resp => {
+        // resp.msg has the email which wasnt sent.
         if(!resp.success)
           rejected_mails.push(resp.msg);
         sendMail(++i);

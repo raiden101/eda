@@ -24,8 +24,6 @@ module.exports = (req, res) => {
 	p2 = aft_exam.aggregate(query);
 	
 	Promise.all([p1, p2])
-	.then(data => {
-		res.json({data: data, error: null})
-	})
+	.then(data => res.json({data: data, error: null}))
 	.catch(err => res.json({data: null, error: "error while fetching data!!"}));
 }

@@ -1,5 +1,10 @@
 const { morn_exam, aft_exam } = require('../../../../schemas/collections')
-const mapping = require('../../../../utils/designation_map');
+const mapping = {
+	1: "Asst. Prof GD 1",
+	2: "Asst. Prof GD 2",
+	3: "Asst. Prof GD 3",
+	4: "Asso. Prof."
+};
 
 // { token: '...', date: '....', session: '...'}
 module.exports = (req, res) => {
