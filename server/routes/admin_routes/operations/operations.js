@@ -12,7 +12,8 @@ const admin_home = require('./others/admin_home'),
       pending_faculties = require('./faculty_db_ops/pending_faculty'),
       slot_info = require('./slot_db_ops/slot_info'),
       send_mails = require('./others/send_mails'),
-      add_faculties = require('./faculty_db_ops/add_faculties');
+      add_faculties = require('./faculty_db_ops/add_faculties'),
+      add_slots_via_excel = require('./slot_db_ops/add_slots_ex');
 
 module.exports = {
   admin_home,
@@ -29,5 +30,6 @@ module.exports = {
   pending_faculties,
   slot_info,
   send_mails,
-  add_faculties
+  add_faculties,
+  add_slots_via_excel
 }
