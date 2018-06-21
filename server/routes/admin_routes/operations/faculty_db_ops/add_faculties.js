@@ -1,13 +1,14 @@
-const xlsx = require('xlsx');
+const xlsx = require('node-xlsx').default;
 const { faculty } = require('../../../../schemas/collections');
 
 module.exports = (req, res) => {
   if(!req.files)
     return res.json({ data: null, error: "error while receving the file."});
   
-  let file = req.files.faculties_excel;
+  let file = req.files.file_input;
   let data_from_buffer = xlsx.parse(file.data);
   let fac_data = data_from_buffer[0].data;
+  console.log(fac_data);
 
   Promise.all(fac_data.map(fac => {
     return new faculty({

@@ -1,4 +1,4 @@
-const xlsx = require('xlsx');
+const xlsx = require('node-xlsx').default;
 const { morn_exam, aft_exam } = require('../../../../schemas/collections');
 
 

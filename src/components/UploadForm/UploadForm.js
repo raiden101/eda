@@ -17,7 +17,7 @@ class UploadForm extends Component {
         if (!!this.state.filename) {
             let formdata = new FormData();
             formdata.append("token", this.props.token);
-            formdata.append('files', this.state.file);
+            formdata.append(this.props.filename, this.state.file);
             let config = {
                 headers: {
                     "content-type": "multipart/form-data"
