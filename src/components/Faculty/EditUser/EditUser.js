@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Snackbar from "@material-ui/core/Snackbar";
+import PasswordField from "material-ui-password-field";
 import "./EditUser.css";
 import axios from "axios";
 class EditUser extends Component {
@@ -82,8 +83,7 @@ class EditUser extends Component {
 						/>
 					</div>
 					<div className="input-space">
-						<TextField
-							type="password"
+						<PasswordField
 							label="new password"
 							value={this.state.faculty_password}
 							onChange={this.changeState("faculty_password")}
