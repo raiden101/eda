@@ -6,8 +6,8 @@ const faculty_schema = new Schema({
 	fac_des: Number,
 	branch: String,
 	email: String,
-	contact_no: { type: String, default: 1111 },
-	password: { type: String, default: 1111 },
+	contact_no: String,
+	password: String ,
 	morn_selected_slots: { type: Number, default: 0 },
 	aft_selected_slots: { type: Number, default: 0 }
 });

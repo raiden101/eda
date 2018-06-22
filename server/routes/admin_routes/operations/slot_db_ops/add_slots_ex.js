@@ -15,16 +15,17 @@ module.exports = (req, res) => {
     return res.json({ data: null, error: "invalid file type!! .xlsx file expected!!" })
   let data_from_buffer = xlsx.parse(file.data);
   let slots_data = data_from_buffer[0].data;
+  
   // allowed date formats for excel
   // (YYYY/MM/DD)
-
-
+  console.log(slots_data);
   Promise.all(slots_data.map(slot => {
+    if(slot.length == 0) return;
     let _collection = slot[0] === 'morning' ? 
     morn_exam : aft_exam;  
     
     return new _collection({
-      date: new Date((date - (25567 + 1))*86400*1000),
+      date: new Date((slot[1] - (25567+2))*86400*1000),
       total_slot: slot[2]
     }).save();
   }))

@@ -7,7 +7,7 @@ module.exports = (req, res) => {
   
   let file = req.files.file_input;
   let namearr = file.name.split(".");
-  if(namearr[namearr.length-1] !== 'xlsx')
+  if(namearr[namearr.length-1] !== 'xlsx')  // checking extension type.
     return res.json({ data: null, error: "invalid file type!! .xlsx file expected!!" })
   
   let data_from_buffer = xlsx.parse(file.data);

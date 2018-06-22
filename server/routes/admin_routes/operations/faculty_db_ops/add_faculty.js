@@ -5,7 +5,7 @@ const { faculty } = require('../../../../schemas/collections')
 module.exports = (req, res) => {
 	let fac_data = req.body.faculty_data;
 	// checking if the fac_id already exists in db.
-	faculty.findOne({fac_id: fac_data.fac_id})
+	faculty.findOne({ fac_id: fac_data.fac_id })
 	.then(data => {
 		if(data === null)
 			return new faculty({

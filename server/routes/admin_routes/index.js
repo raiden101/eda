@@ -20,10 +20,6 @@ router.post('/delete_slots', check_token, operations.delete_slots);
 
 router.post('/add_slots', check_token, operations.add_slots);
 
-router.post('/change_timings', check_token, operations.change_timings);
-
-router.post('/get_exam_timings', check_token, operations.get_exam_timings)
-
 router.post('/get_exam_dates', check_token, operations.get_exam_dates);
 
 router.post('/slot_info', check_token, operations.slot_info);
