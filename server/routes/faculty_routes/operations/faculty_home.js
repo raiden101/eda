@@ -33,6 +33,9 @@ module.exports = (req, res) => {
         $project: {
           "fac_des": 1,
           "fac_name": 1,
+          "email": 1,
+          "contact_no": 1,
+          "branch": 1,
           "slot_lims.morn_max": 1,
           "slot_lims.aft_max": 1,
           "slot_lims.minimum": 1,
