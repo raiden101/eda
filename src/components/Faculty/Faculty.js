@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import FacultyHome from './FacultyHome/FacultyHome';
 import FacultySelection from './FacultySelection/FacultySelection';
+import EditUser from './EditUser/EditUser';
 class Faculty extends Component {
 	state = {
 		activeTab: 0,
@@ -54,14 +55,8 @@ class Faculty extends Component {
 	}
 	render() {
 		let { activeTab } = this.state;
-		let component = this.state.data ? (
-			<Fragment>
-				<div
-					className="header"
-					style={{
-						textTransform: "capitalize"
-					}}
-				>
+		let component = this.state.data ? <Fragment>
+				<div className="header" style={{ textTransform: "capitalize" }}>
 					Welcome {this.state.data.fac_name.toLowerCase()}
 				</div>
 				<div className="paper-field">
@@ -69,23 +64,20 @@ class Faculty extends Component {
 						<Tabs value={activeTab} onChange={this.handleChange}>
 							<Tab label="Home" />
 							<Tab label="Slot Selection" />
+							<Tab label="Change info" />
 						</Tabs>
 					</AppBar>
-					{activeTab === 0 && (
-						<div className="tab-faculty">
-							<FacultyHome token={this.token} setData={this.setData}/>
-						</div>
-					)}
-					{activeTab === 1 && (
-						<div className="tab-faculty">
-							<FacultySelection token={this.token} data={this.state.data}/>
-						</div>
-					)}
+					{activeTab === 0 && <div className="tab-faculty">
+							<FacultyHome token={this.token} setData={this.setData} />
+						</div>}
+					{activeTab === 1 && <div className="tab-faculty">
+							<FacultySelection token={this.token} data={this.state.data} />
+						</div>}
+					{activeTab === 2 && <div className="tab-faculty">
+							<EditUser token={this.token} data={this.state.data} />
+						</div>}
 				</div>
-			</Fragment>
-		) : (
-			<center>Loading Faculty Data...</center>
-		);
+			</Fragment> : <center>Loading Faculty Data...</center>;
 		return (
 			<div className="faculty-component">
 				{this.state.redirect && <Redirect to="/" />}
