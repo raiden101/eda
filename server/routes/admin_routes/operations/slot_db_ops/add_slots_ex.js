@@ -2,7 +2,8 @@ const xlsx = require('node-xlsx').default;
 const { morn_exam, aft_exam } = require('../../../../schemas/collections');
 
 
-// {token:'', session: ''}44
+// {token:''}
+// excel file format: session(morning/afternoon) // date // total_slot
 
 module.exports = (req, res) => {
   if(!req.files)
@@ -14,15 +15,25 @@ module.exports = (req, res) => {
     return res.json({ data: null, error: "invalid file type!! .xlsx file expected!!" })
   let data_from_buffer = xlsx.parse(file.data);
   let slots_data = data_from_buffer[0].data;
-  let _collection = req.body.session === 'morning' ? morn_exam : aft_exam;
-
   // allowed date formats for excel
-  // (YYYY-MM-DD) or MM/DD/YYYY
+  // (YYYY/MM/DD)
+
+  const get_hours_and_mins = (date) => {
+    return {
+      'year': date.getFullYear(),
+      'date': date.getDate(),
+      'month': date.getMonth()
+    }
+  }
+  console.log(slots_data);
   Promise.all(slots_data.map(slot => {
-    return new _collection({
-      date: new Date(slot[0]),
-      total_slot: slot[1]
-    }).save();
+    let _collection = slot[0] === 'morning' ? 
+    morn_exam : aft_exam;  
+    console.log(get_hours_and_mins(new Date(slot[1])))
+    // return new _collection({
+    //   date: slot[1],
+    //   total_slot: slot[2]
+    // }).save();
   }))
   .then(data => res.json({ data: "data succesfully uploaded to db", error: null }))
   .catch(err => res.json({ error: "error while uploading to db", data: null }));
