@@ -3,11 +3,11 @@ import "./Faculty.css";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import axios from 'axios';
-import { Redirect } from 'react-router-dom';
-import FacultyHome from './FacultyHome/FacultyHome';
-import FacultySelection from './FacultySelection/FacultySelection';
-import EditUser from './EditUser/EditUser';
+import axios from "axios";
+import { Redirect } from "react-router-dom";
+import FacultyHome from "./FacultyHome/FacultyHome";
+import FacultySelection from "./FacultySelection/FacultySelection";
+import EditUser from "./EditUser/EditUser";
 class Faculty extends Component {
 	state = {
 		activeTab: 0,
@@ -17,8 +17,8 @@ class Faculty extends Component {
 	unmounted = false;
 	constructor(props) {
 		super(props);
-		let local = localStorage.getItem("auth")
-		this.token = local? JSON.parse(local).token:0;
+		let local = localStorage.getItem("auth");
+		this.token = local ? JSON.parse(local).token : 0;
 		axios.interceptors.response.use(response => {
 			response.data.error === "auth error" &&
 				!this.unmounted &&
@@ -47,14 +47,16 @@ class Faculty extends Component {
 	componentWillUnmount() {
 		this.unmounted = true;
 	}
-	setData = (data) => {
-		!this.unmounted && this.setState({
-			data: data
-		});
-	}
+	setData = data => {
+		!this.unmounted &&
+			this.setState({
+				data: data
+			});
+	};
 	render() {
 		let { activeTab } = this.state;
-		let component = this.state.data ? <Fragment>
+		let component = this.state.data ? (
+			<Fragment>
 				<div className="header" style={{ textTransform: "capitalize" }}>
 					Welcome {this.state.data.fac_name.toLowerCase()}
 				</div>
@@ -66,17 +68,35 @@ class Faculty extends Component {
 							<Tab label="Change info" />
 						</Tabs>
 					</AppBar>
-					{activeTab === 0 && <div className="tab-faculty">
-							<FacultyHome token={this.token} setData={this.setData} />
-						</div>}
-					{activeTab === 1 && <div className="tab-faculty">
-							<FacultySelection token={this.token} data={this.state.data} />
-						</div>}
-					{activeTab === 2 && <div className="tab-faculty">
-							<EditUser token={this.token} data={this.state.data} />
-						</div>}
+					{activeTab === 0 && (
+						<div className="tab-faculty">
+							<FacultyHome
+								token={this.token}
+								setData={this.setData}
+							/>
+						</div>
+					)}
+					{activeTab === 1 && (
+						<div className="tab-faculty">
+							<FacultySelection
+								token={this.token}
+								data={this.state.data}
+							/>
+						</div>
+					)}
+					{activeTab === 2 && (
+						<div className="tab-faculty">
+							<EditUser
+								token={this.token}
+								data={this.state.data}
+							/>
+						</div>
+					)}
 				</div>
-			</Fragment> : <center>Loading Faculty Data...</center>;
+			</Fragment>
+		) : (
+			<center>Loading Faculty Data...</center>
+		);
 		return (
 			<div className="faculty-component">
 				{this.state.redirect && <Redirect to="/" />}

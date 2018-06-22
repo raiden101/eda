@@ -1,15 +1,19 @@
 import React, { Component, Fragment } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
 import "./EditUser.css";
+import axios from "axios";
 class EditUser extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			faculty_email: props.mail,
-			faculty_contact: props.contact,
+			faculty_email: props.data.email,
+			faculty_contact: props.data.contact_no,
 			faculty_password: "",
-			saving: false
+			saving: false,
+			snack: false,
+			msg: ""
 		};
 	}
 	changeState = type => ({ target: { value } }) => {
@@ -17,9 +21,43 @@ class EditUser extends Component {
 			[type]: value
 		});
 	};
+	handleClose = name => () => {
+		this.setState({
+			[name]: false
+		});
+	};
+	save = () => {
+		this.setState({
+			saving: true
+		});
+		axios
+			.post("faculty/update_info", {
+				token: this.props.token,
+				fac_data: {
+					fac_name: this.props.data.fac_name,
+					email: this.state.faculty_email,
+					contact_no: this.state.faculty_contact,
+					password:this.state.faculty_password
+				}
+			})
+			.then(data => {
+				this.setState({
+					saving: false,
+					snack: true,
+					msg: data.data.error || data.data.data
+				});
+			});
+	};
 	render() {
 		return (
 			<Fragment>
+				<Snackbar
+					anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+					open={this.state.snack}
+					autoHideDuration={3000}
+					onClose={this.handleClose("snack")}
+					message={<span>{this.state.msg || "Error!"}</span>}
+				/>
 				<div className="edit-user">
 					<li>
 						If you dont want to change the info just leave the field
