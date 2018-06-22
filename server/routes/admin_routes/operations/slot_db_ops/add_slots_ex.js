@@ -9,6 +9,9 @@ module.exports = (req, res) => {
     return res.json({ data: null, error: "error while receving the file."});
   
   let file = req.files.slots_excel;
+  let namearr = file.name.split(".");
+  if (namearr[namearr.length - 1] !== 'xlsx')
+    return res.json({ data: null, error: "invalid file type!! .xlsx file expected!!" })
   let data_from_buffer = xlsx.parse(file.data);
   let slots_data = data_from_buffer[0].data;
   let _collection = req.body.session === 'morning' ? morn_exam : aft_exam;
