@@ -26,7 +26,7 @@ class SlotAddition extends Component {
 			slot_id: 1,
 			date: new Date(
 				new Date().getFullYear(),
-				new Date().getMonth(),
+				new Date().getMonth()+1,
 				new Date().getDate()
 			).toISOString(),
 			session: "morning",
@@ -42,7 +42,7 @@ class SlotAddition extends Component {
 	translateSlotData = obj => {
 		let date = new Date(obj.date);
 		let dateString =
-			date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+			date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
 		return [dateString, obj.session, obj.total_slot];
 	};
 
@@ -104,7 +104,7 @@ class SlotAddition extends Component {
 											date &&
 											date.getDate() +
 												"/" +
-												date.getMonth() +
+											(date.getMonth() + 1) +
 												"/" +
 												date.getFullYear();
 										return (
@@ -156,7 +156,7 @@ class SlotAddition extends Component {
 					slot_id: prevState.incrementer + 1,
 					date: new Date(
 						new Date().getFullYear(),
-						new Date().getMonth(),
+						new Date().getMonth()+1,
 						new Date().getDate()
 					).toISOString(),
 					session: "morning",
@@ -193,7 +193,7 @@ class SlotAddition extends Component {
 	dashSeperatedDateString = date => {
 		let dateObj = new Date(date);
 		let year = dateObj.getFullYear();
-		let month = dateObj.getMonth();
+		let month = dateObj.getMonth()+1;
 		month.toString().length === 1 && (month = "0" + month);
 		let dated = dateObj.getDate();
 		dated.toString().length === 1 && (dated = "0" + dated);

@@ -68,7 +68,7 @@ class SlotDeletion extends Component {
 	translateSlotData(obj) {
 		let date = new Date(obj.date);
 		let dateString =
-			date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+			date.getDate() + "/" + (date.getMonth() + 1)+ "/" + date.getFullYear();
 		return [
 			dateString,
 			obj.total_slot,
@@ -165,7 +165,7 @@ class SlotDeletion extends Component {
 											date &&
 											date.getDate() +
 												"/" +
-												date.getMonth() +
+											(date.getMonth() + 1)+
 												"/" +
 												date.getFullYear();
 										return (

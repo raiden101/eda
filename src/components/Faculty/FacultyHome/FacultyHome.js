@@ -27,7 +27,7 @@ export default class FacultyHome extends Component {
     translateSlotData = (obj) => {
         let date = new Date(obj.date);
         return [
-            date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear(),
+            date.getDate() + "/" + (date.getMonth() + 1)+ "/" + date.getFullYear(),
             obj.session
         ];
     }
