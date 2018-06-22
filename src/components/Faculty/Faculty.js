@@ -47,7 +47,6 @@ class Faculty extends Component {
 		this.unmounted = true;
 	}
 	setData = (data) => {
-		console.log(data);
 		!this.unmounted && this.setState({
 			data: data
 		});
