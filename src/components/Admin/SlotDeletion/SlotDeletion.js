@@ -71,7 +71,7 @@ class SlotDeletion extends Component {
 		let dateString =
 			date.getDate() +
 			"/" +
-			date.getMonth() +
+			(date.getMonth() +1)+
 			"/" +
 			date.getFullYear();
 		return [

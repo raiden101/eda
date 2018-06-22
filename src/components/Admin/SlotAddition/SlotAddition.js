@@ -20,9 +20,11 @@ class SlotAddition extends Component {
 		this.props = props;
 		this.tableHeads = ["Date", "Session", "Total slots"];
 		let date = new Date(
+			Date.UTC(
 			new Date().getFullYear(),
-			new Date().getMonth() + 1,
-			new Date().getDate()
+			new Date().getMonth(),
+				new Date().getDate(),0,0,0
+			)
 		);
 		this.UTCEnabled = false;
 		if (this.UTCEnabled) {
@@ -162,9 +164,10 @@ class SlotAddition extends Component {
 			}
 		if (flag === 0) {
 			let date = new Date(
+				Date.UTC(
 				new Date().getFullYear(),
-				new Date().getMonth() + 1,
-				new Date().getDate()
+				new Date().getMonth(),
+				new Date().getDate(),0,0,0)
 			);
 			if (this.UTCEnabled) {
 				date.setUTCHours(0);
@@ -223,15 +226,10 @@ class SlotAddition extends Component {
 	changeTempDate = ({ target: { value: date } }) => {
 		date = date.split("-");
 		if (!(date[0].length && date[1].length && date[2].length)) return;
-		let dateObj = new Date(date[0] * 1, date[1] * 1 - 1, date[2]);
 
-		if (this.UTCEnabled) {
-			dateObj.setUTCHours(0);
-			dateObj.setUTCMinutes(0);
-			dateObj.setUTCSeconds(0);
-			dateObj.setUTCMilliseconds(0);
-		}
+		let dateObj = new Date(Date.UTC(date[0] * 1, date[1] * 1-1, date[2],0,0,0));
 		dateObj = dateObj.toISOString();
+		console.log("Changed to :", date, dateObj);
 		this.setState({
 			tempSlotData: {
 				...this.state.tempSlotData,
