@@ -26,7 +26,7 @@ class SlotAddition extends Component {
 			slot_id: 1,
 			date: new Date(
 				new Date().getFullYear(),
-				new Date().getMonth()+1,
+				new Date().getMonth(),
 				new Date().getDate()
 			).toISOString(),
 			session: "morning",
@@ -40,23 +40,29 @@ class SlotAddition extends Component {
 		this.tableHeads = ["Date", "Session", "Total slots"];
 	}
 	translateSlotData = obj => {
+		console.log(this.dashSeperatedDateString(obj.date))
 		let date = new Date(obj.date);
 		let dateString =
-			date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+			date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear();
 		return [dateString, obj.session, obj.total_slot];
 	};
 
 	removeElements = elements => {
 		let slots = [...this.state.slots];
+		console.log("slots", ...slots);
+		console.log("elements",...elements);
 		elements.forEach(element => {
 			let elIndex = -1;
 			slots.forEach((slot, i) => {
-				if (slot.slot_id === element.slot_id) {
+				console.log(slot.slot_id , element.slot_id);
+				if (slot.slot_id === element) {
 					elIndex = i;
+					console.log("index", i);
 					return;
 				}
 			});
 			slots.splice(elIndex, 1);
+			console.log(elIndex);
 		});
 		this.setState({
 			slots: slots
@@ -202,7 +208,9 @@ class SlotAddition extends Component {
 	changeTempDate = ({ target: { value: date } }) => {
 		date = date.split("-");
 		if (!(date[0].length && date[1].length && date[2].length)) return;
-		let dateObj = new Date(date[0] * 1, date[1] * 1, date[2]).toISOString();
+		let dateObj = new Date(date[0] * 1, date[1] * 1-1 , date[2]).toISOString();
+
+		console.log(date);
 		this.setState({
 			tempSlotData: {
 				...this.state.tempSlotData,
