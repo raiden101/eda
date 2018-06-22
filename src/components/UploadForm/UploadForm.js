@@ -40,7 +40,7 @@ class UploadForm extends Component {
 			};
 			axios.post(this.props.actionRoute, formdata, config).then(data => {
 				let msg = "";
-				if (data.data.errors) msg = data.data.errors;
+				if (data.data.error) msg = data.data.error;
 				else msg = data.data.data;
 				this.setState({
 					snack: true,
@@ -80,7 +80,7 @@ class UploadForm extends Component {
 							<span className="ocher">
 								<h4 className="fake-header">
 									{!!!this.state.filename
-										? "Upload User Data"
+										? this.props.placeholder
 										: this.state.filename}
 								</h4>
 							</span>

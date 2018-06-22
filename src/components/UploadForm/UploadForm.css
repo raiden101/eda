@@ -7,9 +7,13 @@
     text-align: center;
     transition:0.3s;
 }
-.upload-wrapper.disabled{
+.upload-wrapper.disabled,.upload-wrapper.disabled h4{
     border-color:#333;
-    background:#ddd;
+    background:#333;
+    color:#fff;
+}
+.upload-wrapper.disabled .submit-file{
+    visibility: hidden;
 }
 .submit-file{
     padding:5px;

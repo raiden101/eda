@@ -12,6 +12,7 @@ import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import Snackbar from "@material-ui/core/Snackbar";
+import UploadForm from "../../UploadForm/UploadForm";
 import axios from "axios";
 class SlotAddition extends Component {
 	state = {
@@ -135,13 +136,17 @@ class SlotAddition extends Component {
 	};
 	addSlot = () => {
 		if (!this.state.validated) return false;
-		let slots = [...this.state.slots], flag = 0;
-		for(let i=0;i<slots.length;++i)
-			if(this.state.tempSlotData.date === slots[i].date && 
-				this.state.tempSlotData.session === slots[i].session) {
-				flag = 1;break;
+		let slots = [...this.state.slots],
+			flag = 0;
+		for (let i = 0; i < slots.length; ++i)
+			if (
+				this.state.tempSlotData.date === slots[i].date &&
+				this.state.tempSlotData.session === slots[i].session
+			) {
+				flag = 1;
+				break;
 			}
-		if(flag === 0) {
+		if (flag === 0) {
 			slots.push(this.state.tempSlotData);
 			this.setState(prevState => ({
 				...this.state,
@@ -366,6 +371,12 @@ class SlotAddition extends Component {
 						)}
 					</Button>
 				</div>
+				<UploadForm
+					actionRoute="admin/upload_slots"
+					filename="slots_excel"
+					token={this.props.token}
+					placeholder="Upload Slot data"
+				/>
 			</Fragment>
 		);
 	}
