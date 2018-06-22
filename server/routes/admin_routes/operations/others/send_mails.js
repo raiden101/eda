@@ -59,7 +59,7 @@ const get_doc_def = (fac_id) => {
 
 }
 
-function send_mail(fac_id, email, name) {
+function send_mail(fac_id, email, name, email_body) {
   return new Promise((resolve, reject) => {
 
     get_doc_def(fac_id)
@@ -69,10 +69,7 @@ function send_mail(fac_id, email, name) {
         let mail_ops = {
           from: email_add,
           to: email,
-          html: `<h3>Dear prof. ${name}</h3>
-          <p>We have processed your request for the exam duty and 
-          following are your selections.For further query or for 
-          any kind of changes, contact ...</p>`,
+          html: email_body,
           subject: 'Exam duty table',  
           attachments: [
             { 
@@ -109,7 +106,12 @@ module.exports = (req, res) => {
   (function sendMail(i) {
 
     if(i < faculties.length) {
-      send_mail(faculties[i].fac_id, 'newtest191@gmail.com', faculties[i].fac_name)
+      send_mail(
+        faculties[i].fac_id, 
+        'newtest191@gmail.com', 
+        faculties[i].fac_name,
+        req.body.mail.replace('{username}', faculties[i].fac_name)
+      )
       .then(resp => {
         // resp.msg has the email which wasnt sent.
         if(!resp.success)

@@ -32,7 +32,6 @@ class UploadForm extends Component {
         }
     }
     render() {
-        console.log(!!this.state.filename)
 		return (
 			<div className="upload-wrapper">
                 <form onSubmit = {this.submit}>

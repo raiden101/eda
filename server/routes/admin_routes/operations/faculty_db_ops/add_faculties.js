@@ -6,9 +6,11 @@ module.exports = (req, res) => {
     return res.json({ data: null, error: "error while receving the file."});
   
   let file = req.files.file_input;
+  if(file.name.split(".")[1] !== 'xlsx')
+    return res.json({ data: null, error: "invalid file type!! .xlsx file expected!!" })
+  
   let data_from_buffer = xlsx.parse(file.data);
   let fac_data = data_from_buffer[0].data;
-  console.log(fac_data);
 
   Promise.all(fac_data.map(fac => {
     return new faculty({
