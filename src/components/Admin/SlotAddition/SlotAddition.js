@@ -15,46 +15,55 @@ import Snackbar from "@material-ui/core/Snackbar";
 import UploadForm from "../../UploadForm/UploadForm";
 import axios from "axios";
 class SlotAddition extends Component {
-	state = {
-		incrementer: 1,
-		saving: false,
-		slots: [],
-		snack: false,
-		successRate: 0,
-		rejected: false,
-		tempSlotData: {
-			slot_id: 1,
-			date: new Date(
-				new Date().getFullYear(),
-				new Date().getMonth(),
-				new Date().getDate()
-			).toISOString(),
-			session: "morning",
-			total_slot: 1
-		},
-		validated: true
-	};
 	constructor(props) {
 		super(props);
 		this.props = props;
 		this.tableHeads = ["Date", "Session", "Total slots"];
+		let date = new Date(
+			new Date().getFullYear(),
+			new Date().getMonth() + 1,
+			new Date().getDate()
+		);
+		this.UTCEnabled = false;
+		if (this.UTCEnabled) {
+			date.setUTCHours(0);
+			date.setUTCMinutes(0);
+			date.setUTCSeconds(0);
+			date.setUTCMilliseconds(0);
+		}
+		this.state = {
+			incrementer: 1,
+			saving: false,
+			slots: [],
+			snack: false,
+			successRate: 0,
+			rejected: false,
+			tempSlotData: {
+				slot_id: 1,
+				date: date.toISOString(),
+				session: "morning",
+				total_slot: 1
+			},
+			validated: true
+		};
 	}
 	translateSlotData = obj => {
-		console.log(this.dashSeperatedDateString(obj.date))
+		console.log(this.dashSeperatedDateString(obj.date));
 		let date = new Date(obj.date);
 		let dateString =
-			date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear();
+			date.getDate() +
+			"/" +
+			(date.getMonth() + 1) +
+			"/" +
+			date.getFullYear();
 		return [dateString, obj.session, obj.total_slot];
 	};
 
 	removeElements = elements => {
 		let slots = [...this.state.slots];
-		console.log("slots", ...slots);
-		console.log("elements",...elements);
 		elements.forEach(element => {
 			let elIndex = -1;
 			slots.forEach((slot, i) => {
-				console.log(slot.slot_id , element.slot_id);
 				if (slot.slot_id === element) {
 					elIndex = i;
 					console.log("index", i);
@@ -62,7 +71,6 @@ class SlotAddition extends Component {
 				}
 			});
 			slots.splice(elIndex, 1);
-			console.log(elIndex);
 		});
 		this.setState({
 			slots: slots
@@ -110,7 +118,7 @@ class SlotAddition extends Component {
 											date &&
 											date.getDate() +
 												"/" +
-											(date.getMonth() + 1) +
+												(date.getMonth() + 1) +
 												"/" +
 												date.getFullYear();
 										return (
@@ -153,6 +161,17 @@ class SlotAddition extends Component {
 				break;
 			}
 		if (flag === 0) {
+			let date = new Date(
+				new Date().getFullYear(),
+				new Date().getMonth() + 1,
+				new Date().getDate()
+			);
+			if (this.UTCEnabled) {
+				date.setUTCHours(0);
+				date.setUTCMinutes(0);
+				date.setUTCSeconds(0);
+				date.setUTCMilliseconds(0);
+			}
 			slots.push(this.state.tempSlotData);
 			this.setState(prevState => ({
 				...this.state,
@@ -160,11 +179,7 @@ class SlotAddition extends Component {
 				slots: slots,
 				tempSlotData: {
 					slot_id: prevState.incrementer + 1,
-					date: new Date(
-						new Date().getFullYear(),
-						new Date().getMonth()+1,
-						new Date().getDate()
-					).toISOString(),
+					date: date.toISOString(),
 					session: "morning",
 					total_slot: 1
 				}
@@ -199,7 +214,7 @@ class SlotAddition extends Component {
 	dashSeperatedDateString = date => {
 		let dateObj = new Date(date);
 		let year = dateObj.getFullYear();
-		let month = dateObj.getMonth()+1;
+		let month = dateObj.getMonth() + 1;
 		month.toString().length === 1 && (month = "0" + month);
 		let dated = dateObj.getDate();
 		dated.toString().length === 1 && (dated = "0" + dated);
@@ -208,9 +223,15 @@ class SlotAddition extends Component {
 	changeTempDate = ({ target: { value: date } }) => {
 		date = date.split("-");
 		if (!(date[0].length && date[1].length && date[2].length)) return;
-		let dateObj = new Date(date[0] * 1, date[1] * 1-1 , date[2]).toISOString();
+		let dateObj = new Date(date[0] * 1, date[1] * 1 - 1, date[2]);
 
-		console.log(date);
+		if (this.UTCEnabled) {
+			dateObj.setUTCHours(0);
+			dateObj.setUTCMinutes(0);
+			dateObj.setUTCSeconds(0);
+			dateObj.setUTCMilliseconds(0);
+		}
+		dateObj = dateObj.toISOString();
 		this.setState({
 			tempSlotData: {
 				...this.state.tempSlotData,
