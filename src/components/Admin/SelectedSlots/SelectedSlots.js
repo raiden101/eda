@@ -13,7 +13,8 @@ class SelectedSlots extends Component {
 		table: {
 			morning: [],
 			afternoon: []
-		}
+		},
+		loading:false
 	};
 
 	constructor(props) {
@@ -37,7 +38,11 @@ class SelectedSlots extends Component {
 	translateSlotData(obj) {
 		let date = new Date(obj.date);
 		let dateString =
-			date.getDate() + "/" +( date.getMonth() +1)+ "/" + date.getFullYear();
+			date.getDate() +
+			"/" +
+			(date.getMonth() + 1) +
+			"/" +
+			date.getFullYear();
 		return [
 			dateString,
 			obj.total_slot,
@@ -63,27 +68,23 @@ class SelectedSlots extends Component {
 		];
 	}
 	componentDidMount() {
+		this.setState({
+			loading: true
+		});
 		axios
 			.post("admin/", {
 				token: this.props.token
 			})
 			.then(data => {
 				data = data.data;
-				if (data.error !== null) {
-					!this.unmounted &&
-						this.setState({
-							...this.state
-						});
-				} else {
-					!this.unmounted &&
-						this.setState({
-							...this.state,
-							table: {
-								morning: data.data[0],
-								afternoon: data.data[1]
-							}
-						});
-				}
+				!this.unmounted &&
+					this.setState({
+						loading: false,
+						table: {
+							morning: data.data[0],
+							afternoon: data.data[1]
+						}
+					});
 			});
 	}
 	componentWillUnmount() {
@@ -92,38 +93,52 @@ class SelectedSlots extends Component {
 	render() {
 		return (
 			<Fragment>
-				<div className="controls">
-					<FormControl className="select-duration">
-						<InputLabel>Duration</InputLabel>
-						<Select
-							value={this.state.duration}
-							onChange={this.changeDuration}
-							inputProps={{
-								name: "duration"
-							}}
-						>
-							<MenuItem value={0}>Morning</MenuItem>
-							<MenuItem value={1}>Afternoon</MenuItem>
-						</Select>
-					</FormControl>
-				</div>
+				{!this.state.loading &&
+					!!(
+						this.state.table.morning.length ||
+						this.state.table.afternoon.length
+					) && (
+						<div className="controls">
+							<FormControl className="select-duration">
+								<InputLabel>Duration</InputLabel>
+								<Select
+									value={this.state.duration}
+									onChange={this.changeDuration}
+									inputProps={{
+										name: "duration"
+									}}
+								>
+									<MenuItem value={0}>Morning</MenuItem>
+									<MenuItem value={1}>Afternoon</MenuItem>
+								</Select>
+							</FormControl>
+						</div>
+					)}
 				{this.state.table.morning.length ||
 				this.state.table.afternoon.length ? (
 					this.state.duration ? (
-						<RenderTable
-							data={this.state.table.afternoon}
-							translate={this.translateSlotData}
-							heads={this.tableHeads}
-						/>
-					) : (
+						!!this.state.table.afternoon.length ? (
+							<RenderTable
+								data={this.state.table.afternoon}
+								translate={this.translateSlotData}
+								heads={this.tableHeads}
+							/>
+						) : (
+							<div className="loading">No afternoon slots</div>
+						)
+					) : !!this.state.table.morning.length ? (
 						<RenderTable
 							data={this.state.table.morning}
 							translate={this.translateSlotData}
 							heads={this.tableHeads}
 						/>
+					) : (
+						<div className="loading">No morning slots</div>
 					)
 				) : (
-					<div className="loading">Loading..</div>
+					<div className="loading">
+						{this.state.loading ? "Loading.." : "No data here"}
+					</div>
 				)}
 			</Fragment>
 		);

@@ -9,7 +9,8 @@ class DeleteUsers extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			users: []
+			users: [],
+			loading:false
 		};
 		this.tableHeads = ["Username", "User ID", "Email", "Branch"];
 		this.unmounted = false;
@@ -27,9 +28,10 @@ class DeleteUsers extends Component {
 			});
 			users.splice(elIndex, 1);
 		});
-		!this.unmounted && this.setState({
-			users: users
-		});
+		!this.unmounted &&
+			this.setState({
+				users: users
+			});
 		axios.post("/admin/delete_faculties", {
 			token: this.props.token,
 			fac_ids: elements
@@ -76,18 +78,22 @@ class DeleteUsers extends Component {
 		);
 	};
 	componentDidMount() {
+		this.setState({
+			loading: true
+		});
 		axios
 			.post("/admin/get_all_faculties", {
 				token: this.props.token,
-				fields: ['fac_name', 'fac_id', 'email', 'branch']
+				fields: ["fac_name", "fac_id", "email", "branch"]
 			})
 			.then(data => {
 				data = data.data;
 				if (data.error === null) {
 					!this.unmounted &&
-						!this.unmounted && this.setState({
-							...this.state,
-							users: data.data
+						!this.unmounted &&
+						this.setState({
+							users: data.data,
+							loading: false
 						});
 				}
 			});
@@ -104,14 +110,20 @@ class DeleteUsers extends Component {
 	render() {
 		return (
 			<Fragment>
-				{this.state.users.length > 0 ? <RenderTableSelectable
-					data={this.state.users}
-					translate={this.translateSlotData}
-					heads={this.tableHeads}
-					title={"Faculty"}
-					selectedAction={this.selectedAction}
-					selectionId="fac_id"
-				/>:<div className="loading">Loading..</div>}
+				{this.state.users.length > 0 && !this.state.loading ? (
+					<RenderTableSelectable
+						data={this.state.users}
+						translate={this.translateSlotData}
+						heads={this.tableHeads}
+						title={"Faculty"}
+						selectedAction={this.selectedAction}
+						selectionId="fac_id"
+					/>
+				) : (
+					<div className="loading">
+						{this.state.loading ? "Loading.." : "No Users"}
+					</div>
+				)}
 			</Fragment>
 		);
 	}

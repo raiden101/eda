@@ -142,12 +142,14 @@ class Reports extends Component {
 			.then(data => {
 				data = data.data.data;
 				!this.unmounted && this.setState({
-					morn_dates: data.morn_dates,
-					aft_dates: data.aft_dates,
-					dates: data.morn_dates,
-					currentDate: data.morn_dates[0].date
+						morn_dates: data.morn_dates,
+						aft_dates: data.aft_dates,
+						dates: data.morn_dates,
+						currentDate:
+							data.morn_dates.length && data.morn_dates[0]
+								.date
 				});
-				axios
+				data.morn_dates.length > 0 ? axios
 					.post("/admin/slot_info", {
 						token: this.props.token,
 						session: "morning",
@@ -163,13 +165,15 @@ class Reports extends Component {
 							users: users,
 							loading: false
 						});
+					}) : this.setState({
+						loading:false
 					});
 			});
 	}
 	render() {
 		return (
 			<Fragment>
-				<div className="controls">
+				{!this.state.loading && !!(this.state.morn_dates.length+this.state.dates.length) && <div className="controls">
 					<div className="quarter">
 						<FormControl className="dropdown">
 							<InputLabel>Date</InputLabel>
@@ -208,7 +212,7 @@ class Reports extends Component {
 							</Select>
 						</FormControl>
 					</div>
-				</div>
+				</div>}
 				{this.state.users.length > 0 ? (
 					<RenderTable
 						data={this.state.users}
@@ -219,10 +223,10 @@ class Reports extends Component {
 					<div className="loading">
 						{this.state.loading
 							? "Loading..."
-							: "No users here : /"}
+							: "No Data here : /"}
 					</div>
 				)}
-				{!this.state.loading && (
+				{!this.state.loading && !!(this.state.morn_dates.length+this.state.dates.length) && (
 					<div className="downloads">
 						<div
 							className="full fake-link"

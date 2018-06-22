@@ -16,7 +16,8 @@ class SlotDeletion extends Component {
 		table: {
 			morning: [],
 			afternoon: []
-		}
+		},
+		loading: false
 	};
 
 	constructor(props) {
@@ -68,7 +69,11 @@ class SlotDeletion extends Component {
 	translateSlotData(obj) {
 		let date = new Date(obj.date);
 		let dateString =
-			date.getDate() + "/" + (date.getMonth() + 1)+ "/" + date.getFullYear();
+			date.getDate() +
+			"/" +
+			(date.getMonth() + 1) +
+			"/" +
+			date.getFullYear();
 		return [
 			dateString,
 			obj.total_slot,
@@ -94,27 +99,23 @@ class SlotDeletion extends Component {
 		];
 	}
 	componentDidMount() {
+		this.setState({
+			loading: true
+		});
 		axios
 			.post("/admin/", {
 				token: this.token
 			})
 			.then(data => {
 				data = data.data;
-				if (data.error !== null) {
-					!this.unmounted &&
-						this.setState({
-							...this.state
-						});
-				} else {
-					!this.unmounted &&
-						this.setState({
-							...this.state,
-							table: {
-								morning: data.data[0],
-								afternoon: data.data[1]
-							}
-						});
-				}
+				!this.unmounted &&
+					this.setState({
+						loading: false,
+						table: {
+							morning: data.data[0],
+							afternoon: data.data[1]
+						}
+					});
 			});
 	}
 	componentWillUnmount() {
@@ -165,7 +166,7 @@ class SlotDeletion extends Component {
 											date &&
 											date.getDate() +
 												"/" +
-											(date.getMonth() + 1)+
+												(date.getMonth() + 1) +
 												"/" +
 												date.getFullYear();
 										return (
@@ -198,34 +199,42 @@ class SlotDeletion extends Component {
 	render() {
 		return (
 			<Fragment>
-				<div className="controls">
-					<FormControl className="select-duration">
-						<InputLabel>Duration</InputLabel>
-						<Select
-							value={this.state.duration}
-							onChange={this.changeDuration}
-							inputProps={{
-								name: "duration"
-							}}
-						>
-							<MenuItem value={0}>Morning</MenuItem>
-							<MenuItem value={1}>Afternoon</MenuItem>
-						</Select>
-					</FormControl>
-				</div>
+				{!this.state.loading &&
+					!!(this.state.table.morning.length ||
+						this.state.table.afternoon.length) && (
+						<div className="controls">
+							<FormControl className="select-duration">
+								<InputLabel>Duration</InputLabel>
+								<Select
+									value={this.state.duration}
+									onChange={this.changeDuration}
+									inputProps={{
+										name: "duration"
+									}}
+								>
+									<MenuItem value={0}>Morning</MenuItem>
+									<MenuItem value={1}>Afternoon</MenuItem>
+								</Select>
+							</FormControl>
+						</div>
+					)}
 				{this.state.table.morning.length ||
 				this.state.table.afternoon.length ? (
 					this.state.duration ? (
-						<RenderTableSelectable
-							data={this.state.table.afternoon}
-							translate={this.translateSlotData}
-							heads={this.tableHeads}
-							onSelectConfirm={this.handleSelect}
-							title={"Afternoon Slots"}
-							selectedAction={e => this.selectedAction(e, 1)}
-							selectionId="_id"
-						/>
-					) : (
+						!!this.state.table.afternoon.length ? (
+							<RenderTableSelectable
+								data={this.state.table.afternoon}
+								translate={this.translateSlotData}
+								heads={this.tableHeads}
+								onSelectConfirm={this.handleSelect}
+								title={"Afternoon Slots"}
+								selectedAction={e => this.selectedAction(e, 1)}
+								selectionId="_id"
+							/>
+						) : (
+							<div className="loading">No Afternoon slots</div>
+						)
+					) : !!this.state.table.morning.length ? (
 						<RenderTableSelectable
 							data={this.state.table.morning}
 							translate={this.translateSlotData}
@@ -235,9 +244,13 @@ class SlotDeletion extends Component {
 							selectedAction={e => this.selectedAction(e, 0)}
 							selectionId="_id"
 						/>
+					) : (
+						<div className="loading">No morning slots</div>
 					)
 				) : (
-					<div className="loading">Loading..</div>
+					<div className="loading">
+						{this.state.loading ? "Loading.." : "No Slots"}
+					</div>
 				)}
 			</Fragment>
 		);
