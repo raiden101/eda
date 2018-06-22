@@ -70,7 +70,6 @@ class SendMail extends Component {
 		let users = [];
 		this.state.sendToNonPending && users.push(...this.state.nonpending);
 		this.state.sendPending && users.push(...this.state.pending);
-		console.log(users.length)
 		axios
 			.post("admin/send_mails", {
 				token: this.props.token,
@@ -79,7 +78,6 @@ class SendMail extends Component {
 			})
 			.then(data => {
 				if (data.data.data.rejected_mails.length > 0) {
-					console.log(data.data.data.rejected_mails);
 					this.setState({
 						sent: true,
 						status:
@@ -167,6 +165,7 @@ class SendMail extends Component {
 								color="secondary"
 								variant="raised"
 								onClick={this.sendMail}
+								disabled={this.state.loading || !users.length}
 							>
 								Send<i className="fa fa-paper-plane" />
 							</Button>
