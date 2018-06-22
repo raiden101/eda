@@ -38,7 +38,7 @@ class EditUser extends Component {
 					fac_name: this.props.data.fac_name,
 					email: this.state.faculty_email,
 					contact_no: this.state.faculty_contact,
-					password:this.state.faculty_password
+					password: this.state.faculty_password
 				}
 			})
 			.then(data => {
@@ -84,6 +84,7 @@ class EditUser extends Component {
 					</div>
 					<div className="input-space">
 						<PasswordField
+							placeholder="new password"
 							label="new password"
 							value={this.state.faculty_password}
 							onChange={this.changeState("faculty_password")}
