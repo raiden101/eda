@@ -10,7 +10,7 @@ const transporter = require('../utils/transporter');
 
 // function for extractiong human readable date.
 const get_date = (date) => {
-  return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+  return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
 }
 const layout = {
   paddingTop: (i, node) => 7,
