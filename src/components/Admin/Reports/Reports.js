@@ -173,7 +173,7 @@ class Reports extends Component {
 	render() {
 		return (
 			<Fragment>
-				{!this.state.loading && !!(this.state.morn_dates.length+this.state.dates.length) && <div className="controls">
+				{!this.state.loading && !!(this.state.morn_dates.length+this.state.aft_dates.length) && <div className="controls">
 					<div className="quarter">
 						<FormControl className="dropdown">
 							<InputLabel>Date</InputLabel>
