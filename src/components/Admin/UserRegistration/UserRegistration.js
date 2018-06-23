@@ -28,6 +28,10 @@ class UserRegistration extends Component {
 			successSnack: false
 		};
 	}
+	unmounted = false;
+	componentWillUnmount() {
+		this.unmounted = true;
+	}
 	validate = () => {
 		const {
 			faculty_name: name,
@@ -47,15 +51,17 @@ class UserRegistration extends Component {
 		);
 	};
 	save = () => {
-		this.setState({
-			saving: true
-		});
-		if (this.validate())
+		!this.unmounted &&
 			this.setState({
-				saving: false,
-				failureSnack: true,
-				failureMessage: "Please Fill all the Fields"
+				saving: true
 			});
+		if (this.validate())
+			!this.unmounted &&
+				this.setState({
+					saving: false,
+					failureSnack: true,
+					failureMessage: "Please Fill all the Fields"
+				});
 		else {
 			const {
 				faculty_name,
@@ -81,41 +87,37 @@ class UserRegistration extends Component {
 				})
 				.then(data => {
 					if (data.data.error) {
-						this.setState({
-							saving: false,
-							failureSnack: true,
-							failureMessage: data.data.error
-						});
+						!this.unmounted &&
+							this.setState({
+								saving: false,
+								failureSnack: true,
+								failureMessage: data.data.error
+							});
 					} else {
-						this.setState({
-							saving: false,
-							failureSnack: false,
-							successSnack: true,
-							faculty_name: "",
-							faculty_id: "",
-							faculty_designation: 0,
-							faculty_branch: 0,
-							faculty_email: "",
-							faculty_contact: ""
-						});
+						!this.unmounted &&
+							this.setState({
+								saving: false,
+								failureSnack: false,
+								successSnack: true,
+								faculty_name: "",
+								faculty_id: "",
+								faculty_designation: 0,
+								faculty_branch: 0,
+								faculty_email: "",
+								faculty_contact: ""
+							});
 					}
 				});
 		}
 	};
 	changeState = type => ({ target: { value } }) => {
-		this.setState({
-			[type]: value
-		});
+		!this.unmounted && this.setState({ [type]: value });
 	};
 	changeDropdownState = ({ target: { name, value } }) => {
-		this.setState({
-			[name]: value
-		});
+		!this.unmounted && this.setState({ [name]: value });
 	};
 	handleClose = name => () => {
-		this.setState({
-			[name]: false
-		});
+		!this.unmounted && this.setState({ [name]: false });
 	};
 	render() {
 		return (

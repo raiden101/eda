@@ -21,9 +21,12 @@ class SlotAddition extends Component {
 		this.tableHeads = ["Date", "Session", "Total slots"];
 		let date = new Date(
 			Date.UTC(
-			new Date().getFullYear(),
-			new Date().getMonth(),
-				new Date().getDate(),0,0,0
+				new Date().getFullYear(),
+				new Date().getMonth(),
+				new Date().getDate(),
+				0,
+				0,
+				0
 			)
 		);
 		this.UTCEnabled = false;
@@ -48,6 +51,10 @@ class SlotAddition extends Component {
 			},
 			validated: true
 		};
+	}
+	unmounted = false;
+	componentWillUnmount() {
+		this.unmounted = true;
 	}
 	translateSlotData = obj => {
 		console.log(this.dashSeperatedDateString(obj.date));
@@ -74,9 +81,7 @@ class SlotAddition extends Component {
 			});
 			slots.splice(elIndex, 1);
 		});
-		this.setState({
-			slots: slots
-		});
+		!this.unmounted && this.setState({ slots: slots });
 	};
 
 	findById = id => {
@@ -165,9 +170,13 @@ class SlotAddition extends Component {
 		if (flag === 0) {
 			let date = new Date(
 				Date.UTC(
-				new Date().getFullYear(),
-				new Date().getMonth(),
-				new Date().getDate(),0,0,0)
+					new Date().getFullYear(),
+					new Date().getMonth(),
+					new Date().getDate(),
+					0,
+					0,
+					0
+				)
 			);
 			if (this.UTCEnabled) {
 				date.setUTCHours(0);
@@ -176,42 +185,33 @@ class SlotAddition extends Component {
 				date.setUTCMilliseconds(0);
 			}
 			slots.push(this.state.tempSlotData);
-			this.setState(prevState => ({
-				...this.state,
-				incrementer: prevState.incrementer + 1,
-				slots: slots,
-				tempSlotData: {
-					slot_id: prevState.incrementer + 1,
-					date: date.toISOString(),
-					session: "morning",
-					total_slot: 1
-				}
-			}));
+			!this.unmounted && this.setState(prevState => ({
+					...this.state,
+					incrementer: prevState.incrementer + 1,
+					slots: slots,
+					tempSlotData: {
+						slot_id: prevState.incrementer + 1,
+						date: date.toISOString(),
+						session: "morning",
+						total_slot: 1
+					}
+				}));
 			return true;
 		}
 		return false;
 	};
 	saveSlots = () => {
 		let slots = [...this.state.slots];
-		this.setState({
-			saving: true
-		});
+		!this.unmounted && this.setState({ saving: true });
 		axios
 			.post("/admin/add_slots", {
 				token: this.props.token,
 				slots: slots
 			})
 			.then(data => {
-				this.setState(prevState => {
-					return {
-						snack: true,
-						successRate:
-							prevState.slots.length - data.data.data.length,
-						rejected: data.data.data.length !== 0,
-						saving: false,
-						slots: data.data.data
-					};
-				});
+				!this.unmounted && this.setState(prevState => {
+						return { snack: true, successRate: prevState.slots.length - data.data.data.length, rejected: data.data.data.length !== 0, saving: false, slots: data.data.data };
+					});
 			});
 	};
 	dashSeperatedDateString = date => {
@@ -227,51 +227,45 @@ class SlotAddition extends Component {
 		date = date.split("-");
 		if (!(date[0].length && date[1].length && date[2].length)) return;
 
-		let dateObj = new Date(Date.UTC(date[0] * 1, date[1] * 1-1, date[2],0,0,0));
+		let dateObj = new Date(
+			Date.UTC(date[0] * 1, date[1] * 1 - 1, date[2], 0, 0, 0)
+		);
 		dateObj = dateObj.toISOString();
 		console.log("Changed to :", date, dateObj);
-		this.setState({
-			tempSlotData: {
-				...this.state.tempSlotData,
-				date: dateObj
-			}
-		});
+		!this.unmounted && this.setState({
+				tempSlotData: {
+					...this.state.tempSlotData,
+					date: dateObj
+				}
+			});
 	};
 	changeTempDuration = ({ target: { value } }) => {
-		this.setState({
-			tempSlotData: {
-				...this.state.tempSlotData,
-				session: value
-			}
-		});
+		!this.unmounted && this.setState({
+				tempSlotData: {
+					...this.state.tempSlotData,
+					session: value
+				}
+			});
 	};
 	changeTempSlots = ({ target: { value } }) => {
 		if (value <= 0) {
-			this.setState({
-				validated: false
-			});
+			!this.unmounted && this.setState({ validated: false });
 		} else {
-			this.setState({
-				validated: true
-			});
+			!this.unmounted && this.setState({ validated: true });
 		}
-		this.setState(prevState => ({
-			...prevState,
-			tempSlotData: {
-				...prevState.tempSlotData,
-				total_slot: value
-			}
-		}));
+		!this.unmounted && this.setState(prevState => ({
+				...prevState,
+				tempSlotData: {
+					...prevState.tempSlotData,
+					total_slot: value
+				}
+			}));
 	};
 	handleClose = () => {
-		this.setState({
-			snack: false
-		});
+		!this.unmounted && this.setState({ snack: false });
 	};
 	handleRejected = () => {
-		this.setState({
-			rejected: false
-		});
+		!this.unmounted && this.setState({ rejected: false });
 	};
 	render() {
 		return (

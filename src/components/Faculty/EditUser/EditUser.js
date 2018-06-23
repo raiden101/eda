@@ -17,20 +17,18 @@ class EditUser extends Component {
 			msg: ""
 		};
 	}
+	unmounted = false;
+	componentWillUnmount() {
+		this.unmounted = true;
+	}
 	changeState = type => ({ target: { value } }) => {
-		this.setState({
-			[type]: value
-		});
+		!this.unmounted && this.setState({ [type]: value });
 	};
 	handleClose = name => () => {
-		this.setState({
-			[name]: false
-		});
+		!this.unmounted && this.setState({ [name]: false });
 	};
 	save = () => {
-		this.setState({
-			saving: true
-		});
+		!this.unmounted && this.setState({ saving: true });
 		axios
 			.post("faculty/update_info", {
 				token: this.props.token,
@@ -42,11 +40,12 @@ class EditUser extends Component {
 				}
 			})
 			.then(data => {
-				this.setState({
-					saving: false,
-					snack: true,
-					msg: data.data.error || data.data.data
-				});
+				!this.unmounted &&
+					this.setState({
+						saving: false,
+						snack: true,
+						msg: data.data.error || data.data.data
+					});
 			});
 	};
 	render() {

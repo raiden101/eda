@@ -28,9 +28,7 @@ class SendMail extends Component {
 			this.setState(prevState => ({ [name]: !prevState[name] }));
 	};
 	componentDidMount() {
-		this.setState({
-			loading: true
-		});
+		!this.unmounted && this.setState({ loading: true });
 		axios
 			.post("/admin/get_all_faculties", {
 				token: this.props.token,
@@ -59,14 +57,10 @@ class SendMail extends Component {
 		return [obj.fac_name, obj.fac_id, obj.email];
 	}
 	changeMailBody = ({ target: { value } }) => {
-		this.setState({
-			mail: value
-		});
+		!this.unmounted && this.setState({ mail: value });
 	};
 	sendMail = () => {
-		this.setState({
-			sending: true
-		});
+		!this.unmounted && this.setState({ sending: true });
 		let users = [];
 		this.state.sendToNonPending && users.push(...this.state.nonpending);
 		this.state.sendPending && users.push(...this.state.pending);
@@ -78,24 +72,24 @@ class SendMail extends Component {
 			})
 			.then(data => {
 				if (data.data.data.rejected_mails.length > 0) {
-					this.setState({
-						sent: true,
-						status:
-							data.data.data.rejected_mails.length +
-							" mails were'nt sent"
-					});
+					!this.unmounted && this.setState({
+							sent: true,
+							status:
+								data.data.data
+									.rejected_mails.length +
+								" mails were'nt sent"
+						});
 				} else {
-					this.setState({
-						sent: true,
-						status: "The mails were sent successfully"
-					});
+					!this.unmounted && this.setState({
+							sent: true,
+							status:
+								"The mails were sent successfully"
+						});
 				}
 			});
 	};
 	handleClose = (name) => () => {
-		this.setState({
-			[name]: false
-		});
+		!this.unmounted && this.setState({ [name]: false });
 	};
 	render() {
 		let mailBody = (

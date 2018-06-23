@@ -150,24 +150,28 @@ class Reports extends Component {
 								.date
 				});
 				data.morn_dates.length > 0 ? axios
-					.post("/admin/slot_info", {
-						token: this.props.token,
-						session: "morning",
-						date: data.morn_dates[0].date
-					})
-					.then(data => {
-						data = data.data.data;
-						let users = [];
-						data.forEach((e, i) => {
-							users.push(e.fac_info[0]);
-						});
-						!this.unmounted && this.setState({
-							users: users,
-							loading: false
-						});
-					}) : this.setState({
-						loading:false
-					});
+							.post("/admin/slot_info", {
+								token: this.props.token,
+								session: "morning",
+								date: data.morn_dates[0].date
+							})
+							.then(data => {
+								data = data.data.data;
+								let users = [];
+								data.forEach((e, i) => {
+									users.push(e.fac_info[0]);
+								});
+								!this.unmounted && this.setState(
+										{
+											users: users,
+											loading: false
+										}
+									);
+							}) : !this.unmounted && this.setState(
+							{
+								loading: false
+							}
+					  );
 			});
 	}
 	render() {
