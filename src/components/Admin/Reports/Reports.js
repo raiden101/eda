@@ -65,6 +65,7 @@ class Reports extends Component {
 				date: date
 			})
 			.then(data => {
+				if(this.unmounted || data.data.error) return;
 				data = data.data.data;
 				let users = [];
 				data.forEach((e, i) => {
@@ -149,7 +150,7 @@ class Reports extends Component {
 							data.morn_dates.length && data.morn_dates[0]
 								.date
 				});
-				data.morn_dates.length > 0 ? axios
+				data && data.morn_dates.length > 0 ? axios
 							.post("/admin/slot_info", {
 								token: this.props.token,
 								session: "morning",
