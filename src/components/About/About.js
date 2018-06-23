@@ -3,7 +3,7 @@ import React from 'react';
 export default () => {
     return (
         <div className = "loading">
-            Made by shrikanth.
+            A Finite loop product.
         </div>
     )
 }

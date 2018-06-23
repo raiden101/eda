@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const path = require('path');
 
 const port = 5000;
 
@@ -15,15 +16,13 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-let Schema = require("./server/schemas/collections.js");
-
 app.use("/api/auth", require("./server/auth/auth"));
 
 app.use("/api/faculty", require("./server/routes/faculty_routes"));
 
 app.use("/api/admin", require("./server/routes/admin_routes"));
 
+app.use(express.static(path.join(__dirname, './build')));
+
 ///////////////////////////////
-app.listen(port, () => {
-	console.log("listening to port " + port);
-});
+app.listen(port, () => console.log("listening to port " + port));
