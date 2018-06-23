@@ -29,13 +29,6 @@ class SlotAddition extends Component {
 				0
 			)
 		);
-		this.UTCEnabled = false;
-		if (this.UTCEnabled) {
-			date.setUTCHours(0);
-			date.setUTCMinutes(0);
-			date.setUTCSeconds(0);
-			date.setUTCMilliseconds(0);
-		}
 		this.state = {
 			incrementer: 1,
 			saving: false,
@@ -75,7 +68,6 @@ class SlotAddition extends Component {
 			slots.forEach((slot, i) => {
 				if (slot.slot_id === element) {
 					elIndex = i;
-					console.log("index", i);
 					return;
 				}
 			});
@@ -178,12 +170,6 @@ class SlotAddition extends Component {
 					0
 				)
 			);
-			if (this.UTCEnabled) {
-				date.setUTCHours(0);
-				date.setUTCMinutes(0);
-				date.setUTCSeconds(0);
-				date.setUTCMilliseconds(0);
-			}
 			slots.push(this.state.tempSlotData);
 			!this.unmounted && this.setState(prevState => ({
 					...this.state,

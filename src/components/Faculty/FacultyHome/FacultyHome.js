@@ -14,7 +14,7 @@ export default class FacultyHome extends Component {
                 token: this.props.token
             })
             .then(data => {
-                this.props.setData(data.data[0])
+                !this.unmounted && this.props.setData(data.data[0]);
                 !this.unmounted &&
                     this.setState({
                         data: data.data[0]
