@@ -9,26 +9,28 @@ class UploadForm extends Component {
 		snack: false,
 		msg: "",
 		filePath: "",
-		uploading:false
+		uploading: false
 	};
+	unmounted = false;
+	componentWillUnmount() {
+		this.unmounted = true;
+	}
 	changeData = ({ target: { value, files } }) => {
 		if (files.length !== 0)
-			this.setState({
-				filename: files[0].name,
-				file: files[0],
-				filePath: value
-			});
+			!this.unmounted && this.setState({
+					filename: files[0].name,
+					file: files[0],
+					filePath: value
+				});
 		else
-			this.setState({
-				filename: "",
-				file: null,
-				filePath: ""
-			});
+			!this.unmounted && this.setState({
+					filename: "",
+					file: null,
+					filePath: ""
+				});
 	};
 	submit = e => {
-		this.setState({
-			uploading: true
-		});
+		!this.unmounted && this.setState({ uploading: true });
 		if (!!this.state.filename) {
 			let formdata = new FormData();
 			formdata.append("token", this.props.token);
@@ -42,21 +44,19 @@ class UploadForm extends Component {
 				let msg = "";
 				if (data.data.error) msg = data.data.error;
 				else msg = data.data.data;
-				this.setState({
-					snack: true,
-					msg: msg,
-					filename: "",
-					file: null,
-					filePath: "",
-					uploading:false
-				});
+				!this.unmounted && this.setState({
+						snack: true,
+						msg: msg,
+						filename: "",
+						file: null,
+						filePath: "",
+						uploading: false
+					});
 			});
 		}
 	};
 	handleClose = name => () => {
-		this.setState({
-			[name]: false
-		});
+		!this.unmounted && this.setState({ [name]: false });
 	};
 	render() {
 		return (
@@ -68,7 +68,12 @@ class UploadForm extends Component {
 					onClose={this.handleClose("snack")}
 					message={<span>{this.state.msg || "Error!"}</span>}
 				/>
-				<div className={"upload-wrapper"+(this.state.uploading?" disabled":"")}>
+				<div
+					className={
+						"upload-wrapper" +
+						(this.state.uploading ? " disabled" : "")
+					}
+				>
 					<form onSubmit={e => e.preventDefault()}>
 						<label
 							className={

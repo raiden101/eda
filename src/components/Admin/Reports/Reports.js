@@ -65,6 +65,7 @@ class Reports extends Component {
 				date: date
 			})
 			.then(data => {
+				if (data.data.error) return;
 				data = data.data.data;
 				let users = [];
 				data.forEach((e, i) => {
