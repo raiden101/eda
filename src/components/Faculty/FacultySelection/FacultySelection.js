@@ -7,6 +7,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import "./FacultySelection.css";
 import RenderTable from "../../RenderTable/RenderTable";
 import Snackbar from "@material-ui/core/Snackbar";
+import ModalUntriggered from '../../Modal/ModalUntriggered';
 class FacultySelection extends Component {
 	constructor(props) {
 		super(props);
@@ -19,7 +20,8 @@ class FacultySelection extends Component {
 			morn_max: Math.max(0,props.data.slot_lims[0].morn_max-props.data.morn_selections.length),
 			aft_max: Math.max(0, props.data.slot_lims[0].aft_max - props.data.aft_selections.length),
 			error: false,
-			success:false
+			success:false,
+			selectConfirm:false
 		};
 	}
 	unmounted = false;
@@ -65,7 +67,10 @@ class FacultySelection extends Component {
 			date.getDate() + "/" + (date.getMonth() + 1)+ "/" + date.getFullYear();
 		return [dateString, obj.remaining_slot];
 	};
-	rowClicked = duration => obj => {
+	obj = null;
+	handleOk = () =>{
+		let obj = this.obj;
+		let duration = this.duration;
 		!this.unmounted && this.setState({
 			loading: true
 		});
@@ -83,32 +88,13 @@ class FacultySelection extends Component {
 					let aMax = this.state.aft_max;
 					if (duration[0] === "m") --mMax;
 					else --aMax;
-					let morning = this.state.morning;
-					let afternoon = this.state.afternoon;
-					let mIndex = -1;
-					let aIndex = -1;
-					morning.forEach((e, i) => {
-						if (e.date === obj.date) {
-							mIndex = i;
-							return;
-						}
-					});
-					afternoon.forEach((e, i) => {
-						if (e.date === obj.date) {
-							aIndex = i;
-							return;
-						}
-					});
-					if (mIndex !== -1) morning.splice(mIndex, 1);
-					if (aIndex !== -1) afternoon.splice(aIndex, 1);
 					!this.unmounted && this.setState({
 						loading: false,
-						morning: morning,
-						afternoon: afternoon,
 						morn_max: mMax,
 						aft_max: aMax,
 						success:true
 					});
+					this.refetch();
 				} else {
 					!this.unmounted && this.setState({
 						loading: false,
@@ -117,15 +103,35 @@ class FacultySelection extends Component {
 					this.refetch();
 				}
 			});
+			return true;
+	}
+	rowClicked = duration => obj => {
+		this.obj = obj;
+		this.duration = duration;
+		!this.unmounted && this.setState({
+			selectConfirm:true
+		});
 	};
 	handleClose = name => () => {
 		!this.unmounted && this.setState({
 			[name]: false
 		});
 	};
+	toggleSelect = () =>{
+		this.setState({
+			selectConfirm:false
+		})
+	}
 	render() {
 		return (
 			<Fragment>
+				{this.state.selectConfirm && <ModalUntriggered
+					content = "Are you sure you want to select this?"
+					title="Select Confirmation"
+					handleOk={this.handleOk}
+					sendStatus={this.toggleSelect}
+					cancel={true}/>
+				}
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
 					open={this.state.error}

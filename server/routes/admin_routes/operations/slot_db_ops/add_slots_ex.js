@@ -18,7 +18,6 @@ module.exports = (req, res) => {
   
   // allowed date formats for excel
   // (YYYY/MM/DD)
-  console.log(slots_data);
   Promise.all(slots_data.map(slot => {
     if(slot.length == 0) return;
     let _collection = slot[0] === 'morning' ? 

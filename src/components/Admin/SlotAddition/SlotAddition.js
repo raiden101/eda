@@ -50,7 +50,6 @@ class SlotAddition extends Component {
 		this.unmounted = true;
 	}
 	translateSlotData = obj => {
-		console.log(this.dashSeperatedDateString(obj.date));
 		let date = new Date(obj.date);
 		let dateString =
 			date.getDate() +
@@ -217,7 +216,6 @@ class SlotAddition extends Component {
 			Date.UTC(date[0] * 1, date[1] * 1 - 1, date[2], 0, 0, 0)
 		);
 		dateObj = dateObj.toISOString();
-		console.log("Changed to :", date, dateObj);
 		!this.unmounted && this.setState({
 				tempSlotData: {
 					...this.state.tempSlotData,
