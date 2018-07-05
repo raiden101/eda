@@ -98,7 +98,15 @@ class Reports extends Component {
 				return {
 					columns: [
 						{
-							width: "100%",
+							margin: [0, 10, 30, 0],
+							alignment: "center",
+							text: {
+								color: "#777",
+								bold: true,
+								text:"Powered by Finite Loop"
+							}
+						},
+						{
 							margin: [0, 10, 30, 0],
 							alignment: "right",
 							text: {
@@ -118,13 +126,14 @@ class Reports extends Component {
 				{
 					image: Logo,
 					width: 90,
-					height: 60
+					height: 60,
+					style: "icentered"
 				},
 				{
 					columns: [
 						{
 							width: "50%",
-							margin: [0,0,0, 20],
+							margin: [0, 0, 0, 20],
 							alignment: "center",
 							text: {
 								bold: true,
@@ -135,7 +144,7 @@ class Reports extends Component {
 						},
 						{
 							width: "50%",
-							margin: [0,0,0, 20],
+							margin: [0, 0, 0, 20],
 							alignment: "center",
 							text: {
 								bold: true,
@@ -160,7 +169,12 @@ class Reports extends Component {
 						body: [["sl no"].concat(...this.tableHeads), ...rows]
 					}
 				}
-			]
+			],
+			styles: {
+				icentered: {
+					alignment: "center"
+				}
+			}
 		};
 		pdfMake.createPdf(docDefinition).print();
 	};

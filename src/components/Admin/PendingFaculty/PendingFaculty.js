@@ -98,9 +98,17 @@ class PendingFaculty extends Component {
 		let docDefinition = {
 			footer: function(currentPage, pageCount) {
 				return {
-					columns: [{
-
-						width: "100%",
+					columns: [
+						{
+							margin: [0, 10, 30, 0],
+							alignment: "center",
+							text: {
+								color: "#777",
+								bold: true,
+								text: "Powered by Finite Loop"
+							}
+						},
+						{
 						margin: [0, 10,30,0],
 						alignment: "right",
 						text: {
@@ -116,7 +124,8 @@ class PendingFaculty extends Component {
 				{
 					image: Logo,
 					width: 90,
-					height: 60
+					height: 60,
+					style: "icentered"
 				},
 				{
 					columns: [
@@ -143,7 +152,12 @@ class PendingFaculty extends Component {
 						body: [...rows]
 					}
 				}
-			]
+			],
+			styles: {
+				icentered: {
+					alignment: "center"
+				}
+			}
 		};
 		pdfMake.createPdf(docDefinition).print();
 	};
