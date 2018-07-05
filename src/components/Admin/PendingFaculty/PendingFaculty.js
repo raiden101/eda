@@ -8,6 +8,7 @@ import "./PendingFaculty.css";
 import axios from "axios";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import Logo from "./logo.png";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 class PendingFaculty extends Component {
@@ -46,10 +47,11 @@ class PendingFaculty extends Component {
 			});
 	}
 	changeDropdown = ({ target: { name, value } }) => {
-		!this.unmounted && this.setState({
-			[name]: value,
-			loading: true
-		});
+		!this.unmounted &&
+			this.setState({
+				[name]: value,
+				loading: true
+			});
 		axios
 			.post("/admin/pending_faculty", {
 				token: this.props.token,
@@ -94,17 +96,38 @@ class PendingFaculty extends Component {
 			});
 		});
 		let docDefinition = {
+			footer: function(currentPage, pageCount) {
+				return {
+					columns: [{
+
+						width: "100%",
+						margin: [0, 10,30,0],
+						alignment: "right",
+						text: {
+							color:"#777",
+							bold:true,
+							text: "page "+currentPage.toString() + " / " + pageCount
+						}
+					}
+					]
+				};
+			},
 			content: [
+				{
+					image: Logo,
+					width: 90,
+					height: 60
+				},
 				{
 					columns: [
 						{
 							width: "100%",
-							margin: [0, 30],
+							margin: [0, 0, 0, 30],
 							alignment: "center",
 							text: {
 								bold: true,
 								text:
-									"Desingation : " +
+									"Designation : " +
 									this.getDesignation(
 										this.state.designation
 									) +
@@ -117,7 +140,6 @@ class PendingFaculty extends Component {
 					table: {
 						headerRows: 0,
 						widths: ["20%", "20%", "40%", "20%"],
-
 						body: [...rows]
 					}
 				}
