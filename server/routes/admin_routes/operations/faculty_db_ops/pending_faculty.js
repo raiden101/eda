@@ -12,7 +12,12 @@ module.exports = (req, res) => {
 				{ $match: { fac_des: req.body.designation } },
 				{ 
 					$addFields: { tot_count: 
-						{ $sum: ['$morn_selected_slots', '$aft_selected_slots'] } 
+						{ 
+							$sum: [
+								{ $size: '$morn_selected_slots' }, 
+								{ $size: '$aft_selected_slots' }
+							] 
+						} 
 					} 
 				},
 				{ $match: { tot_count: { $lt: data.maximum } } }

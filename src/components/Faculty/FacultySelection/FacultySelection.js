@@ -17,8 +17,8 @@ class FacultySelection extends Component {
 			allSelected: false,
 			duration: 0,
 			loading: false,
-			morn_max: Math.max(0,props.data.slot_lims[0].morn_max-props.data.morn_selections.length),
-			aft_max: Math.max(0, props.data.slot_lims[0].aft_max - props.data.aft_selections.length),
+			morn_max: Math.max(0,props.data.slot_lims[0].morn_max-props.data.morn_selected_slots.length),
+			aft_max: Math.max(0, props.data.slot_lims[0].aft_max - props.data.aft_selected_slots.length),
 			error: false,
 			success:false,
 			selectConfirm:false

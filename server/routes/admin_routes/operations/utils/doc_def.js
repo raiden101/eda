@@ -18,8 +18,8 @@ module.exports = {
     {
       text: 'Exam duty chart', 
       margin: [0, 18, 0, 0],
-      fontSize: 20, 
-      alignment: 'center', lineHeight: 2
+      fontSize: 17, 
+      lineHeight: 2
     },
     {
       table: {

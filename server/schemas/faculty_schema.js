@@ -8,8 +8,8 @@ const faculty_schema = new Schema({
 	email: String,
 	contact_no: String,
 	password: String ,
-	morn_selected_slots: { type: Number, default: 0 },
-	aft_selected_slots: { type: Number, default: 0 }
+	morn_selected_slots: { type: [Date], default: [] },
+	aft_selected_slots: { type: [Date], default: [] }
 });
 
 const faculty = mongoose.model("facultie", faculty_schema);

@@ -33,12 +33,12 @@ export default class FacultyHome extends Component {
     }
     render() {
         if (!this.state.data) return <div className="loading">Loading...</div>;
-        let morning = this.state.data.morn_selections.map((element) => {
-            return { date: element.date, session: "Morning" };
+        let morning = this.state.data.morn_selected_slots.map((element) => {
+            return { date: element, session: "Morning" };
         });
-        let afternoon = this.state.data.aft_selections.map((element) => {
+        let afternoon = this.state.data.aft_selected_slots.map((element) => {
             return {
-                date: element.date,
+                date: element,
                 session: 'Afternoon'
             }
         });

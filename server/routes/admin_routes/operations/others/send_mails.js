@@ -3,7 +3,7 @@ const vfs_fonts = require('pdfmake/build/vfs_fonts');
 pdfmake.vfs = vfs_fonts.pdfMake.vfs;
 
 const { email_add } = require('../../../../../credentials/credentials');
-const { morn_exam, aft_exam } = require('../../../../schemas/collections');
+const { faculty } = require('../../../../schemas/collections');
 
 const doc_def = require('../utils/doc_def');
 const transporter = require('../utils/transporter');
@@ -34,26 +34,28 @@ const get_doc_def = (fac_id) => {
     docDefinition.content[1].layout = layout;
     let body_ref = docDefinition.content[1].table.body;
     
-    morn_exam.find({ selected_members: { $in: [fac_id] } }, 'date')
-    .then(data => { 
-      data.forEach((dat) => {
-        body_ref.push([
-          { text: 'Morning', style: 'row' }, 
-          { text: get_date(dat.date), style: 'row'}
-        ])
-      })
-      return aft_exam.find({ selected_members: { $in: [fac_id] }}, 'date')
+    faculty.findOne(
+      { fac_id: fac_id }, 
+      'morn_selected_slots aft_selected_slots'
+    ).then(data => {
+      if(data === null)
+        reject("no such id found!!");
+      else {
+        data.morn_selected_slots.forEach(date => {
+          body_ref.push([
+            { text: 'Morning', style: 'row' }, 
+            { text: get_date(date), style: 'row'}
+          ])
+        })
+        data.aft_selected_slots.forEach(date => {
+          body_ref.push([
+            { text: 'Afternoon', style: 'row' }, 
+            { text: get_date(date), style: 'row'}
+          ])
+        })
+        resolve(docDefinition);
+      }  
     })
-    .then(data => {
-      data.forEach((dat) => {
-        body_ref.push([
-          { text: 'Afternoon', style: 'row' }, 
-          { text: get_date(dat.date), style: 'row'}
-        ])
-      });
-      resolve(docDefinition);
-    })
-    .catch(err => reject("error while fetching data"));
 
   });
 

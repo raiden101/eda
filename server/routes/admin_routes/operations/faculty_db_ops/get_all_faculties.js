@@ -22,7 +22,12 @@ module.exports = (req, res) => {
 			$project: {
 				'pending': {
 					$lt: [
-						{ $sum: ['$morn_selected_slots', '$aft_selected_slots'] },
+						{ 
+							$sum: [
+								{ $size: '$morn_selected_slots' }, 
+								{ $size: '$aft_selected_slots' }
+							] 
+						},
 						'$lims.maximum'
 					]
 				},

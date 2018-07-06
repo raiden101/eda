@@ -24,7 +24,7 @@ module.exports = (req, res) => {
 		else
 			return faculty.updateOne(
 				{ fac_id: req.fac_id }, 
-				{ $inc: { [field]: 1 } }
+				{ $push: { [field]: new Date(req.body.selected.date) } }
 			)
 	})
 	.then(data => res.json({ data: "reservation successful", error: null}))
