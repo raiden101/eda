@@ -10,7 +10,7 @@ module.exports = (req, res) => {
   faculty.aggregate(pending_fac_query)
   .then(pending_faculties => {
 
-    (async function allocate(fac_index) {
+    (function allocate(fac_index) {
       if(fac_index >= pending_faculties.length)
         return res.json({ error: null, data: "allocation completed sucessfully"})
       
@@ -57,7 +57,7 @@ module.exports = (req, res) => {
           return Promise.all([a, b]);
       })
       .then(data => {
-        setTimeout(() => {allocate(++fac_index)}, 0);
+        setTimeout(_ => {allocate(++fac_index)}, 0);
       })
       .catch(err => res.json({ error: "error while allocating!!", data: null }));
 

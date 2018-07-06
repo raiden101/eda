@@ -118,7 +118,7 @@ module.exports = (req, res) => {
         // resp.msg has the email which wasnt sent.
         if(!resp.success)
           rejected_mails.push(resp.msg);
-        sendMail(++i);
+        setTimeout(_ => {sendMail(++i)}, 0)
       });
     }else { 
       res.json({ data: 
