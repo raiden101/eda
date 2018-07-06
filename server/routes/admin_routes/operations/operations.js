@@ -11,7 +11,8 @@ const admin_home = require('./others/admin_home'),
       slot_info = require('./slot_db_ops/slot_info'),
       send_mails = require('./others/send_mails'),
       add_faculties = require('./faculty_db_ops/add_faculties_ex'),
-      add_slots_via_excel = require('./slot_db_ops/add_slots_ex');
+      add_slots_via_excel = require('./slot_db_ops/add_slots_ex'),
+      auto_allocation = require("./slot_db_ops/auto_allocation/auto_allocation")
 
 module.exports = {
   admin_home,
@@ -27,5 +28,6 @@ module.exports = {
   slot_info,
   send_mails,
   add_faculties,
-  add_slots_via_excel
+  add_slots_via_excel,
+  auto_allocation
 }

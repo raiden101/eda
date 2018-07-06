@@ -32,6 +32,7 @@ router.post('/upload_faculties', check_token, operations.add_faculties);
 
 router.post('/upload_slots', check_token, operations.add_slots_via_excel);
 
+router.post('/auto_allocation', check_token, operations.auto_allocation);
 module.exports = router;
 
 
