@@ -7,7 +7,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import "./FacultySelection.css";
 import RenderTable from "../../RenderTable/RenderTable";
 import Snackbar from "@material-ui/core/Snackbar";
-import ModalUntriggered from '../../Modal/ModalUntriggered';
+import ModalUntriggered from "../../Modal/ModalUntriggered";
 class FacultySelection extends Component {
 	constructor(props) {
 		super(props);
@@ -17,11 +17,20 @@ class FacultySelection extends Component {
 			allSelected: false,
 			duration: 0,
 			loading: false,
-			morn_max: Math.max(0,props.data.slot_lims[0].morn_max-props.data.morn_selections.length),
-			aft_max: Math.max(0, props.data.slot_lims[0].aft_max - props.data.aft_selections.length),
+			morn_max: Math.max(
+				0,
+				props.data.slot_lims[0].morn_max -
+					props.data.morn_selections.length
+			),
+			aft_max: Math.max(
+				0,
+				props.data.slot_lims[0].aft_max -
+					props.data.aft_selections.length
+			),
 			error: false,
-			success:false,
-			selectConfirm:false
+			success: false,
+			selectConfirm: false,
+			msg: null
 		};
 	}
 	unmounted = false;
@@ -30,26 +39,29 @@ class FacultySelection extends Component {
 	}
 	tableHeads = ["Date", "Remaining Slots"];
 	refetch = () => {
-		!this.unmounted && this.setState({
-			loading: true
-		});
+		!this.unmounted &&
+			this.setState({
+				loading: true
+			});
 		axios
 			.post("faculty/selection_info", {
 				token: this.props.token
 			})
 			.then(data => {
 				if (data.data.error) {
-					!this.unmounted && this.setState({
-						allSelected: true,
-						loading: false
-					});
+					!this.unmounted &&
+						this.setState({
+							allSelected: true,
+							loading: false
+						});
 				} else {
-					!this.unmounted && this.setState({
-						morning: data.data.data[0],
-						afternoon: data.data.data[1],
-						allSelected: false,
-						loading: false
-					});
+					!this.unmounted &&
+						this.setState({
+							morning: data.data.data[0],
+							afternoon: data.data.data[1],
+							allSelected: false,
+							loading: false
+						});
 				}
 			});
 	};
@@ -57,23 +69,29 @@ class FacultySelection extends Component {
 		this.refetch();
 	}
 	changeDropdown = ({ target: { name, value } }) => {
-		!this.unmounted && this.setState({
-			[name]: value
-		});
+		!this.unmounted &&
+			this.setState({
+				[name]: value
+			});
 	};
 	translateSlotData = obj => {
 		let date = new Date(obj.date);
 		let dateString =
-			date.getDate() + "/" + (date.getMonth() + 1)+ "/" + date.getFullYear();
+			date.getDate() +
+			"/" +
+			(date.getMonth() + 1) +
+			"/" +
+			date.getFullYear();
 		return [dateString, obj.remaining_slot];
 	};
 	obj = null;
-	handleOk = () =>{
+	handleOk = () => {
 		let obj = this.obj;
 		let duration = this.duration;
-		!this.unmounted && this.setState({
-			loading: true
-		});
+		!this.unmounted &&
+			this.setState({
+				loading: true
+			});
 		axios
 			.post("faculty/reserve_slot", {
 				token: this.props.token,
@@ -88,50 +106,75 @@ class FacultySelection extends Component {
 					let aMax = this.state.aft_max;
 					if (duration[0] === "m") --mMax;
 					else --aMax;
-					!this.unmounted && this.setState({
-						loading: false,
-						morn_max: mMax,
-						aft_max: aMax,
-						success:true
-					});
+					!this.unmounted &&
+						this.setState({
+							loading: false,
+							morn_max: mMax,
+							aft_max: aMax,
+							success: true
+						});
 					this.refetch();
 				} else {
-					!this.unmounted && this.setState({
-						loading: false,
-						error: true
-					});
+					!this.unmounted &&
+						this.setState({
+							loading: false,
+							error: true
+						});
 					this.refetch();
 				}
 			});
-			return true;
-	}
+		return true;
+	};
 	rowClicked = duration => obj => {
 		this.obj = obj;
 		this.duration = duration;
-		!this.unmounted && this.setState({
-			selectConfirm:true
-		});
+		!this.unmounted &&
+			this.setState({
+				selectConfirm: true,
+				msg: [duration, obj]
+			});
 	};
 	handleClose = name => () => {
-		!this.unmounted && this.setState({
-			[name]: false
+		!this.unmounted &&
+			this.setState({
+				[name]: false
+			});
+	};
+	toggleSelect = () => {
+		this.setState({
+			selectConfirm: false
 		});
 	};
-	toggleSelect = () =>{
-		this.setState({
-			selectConfirm:false
-		})
-	}
 	render() {
+		let date = new Date(this.state.msg && this.state.msg[1].date);
+		let dateString =
+			date.getDate() +
+			"/" +
+			(date.getMonth() + 1) +
+			"/" +
+			date.getFullYear();
 		return (
 			<Fragment>
-				{this.state.selectConfirm && <ModalUntriggered
-					content = "Are you sure you want to select this?"
-					title="Select Confirmation"
-					handleOk={this.handleOk}
-					sendStatus={this.toggleSelect}
-					cancel={true}/>
-				}
+				{this.state.selectConfirm && (
+					<ModalUntriggered
+						content={
+							<div>
+								Are you sure you want to select this duration?
+								<br />
+								<div className="cell-full">
+									<div className="half">{dateString}</div>
+									<div className="half">
+										{this.state.msg[0]}
+									</div>
+								</div>
+							</div>
+						}
+						title="Select Confirmation"
+						handleOk={this.handleOk}
+						sendStatus={this.toggleSelect}
+						cancel={true}
+					/>
+				)}
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
 					open={this.state.error}
@@ -145,10 +188,7 @@ class FacultySelection extends Component {
 					}
 				/>
 				<Snackbar
-					anchorOrigin={{
-						vertical: "bottom",
-						horizontal: "left"
-					}}
+					anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
 					open={!this.state.error && this.state.success}
 					autoHideDuration={3000}
 					onClose={this.handleClose("success")}
