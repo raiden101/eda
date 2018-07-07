@@ -30,7 +30,10 @@ module.exports = [
       'lims.morn_max': 1,
       'lims.aft_max': 1,
       'aft_count': { $size: '$aft_selected_slots' },
-      'morn_count': { $size: '$morn_selected_slots' }
+      'morn_count': { $size: '$morn_selected_slots' },
+      'selected_dates': {
+        $concatArrays: ['$aft_selected_slots', '$morn_selected_slots']
+      }
     }
   }
 ]
