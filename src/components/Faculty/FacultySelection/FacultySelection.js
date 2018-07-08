@@ -40,6 +40,7 @@ class FacultySelection extends Component {
 				token: this.props.token
 			})
 			.then(data => {
+				console.log(data.data)
 				if (data.data.error) {
 					!this.unmounted &&
 						this.setState({
