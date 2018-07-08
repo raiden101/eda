@@ -71,7 +71,6 @@ class SendMail extends Component {
 				mail: this.state.mail
 			})
 			.then(data => {
-				console.log(data.data)
 				if(this.unmounted || data.data.error) return;
 				if (data.data.data.rejected_mails.length > 0) {
 					!this.unmounted && this.setState({

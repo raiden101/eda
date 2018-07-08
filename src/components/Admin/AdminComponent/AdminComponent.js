@@ -18,7 +18,7 @@ class AdminComponent extends Component {
 		this.token = JSON.parse(localStorage.getItem("auth")).token;
 	}
 	state = {
-		type: 7
+		type: 0
 	};
 	changeDuration = ({ target: { name, value } }) => {
 		this.setState({
