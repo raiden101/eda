@@ -8,7 +8,8 @@ const port = 5000;
 const { username, password } = require("./credentials/credentials");
 
 mongoose
-	.connect(`mongodb://${username}:${password}@ds143070.mlab.com:43070/eda`)
+	.connect(`mongodb://localhost:27017/eda`)
+	// .connect(`mongodb://${username}:${password}@ds143070.mlab.com:43070/eda`)
 	.then(data => console.log("connected to db."))
 	.catch(err => console.log("couldnt connect to the db."));
 
