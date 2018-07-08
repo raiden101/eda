@@ -9,13 +9,16 @@ import axios from "axios";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import Logo from "./logo.png";
+import { Button, Snackbar } from "@material-ui/core";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 class PendingFaculty extends Component {
 	state = {
 		designation: 1,
 		users: [],
-		loading: true
+		loading: true,
+		msg: "",
+		snack: false
 	};
 	constructor(props) {
 		super(props);
@@ -109,14 +112,18 @@ class PendingFaculty extends Component {
 							}
 						},
 						{
-						margin: [0, 10,30,0],
-						alignment: "right",
-						text: {
-							color:"#777",
-							bold:true,
-							text: "page "+currentPage.toString() + " / " + pageCount
+							margin: [0, 10, 30, 0],
+							alignment: "right",
+							text: {
+								color: "#777",
+								bold: true,
+								text:
+									"page " +
+									currentPage.toString() +
+									" / " +
+									pageCount
+							}
 						}
-					}
 					]
 				};
 			},
@@ -161,19 +168,60 @@ class PendingFaculty extends Component {
 		};
 		pdfMake.createPdf(docDefinition).print();
 	};
+	allocate = () => {
+		this.setState({
+			loading: true
+		});
+		axios
+			.post("/admin/auto_allocation", {
+				token: this.props.token
+			})
+			.then(data => {
+				if (data.error)
+					this.setState({
+						snack: true,
+						msg: "Auto allocation couldn't be done",
+						loading: false
+					});
+				else {
+					axios
+						.post("/admin/pending_faculty", {
+							token: this.props.token,
+							designation: 1
+						})
+						.then(data => {
+							!this.unmounted &&
+								this.setState({
+									msg: "Auto allocation done successfully",
+									snack: true,
+									users: data.data.data,
+									loading: false
+								});
+						});
+				}
+			});
+	};
+	handleClose = name => () => {
+		!this.unmounted && this.setState({ [name]: false });
+	};
 	render() {
 		return (
 			<Fragment>
+				<Snackbar
+					anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+					open={this.state.snack}
+					autoHideDuration={3000}
+					onClose={this.handleClose("msg")}
+					message={<span>{this.state.msg}</span>}
+				/>
 				<div className="controls">
 					<div>
-						<FormControl className="dropdown">
+						<FormControl className="dropdown padded-dropdown">
 							<InputLabel>Designation</InputLabel>
 							<Select
 								value={this.state.designation}
 								onChange={this.changeDropdown}
-								inputProps={{
-									name: "designation"
-								}}
+								inputProps={{ name: "designation" }}
 							>
 								<MenuItem value={1}>Asst. Prof. GD 1</MenuItem>
 								<MenuItem value={2}>Asst. Prof. GD 2</MenuItem>
@@ -181,6 +229,13 @@ class PendingFaculty extends Component {
 								<MenuItem value={4}>Asso. Prof.</MenuItem>
 							</Select>
 						</FormControl>
+						<Button
+							variant="raised"
+							color="primary"
+							onClick={this.allocate}
+						>
+							Auto-allocate
+						</Button>
 					</div>
 				</div>
 				{this.state.users.length > 0 && !this.state.loading ? (
