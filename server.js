@@ -5,10 +5,10 @@ const path = require('path');
 
 const port = 5000;
 
-const { username, password } = require("./credentials/credentials");
+const { username, password, url } = require("./credentials/credentials");
 
 mongoose
-	.connect(`mongodb://${username}:${password}@ds143070.mlab.com:43070/eda`)
+	.connect(`mongodb://${username}:${password}${url}`)
 	.then(data => console.log("connected to db."))
 	.catch(err => console.log("couldnt connect to the db."));
 
