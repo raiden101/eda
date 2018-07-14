@@ -31,7 +31,8 @@ app.use(
 app.use(
 	"/api/admin", 
 	admin_check_token,
-	require("./server/routes/admin_routes"));
+	require("./server/routes/admin_routes")
+);
 
 app.use(express.static(path.join(__dirname, './build')));
 
