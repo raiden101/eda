@@ -205,6 +205,9 @@ class FacultySelection extends Component {
 										<MenuItem value={1}>Afternoon</MenuItem>
 									</Select>
 								</FormControl>
+								<p className="right">
+									Click on the slot you want to select.
+								</p>
 							</div>
 							{!this.state.duration ? (
 								this.state.morning.length > 0 &&

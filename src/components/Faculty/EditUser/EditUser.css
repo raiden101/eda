@@ -2,3 +2,7 @@
     padding:40px;
     box-sizing: border-box;
 }
+
+.edit-user li {
+    padding-bottom: 25px;
+}

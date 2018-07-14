@@ -5,6 +5,10 @@ const path = require('path');
 
 const port = 5000;
 
+const check_token_gen = require('./server/utils/check_token');
+const admin_check_token = check_token_gen(admin_flag = true);
+const faculty_check_token = check_token_gen(admin_flag = false);
+
 const { username, password } = require("./credentials/credentials");
 
 mongoose
@@ -18,9 +22,16 @@ app.use(bodyParser.json());
 
 app.use("/api/auth", require("./server/auth/auth"));
 
-app.use("/api/faculty", require("./server/routes/faculty_routes"));
+app.use(
+	"/api/faculty", 
+	faculty_check_token,
+	require("./server/routes/faculty_routes")
+);
 
-app.use("/api/admin", require("./server/routes/admin_routes"));
+app.use(
+	"/api/admin", 
+	admin_check_token,
+	require("./server/routes/admin_routes"));
 
 app.use(express.static(path.join(__dirname, './build')));
 

@@ -3,3 +3,12 @@
     height:auto;
     padding:20px 0;
 }
+.right {
+    padding: 0px;
+    float: right;
+    padding-right: 15px;
+    font-style: italic;
+    color:indigo;
+    font-weight: 400;
+    font-size: 18px;
+}

@@ -68,7 +68,8 @@ export default class FacultyHome extends Component {
         return <Fragment>
 				<Panel title={<span className="mini-header fake-link black">
 							Some Information
-						</span>} content={<Fragment>
+                        </span>} 
+                        content={<Fragment>
 							<li className="instructions">
 								Select a Maximum of{" "}
 								{this.state.data.slot_lims[0].minimum}{" "}
