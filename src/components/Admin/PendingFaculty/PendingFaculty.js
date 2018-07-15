@@ -211,7 +211,7 @@ class PendingFaculty extends Component {
 					anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
 					open={this.state.snack}
 					autoHideDuration={3000}
-					onClose={this.handleClose("msg")}
+					onClose={this.handleClose("snack")}
 					message={<span>{this.state.msg}</span>}
 				/>
 				<div className="controls">
