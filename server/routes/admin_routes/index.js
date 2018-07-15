@@ -1,7 +1,5 @@
 const router = require('express').Router();
 const operations = require('./operations/operations');
-const fileUpload = require('express-fileupload');
-router.use(fileUpload());
 
 router.post('/', operations.admin_home);
 

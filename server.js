@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const path = require('path');
+const fileUpload = require('express-fileupload');
 
 const port = 5000;
 
@@ -30,6 +31,7 @@ app.use(
 
 app.use(
 	"/api/admin", 
+	fileUpload(),
 	admin_check_token,
 	require("./server/routes/admin_routes")
 );
