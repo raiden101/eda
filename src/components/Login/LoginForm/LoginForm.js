@@ -88,7 +88,7 @@ class LoginForm extends Component {
 		return (
 			<Fragment>
 				{this.renderItem}
-				<div className="tabs">
+				<div className="tabs" style={{fontSize: '36px'}}>
 					{this.state.admin ? "Admin " : ""}Login
 				</div>
 				<form
@@ -117,16 +117,20 @@ class LoginForm extends Component {
 						/>
 					</div>
 					{errors}
-					<div className="input-field t-r-padd">
+					<div className="input-field t-c-padd">
 						<Button
 							variant="raised"
 							color="primary"
 							onClick={this.submit}
 							disabled={this.state.submitting}
+							style={{width: '100%'}}
 						>
 							{this.state.submitting ? "submitting" : "submit"}
 						</Button>
 					</div>
+					<p style={{margin: '0px'}}>
+						<center><u>Powered by Finite Loop.</u></center>
+					</p>
 				</form>
 			</Fragment>
 		);

@@ -17,12 +17,14 @@ module.exports = (req, res) => {
 
       let _faculty = pending_faculties[fac_index];
 
-      (_faculty.morn_count < _faculty.lims.morn_max ?
+      (
+        _faculty.morn_count < _faculty.lims.morn_max ?
         morn_exam.find(
           { 'date': { $nin: _faculty.selected_dates } },
           'date'
         ).limit(_faculty.lims.morn_max - _faculty.morn_count)
-        : Promise.resolve(-1))
+        : Promise.resolve(-1)
+      )
       .then(morn_dates => {
         return (morn_dates !== -1 ? 
         Promise.all(morn_dates.map(obj => {

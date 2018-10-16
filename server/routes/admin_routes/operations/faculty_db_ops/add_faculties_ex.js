@@ -50,7 +50,7 @@ module.exports = (req, res) => {
   let check = is_valid(fac_data);
   if(!check.success)
     res.json({ error: check.error, data: null });
-  else 
+  else
     Promise.all(fac_data.map(fac => {
       return new faculty({
         fac_id: fac[0],

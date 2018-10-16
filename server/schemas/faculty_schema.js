@@ -7,7 +7,7 @@ const faculty_schema = new Schema({
 	branch: String,
 	email: String,
 	contact_no: String,
-	password: String ,
+	password: String,
 	morn_selected_slots: { type: [Date], default: [] },
 	aft_selected_slots: { type: [Date], default: [] }
 });

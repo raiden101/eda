@@ -1,0 +1,16 @@
+faculties:
+fac_id | fac_name | fac_des(Number) | branch | email | contact_no
+
+faculty designation 
+
+Asst. Prof Gd I = 1
+Asst. Prof Gd II = 2
+Asst. Prof Gd III = 3 
+Asso. Prof. = 4
+
+--------------------------------------------------
+
+slot upload:
+morning/afternoon(string) | date | slot_count
+
+
