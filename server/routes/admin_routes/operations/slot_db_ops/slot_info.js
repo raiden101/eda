@@ -27,7 +27,8 @@ module.exports = (req, res) => {
 				"fac_info.fac_id": 1,
 				"fac_info.branch": 1,
 			}
-		}
+		},
+		{ $sort: { 'fac_info.fac_des': -1, 'fac_info.fac_id': 1 } }
 	])
 	.then(data => {
 		for(let i=0;i<data.length;++i)

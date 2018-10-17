@@ -1,70 +1,105 @@
-const { 
-  faculty, 
-  morn_exam, 
+const {
+  faculty,
+  morn_exam,
   aft_exam
-} = require('../../../../../schemas/collections');
-const pending_fac_query = require('./pending_fac_query');
+} = require("../../../../../schemas/collections");
+const pending_fac_query = require("./pending_fac_query");
+
+const allocateSlots = (currFaculty, flag) => {
+  // flag = true or false
+  // true === morning, false === afternoon
+  let {
+    morn_selected_slots,
+    aft_selected_slots,
+    toAllocate,
+    fac_id
+  } = currFaculty;
+  let sessionString = flag ? "morn_selected_slots" : "aft_selected_slots";
+  let allocatedCount = 0;
+  let session = flag ? morn_exam : aft_exam;
+  let selectedDateArray = (flag ? morn_selected_slots : aft_selected_slots).map(
+    ({ date }) => date
+  );
+
+  return new Promise((resolve, reject) => {
+    session
+      .aggregate([
+        { $match: { date: { $nin: [selectedDateArray] } } },
+        {
+          $addFields: {
+            available: {
+              $lt: [{ $size: "$selected_members" }, "$total_slot"]
+            }
+          }
+        },
+        { $match: { available: true } },
+        { $project: { date: 1 } }
+      ])
+      .limit(toAllocate)
+      .then(dates => {
+        // Got allocatable dates.
+        allocatedCount = dates.length;
+        Promise.all(
+          dates.map(currDate => {
+            return session
+              .findByIdAndUpdate(currDate._id, {
+                $push: { 'selected_members': [fac_id] }
+              })
+              .then(_ => {
+                return faculty.updateOne(
+                  { fac_id: fac_id },
+                  { $push: { [sessionString]: currDate.date } }
+                );
+              });
+          })
+        )
+        .then(_ => {
+          resolve(allocatedCount);
+        })
+        .catch(err => {
+          reject();
+        });
+      })
+      .catch(err => {
+        reject(); // do error handling.
+      });
+  });
+};
 
 module.exports = (req, res) => {
+  faculty
+    .aggregate(pending_fac_query)
+    .then(pending_faculties => {
+      // Got all pending faculties.
+      (function allocate(fac_index) {
+        if (fac_index >= pending_faculties.length)
+          return res.json({
+            error: null,
+            data: "allocation completed sucessfully"
+          });
 
-  faculty.aggregate(pending_fac_query)
-  .then(pending_faculties => {
+        let _faculty = pending_faculties[fac_index];
+        // Have to allocate '_faculty.toAllocate' number of slots
+        // to that faculty.(No condition on session[m/a])
+        // But slots shouldnt repeat.
 
-    (function allocate(fac_index) {
-      if(fac_index >= pending_faculties.length)
-        return res.json({ error: null, data: "allocation completed sucessfully"})
-      
+        allocateSlots(_faculty, true)
+          .then(slotAllocated => {
+            let diff = _faculty.toAllocate - slotAllocated;
+            _faculty.toAllocate = diff;
+            if (diff > 0) return allocateSlots(_faculty, false);
+            return Promise.resolve();
+          })
+          .then(_ => {
+            setTimeout(() => {
+              allocate(++fac_index);
+            }, 0);
+          })
+          .catch(err => {
+            throw new Error("Error");
+          });
 
-      let _faculty = pending_faculties[fac_index];
-
-      (_faculty.morn_count < _faculty.lims.morn_max ?
-        morn_exam.find(
-          { 'date': { $nin: _faculty.selected_dates } },
-          'date'
-        ).limit(_faculty.lims.morn_max - _faculty.morn_count)
-        : Promise.resolve(-1))
-      .then(morn_dates => {
-        return (morn_dates !== -1 ? 
-        Promise.all(morn_dates.map(obj => {
-          return morn_exam.findByIdAndUpdate(obj._id,
-            { $push: { 'selected_members' : _faculty.fac_id } }
-          ).then(_ => {
-            _faculty.selected_dates.push(obj.date);
-            return faculty.updateOne(
-              { fac_id: _faculty.fac_id },
-              { $push: { 'morn_selected_slots': obj.date } }
-            )}
-          )
-        })) : Promise.resolve(-1))
-      })
-      .then(_ => {
-        return (_faculty.aft_count < _faculty.lims.aft_max ?
-        aft_exam.find(
-          { 'date': { $nin: _faculty.selected_dates } },
-          'date'
-        ).limit(_faculty.lims.aft_max - _faculty.aft_count):
-        Promise.resolve(-1))
-      })
-      .then(aft_dates => {
-        return (aft_dates !== -1 ? 
-        Promise.all(aft_dates.map(obj => {
-          return aft_exam.findByIdAndUpdate(obj._id,
-            { $push: { 'selected_members' : _faculty.fac_id } }
-          ).then(_ => {
-            _faculty.selected_dates.push(obj.date);
-            return faculty.updateOne(
-              { fac_id: _faculty.fac_id },
-              { $push: { 'aft_selected_slots': obj.date } }
-            )}
-          )
-        })) : Promise.resolve(-1))
-      })      
-      .then(__ => {
-        setTimeout(_ => {allocate(++fac_index)}, 0);
-      })
-      .catch(err => res.json({ error: "error while allocating the slots!!", data: null }));
-
-    })(0);
-  })
-  .catch(err => res.json(err))
-}
+      })(0);
+    })
+    .catch(err => res.json(err));
+};

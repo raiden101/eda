@@ -27,13 +27,19 @@ module.exports = [
   { 
     $project: {
       'fac_id': 1,
-      'lims.morn_max': 1,
-      'lims.aft_max': 1,
-      'aft_count': { $size: '$aft_selected_slots' },
-      'morn_count': { $size: '$morn_selected_slots' },
-      'selected_dates': {
-        $concatArrays: ['$aft_selected_slots', '$morn_selected_slots']
-      }
+      'toAllocate': {
+        $subtract: [
+          { $sum: ['$lims.morn_max', '$lims.aft_max'] },
+          { 
+            $sum: [
+              { $size: '$aft_selected_slots' }, 
+              { $size: '$morn_selected_slots' }
+            ] 
+          }
+        ]
+      },
+      'aft_selected_slots': 1,
+      'morn_selected_slots': 1,
     }
   }
 ]
