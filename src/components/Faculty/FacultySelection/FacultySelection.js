@@ -170,11 +170,11 @@ class FacultySelection extends Component {
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
 					open={this.state.error}
-					autoHideDuration={3000}
+					autoHideDuration={6000}
 					onClose={this.handleClose("error")}
 					message={
 						<span>
-							The selected couldnt be saved , possibly because
+							The selected slot couldnt be saved , possibly because
 							another user has already selected it
 						</span>
 					}
@@ -182,7 +182,7 @@ class FacultySelection extends Component {
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
 					open={!this.state.error && this.state.success}
-					autoHideDuration={3000}
+					autoHideDuration={5000}
 					onClose={this.handleClose("success")}
 					message={<span>The date was selected successfully</span>}
 				/>
